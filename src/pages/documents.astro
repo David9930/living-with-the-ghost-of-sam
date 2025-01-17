@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Show Documents">
+	<main>
+		<h1>Show Documents</h1>
+		<div class="documents-grid">
+			<div class="doc-card">
+				<h2>Show Synopsis</h2>
+				<p>Complete show overview and concept</p>
+				<a href="/docs/synopsis.pdf" class="view-btn">View Document</a>
+			</div>
+			<div class="doc-card">
+				<h2>Season Arc</h2>
+				<p>First season story arc and episode breakdown</p>
+				<a href="/docs/season-arc.pdf" class="view-btn">View Document</a>
+			</div>
+			<!-- Add more document cards as needed -->
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 2rem;
+		max-width: 1200px;
+		color: white;
+	}
+	h1 {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.documents-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.5rem;
+	}
+	.doc-card {
+		background: rgba(255, 255, 255, 0.1);
+		padding: 1.5rem;
+		border-radius: 8px;
+	}
+	.view-btn {
+		display: inline-block;
+		background: #2196F3;
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		text-decoration: none;
+		margin-top: 1rem;
+		transition: background 0.2s;
+	}
+	.view-btn:hover {
+		background: #1976D2;
+	}
+</style>

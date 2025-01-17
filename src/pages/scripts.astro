@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="TV Scripts">
+	<main>
+		<h1>TV Show Scripts</h1>
+		<div class="scripts-grid">
+			<div class="script-card">
+				<h2>Episode 1: Pilot</h2>
+				<p>First draft completed on January 15, 2024</p>
+				<a href="/scripts/pilot.pdf" class="download-btn">Download PDF</a>
+			</div>
+			<!-- Add more script cards as needed -->
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 2rem;
+		max-width: 1200px;
+		color: white;
+	}
+	h1 {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.scripts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+	}
+	.script-card {
+		background: rgba(255, 255, 255, 0.1);
+		padding: 1.5rem;
+		border-radius: 8px;
+	}
+	.download-btn {
+		display: inline-block;
+		background: #4CAF50;
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		text-decoration: none;
+		margin-top: 1rem;
+		transition: background 0.2s;
+	}
+	.download-btn:hover {
+		background: #45a049;
+	}
+</style>

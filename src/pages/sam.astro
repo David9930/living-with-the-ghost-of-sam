@@ -1,0 +1,145 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Sam's Corner - Living with the Ghost of Sam">
+	<main>
+		<h1>Sam's Corner</h1>
+		<div class="video-grid">
+			<div class="video-card">
+				<h2>Episode 1 Teaser</h2>
+				<div class="video-container">
+					<iframe
+						src="about:blank"
+						data-src="https://www.youtube.com/embed/VIDEO_ID_1"
+						title="Episode 1 Teaser"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			</div>
+			<div class="video-card">
+				<h2>Character Introduction</h2>
+				<div class="video-container">
+					<iframe
+						src="about:blank"
+						data-src="https://www.youtube.com/embed/VIDEO_ID_2"
+						title="Character Introduction"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			</div>
+			<div class="video-card">
+				<h2>Behind the Scenes</h2>
+				<div class="video-container">
+					<iframe
+						src="about:blank"
+						data-src="https://www.youtube.com/embed/VIDEO_ID_3"
+						title="Behind the Scenes"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			</div>
+			<div class="video-card">
+				<h2>Sam's Best Moments</h2>
+				<div class="video-container">
+					<iframe
+						src="about:blank"
+						data-src="https://www.youtube.com/embed/VIDEO_ID_4"
+						title="Sam's Best Moments"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<script>
+	if (!sessionStorage.getItem('authenticated')) {
+		window.location.href = '/';
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					const iframe = entry.target.querySelector('iframe');
+					if (iframe.src === 'about:blank') {
+						iframe.src = iframe.dataset.src;
+					}
+				}
+			});
+		}, {
+			threshold: 0.1
+		});
+
+		document.querySelectorAll('.video-container').forEach(container => {
+			observer.observe(container);
+		});
+	});
+</script>
+
+<style>
+	main {
+		margin: auto;
+		padding: 2rem;
+		max-width: 1200px;
+		color: white;
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+		background: linear-gradient(to right, #c2e59c, #64b3f4);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.video-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		gap: 2rem;
+	}
+
+	.video-card {
+		background: rgba(255, 255, 255, 0.1);
+		padding: 1.5rem;
+		border-radius: 8px;
+	}
+
+	.video-card h2 {
+		margin-bottom: 1rem;
+		color: #64b3f4;
+	}
+
+	.video-container {
+		position: relative;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+		height: 0;
+		overflow: hidden;
+	}
+
+	.video-container iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 4px;
+	}
+
+	@media (max-width: 768px) {
+		.video-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
