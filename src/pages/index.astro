@@ -18,27 +18,27 @@ import Layout from '../layouts/Layout.astro';
 	<main id="content" class="hidden">
 		<h1>Living with the Ghost of Sam</h1>
 		<div class="grid">
-			<a href="/scripts" class="card">
-				<h2>Scripts</h2>
-				<p>Access all TV show scripts in PDF format</p>
-			</a>
-			<a href="/documents" class="card">
-				<h2>Show Documents</h2>
-				<p>Review evaluation materials and show proposals</p>
-			</a>
-			<a href="/bible" class="card">
-				<h2>Character Bible</h2>
-				<p>Detailed character profiles and relationships</p>
-			</a>
-			<a href="/sam" class="card ghost-card">
-				<h2>Sam's Corner</h2>
-				<p>Watch exclusive clips featuring Sam</p>
-			</a>
-			<a href="/about" class="card">
-				<h2>About the Writer</h2>
-				<p>Writer biography and background</p>
-			</a>
-		</div>
+    <a href={`${import.meta.env.BASE_URL}scripts`} class="card">
+        <h2>Scripts</h2>
+        <p>Access all TV show scripts in PDF format</p>
+    </a>
+    <a href={`${import.meta.env.BASE_URL}documents`} class="card">
+        <h2>Show Documents</h2>
+        <p>Review evaluation materials and show proposals</p>
+    </a>
+    <a href={`${import.meta.env.BASE_URL}bible`} class="card">
+        <h2>Character Bible</h2>
+        <p>Detailed character profiles and relationships</p>
+    </a>
+    <a href={`${import.meta.env.BASE_URL}sam`} class="card ghost-card">
+        <h2>Sam's Corner</h2>
+        <p>Watch exclusive clips featuring Sam</p>
+    </a>
+    <a href={`${import.meta.env.BASE_URL}about`} class="card">
+        <h2>About the Writer</h2>
+        <p>Writer biography and background</p>
+    </a>
+</div>
 	</main>
 </Layout>
 
