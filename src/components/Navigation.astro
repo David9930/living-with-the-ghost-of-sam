@@ -1,21 +1,17 @@
 ---
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
-// Debug logging
-console.log('Current Path:', currentPath);
-console.log('Base URL:', base);
-console.log('Normalized Path:', currentPath.replace(base, '/'));
-
+// Remove the base path from currentPath for comparison
 const normalizedPath = currentPath.replace(base, '/');
 ---
 <nav class="navigation">
 	<a href={base} class="home-link">Living with the Ghost of Sam</a>
 	<div class="nav-links">
-		<a href={`${base}scripts`} class={normalizedPath === '/scripts' ? 'active' : ''}>Scripts</a>
-		<a href={`${base}documents`} class={normalizedPath === '/documents' ? 'active' : ''}>Documents</a>
-		<a href={`${base}bible`} class={normalizedPath === '/bible' ? 'active' : ''}>Character Bible</a>
-		<a href={`${base}sam`} class={normalizedPath === '/sam' ? 'active' : ''}>Sam's Corner</a>
-		<a href={`${base}about`} class={normalizedPath === '/about' ? 'active' : ''}>About</a>
+		<a href={`${base}/scripts`} class={normalizedPath === '/scripts' ? 'active' : ''}>Scripts</a>
+		<a href={`${base}/documents`} class={normalizedPath === '/documents' ? 'active' : ''}>Documents</a>
+		<a href={`${base}/bible`} class={normalizedPath === '/bible' ? 'active' : ''}>Character Bible</a>
+		<a href={`${base}/sam`} class={normalizedPath === '/sam' ? 'active' : ''}>Sam's Corner</a>
+		<a href={`${base}/about`} class={normalizedPath === '/about' ? 'active' : ''}>About</a>
 	</div>
 </nav>
 <style>
