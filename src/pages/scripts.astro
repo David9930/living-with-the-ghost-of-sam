@@ -1,106 +1,54 @@
-import React, { useState } from 'react';
-import { Download, Book } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+<Layout title="TV Scripts">
+	<main>
+		<h1>TV Show Scripts</h1>
+		<div class="scripts-grid">
+			<div class="script-card">
+				<h2>Episode 1: Pilot</h2>
+				<p>First draft completed on January 15, 2024</p>
+				<a href={`${base}scripts/pilot.pdf`} class="download-btn">Download PDF</a>
+			</div>
+			<!-- Add more script cards as needed -->
+		</div>
+	</main>
+</Layout>
 
-const ScriptViewer = () => {
-  const [showFullScript, setShowFullScript] = useState(false);
-
-  const handleDownload = async () => {
-    try {
-      const response = await window.fs.readFile('Living_with_the_Ghost_of_Sam_Ep6.pdf');
-      const blob = new Blob([response], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Living_with_the_Ghost_of_Sam_Ep6.pdf';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading file:', error);
-    }
-  };
-
-  return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Living with the Ghost of Sam</CardTitle>
-        <div className="text-lg">Episode 6: "Missing"</div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex gap-4 mb-6">
-          <button
-            onClick={handleDownload}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            <Download size={20} />
-            Download PDF
-          </button>
-          <button
-            onClick={() => setShowFullScript(!showFullScript)}
-            className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            <Book size={20} />
-            {showFullScript ? 'Hide Script' : 'Read Script'}
-          </button>
-        </div>
-
-        {showFullScript && (
-          <div className="prose max-w-none dark:prose-invert">
-            <div className="text-sm italic mb-4">Copyright D.A.Burnham 12/2024</div>
-            <div className="space-y-4">
-              <h2>ESSENTIAL INFORMATION</h2>
-              <p><strong>Writer(s):</strong> David A. Burnham</p>
-              <p><strong>Director:</strong> TBD</p>
-              <p><strong>Running Time:</strong> 42 minutes</p>
-
-              <h2>EPISODE LOGLINE</h2>
-              <p>When Marina St. Clair disappears after a mysterious meeting with Linda Rhodes, multiple investigations converge at Ravencrest Mansion, forcing Derek and Nancy to confront both supernatural threats and corporate machinations while preparing for two crucial presentations.</p>
-
-              <h2>MAIN PLOT THREADS</h2>
-              <h3>Primary Plot:</h3>
-              <p>The discovery of Marina's submerged car triggers investigations that threaten to expose the town's supernatural nature, while Derek navigates the complex demands of the Jacobson presentation and his upcoming council performance.</p>
-
-              <h3>Secondary Plots:</h3>
-              <ul>
-                <li>Charles's growing obsession with the mansion's AI technology</li>
-                <li>Nancy's investigation into Linda and the town council</li>
-                <li>The mysterious presence in the lake connected to Earl and Pete</li>
-                <li>Larry's discovery of foreign surveillance technology</li>
-              </ul>
-
-              <h2>CHARACTER FOCUS</h2>
-              <h3>Primary Characters:</h3>
-              <p><strong>Derek Kinison:</strong> Balances corporate responsibilities with supernatural revelations while growing more comfortable with the mansion's abilities.</p>
-              <p><strong>Nancy Hammond:</strong> Transitions from skeptical observer to active investigator, discovering the town council's dark nature.</p>
-
-              <h3>Supporting Characters:</h3>
-              <ul>
-                <li>Charles Weber: His true motives regarding the mansion's technology become increasingly concerning</li>
-                <li>Linda Rhodes: Her supernatural nature becomes more apparent as pressure mounts</li>
-                <li>Larry: Emerges as a crucial ally in understanding the mansion's technology</li>
-                <li>Smithers: Demonstrates deeper connection to the mansion's consciousness</li>
-              </ul>
-
-              <h2>SUPERNATURAL ELEMENTS</h2>
-              <ul>
-                <li>The presence in the lake claiming Marina's car</li>
-                <li>Linda's transformation glimpsed through church windows</li>
-                <li>Ghost comedian appearances in mirrors</li>
-                <li>The mansion's AI system (AISAM) demonstrating increasing independence</li>
-                <li>Thunder and lightning occurring despite clear skies</li>
-              </ul>
-
-              <div className="mt-8 text-sm text-gray-500">
-                Full script content available in PDF download
-              </div>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-};
-
-export default ScriptViewer;
+<style>
+	main {
+		margin: auto;
+		padding: 2rem;
+		max-width: 1200px;
+		color: white;
+	}
+	h1 {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	.scripts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+	}
+	.script-card {
+		background: rgba(255, 255, 255, 0.1);
+		padding: 1.5rem;
+		border-radius: 8px;
+	}
+	.download-btn {
+		display: inline-block;
+		background: #4CAF50;
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		text-decoration: none;
+		margin-top: 1rem;
+		transition: background 0.2s;
+	}
+	.download-btn:hover {
+		background: #45a049;
+	}
+</style>
