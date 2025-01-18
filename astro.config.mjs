@@ -1,6 +1,7 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from 'astro';
 
 export default defineConfig({
-  site: 'https://David9930.github.io',
+  site: 'https://david9930.github.io',
   base: '/living-with-the-ghost-of-sam',
+  outDir: './dist',
 });
