@@ -17,16 +17,26 @@ const scriptFiles = [
         <h1>TV Show Scripts</h1>
         <div class="scripts-grid">
             <div class="script-card">
-                <h3>Episode 6</h3>
-                <a 
-    href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
-    class="download-btn"
-    download="Living_with_the_Ghost_of_Sam_Ep6.pdf"
-    type="application/pdf"
-> 
-    Download
-</a>
-            </div>
+    <h3>Episode 6</h3>
+<div class="button-container">
+        <a 
+            href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
+            class="download-btn"
+            download="Living_with_the_Ghost_of_Sam_Ep6.pdf"
+            type="application/pdf"
+        > 
+            Download
+        </a>
+        <a 
+            href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
+            class="view-btn"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            View PDF
+        </a>
+    </div>
+</div>
             <!-- Placeholder cards for future episodes -->
             {[...Array(11)].map((_, index) => (
                 <div class="script-card">
