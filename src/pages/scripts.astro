@@ -19,7 +19,7 @@ const scriptFiles = [
                 <div class="button-container">
                     <a 
                         href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
-                        class="download-btn"
+                        class="btn download-btn"
                         download="Living_with_the_Ghost_of_Sam_Ep6.pdf"
                         type="application/pdf"
                     > 
@@ -27,7 +27,7 @@ const scriptFiles = [
                     </a>
                     <a 
                         href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
-                        class="view-btn"
+                        class="btn view-btn"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -40,10 +40,10 @@ const scriptFiles = [
                 <div class="script-card">
                     <h3>Future Episode</h3>
                     <div class="button-container">
-                        <button class="download-btn-disabled" disabled>
+                        <button class="btn btn-disabled" disabled>
                             Download
                         </button>
-                        <button class="view-btn-disabled" disabled>
+                        <button class="btn btn-disabled" disabled>
                             View PDF
                         </button>
                     </div>
@@ -92,9 +92,8 @@ const scriptFiles = [
         justify-content: center;
         width: 100%;
     }
-    .download-btn {
+    .btn {
         display: inline-block;
-        background: #4CAF50;
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 4px;
@@ -103,34 +102,22 @@ const scriptFiles = [
         cursor: pointer;
         font-size: 1rem;
         transition: background 0.2s;
+    }
+    .download-btn {
+        background: #4CAF50;
     }
     .download-btn:hover {
         background: #45a049;
     }
     .view-btn {
-        display: inline-block;
         background: #2196F3;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 4px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.2s;
     }
     .view-btn:hover {
         background: #1976D2;
     }
-    .download-btn-disabled, .view-btn-disabled {
-        display: inline-block;
+    .btn-disabled {
         background: #cccccc;
         color: #666666;
-        padding: 0.75rem 1.5rem;
-        border-radius: 4px;
-        text-decoration: none;
-        border: none;
-        font-size: 1rem;
         cursor: not-allowed;
     }
 </style>
