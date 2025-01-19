@@ -1,32 +1,40 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// Define the base URL and script data
 const base = import.meta.env.BASE_URL;
-const pdfFileName = "Living_with_the_Ghost_of_Sam_Ep6.pdf";
-const pdfPath = `${base}scripts/episodes/${pdfFileName}`;
+const scriptFiles = [
+    {
+        title: "Episode 1",
+        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf"
+    },
+    // Add more episodes here following the same format
+];
 ---
+
 <Layout title="TV Scripts">
     <main>
         <h1>TV Show Scripts</h1>
         <div class="scripts-grid">
             <div class="script-card">
-                <h2>Episode 6: Title</h2>
-                <p>First draft completed on [Date]</p>
-                <div class="pdf-options">
-                    <a href={`${base}scripts/episodes/Living_with_the_Ghost_of_Sam_Ep6.pdf`} 
-   class="download-btn" 
-   download="Living_with_the_Ghost_of_Sam_Ep6.pdf">
-   Download PDF
-</a>
-                    <a 
-                        href={pdfPath}
-                        target="_blank"
-                        class="view-btn"
-                        rel="noopener noreferrer"
-                    >
-                        View PDF
-                    </a>
-                </div>
+                <h3>Episode 6</h3>
+                <a 
+                    href={`${base}scripts/episodes/Living_with_the_Ghost_of_Sam_Ep6.pdf`} 
+                    class="download-btn" 
+                    download
+                >
+                    Download
+                </a>
             </div>
+            <!-- Placeholder cards for future episodes -->
+            {[...Array(11)].map((_, index) => (
+                <div class="script-card">
+                    <h3>Future Episode</h3>
+                    <button class="download-btn-disabled" disabled>
+                        Download
+                    </button>
+                </div>
+            ))}
         </div>
     </main>
 </Layout>
@@ -35,51 +43,67 @@ const pdfPath = `${base}scripts/episodes/${pdfFileName}`;
     main {
         margin: auto;
         padding: 2rem;
-        max-width: 1200px;
+        max-width: 1400px;
         color: white;
     }
+
     h1 {
         font-size: 2.5rem;
         text-align: center;
         margin-bottom: 2rem;
     }
+
+    h3 {
+        margin: 0;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
     .scripts-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 2rem;
+        padding: 1rem;
     }
+
     .script-card {
         background: rgba(255, 255, 255, 0.1);
         padding: 1.5rem;
         border-radius: 8px;
-    }
-    .pdf-options {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: space-between;
-        margin-top: 1rem;
+        min-height: 150px;
     }
+
     .download-btn {
         display: inline-block;
         background: #4CAF50;
         color: white;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
         border-radius: 4px;
         text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
         transition: background 0.2s;
     }
+
     .download-btn:hover {
         background: #45a049;
     }
-    .view-btn {
+
+    .download-btn-disabled {
         display: inline-block;
-        background: #2196F3;
-        color: white;
-        padding: 0.5rem 1rem;
+        background: #cccccc;
+        color: #666666;
+        padding: 0.75rem 1.5rem;
         border-radius: 4px;
         text-decoration: none;
-        transition: background 0.2s;
-    }
-    .view-btn:hover {
-        background: #1976D2;
+        border: none;
+        font-size: 1rem;
+        cursor: not-allowed;
     }
 </style>
