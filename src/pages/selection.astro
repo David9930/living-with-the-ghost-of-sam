@@ -3,13 +3,15 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Select Your Role" showNavigation={false}>
-    <h1>I am a .......</h1>
-    <div class="button-container">
-        <button id="agent" class="btn">Professional Agent</button>
-        <button id="agency" class="btn">Agency</button>
-        <button id="streaming" class="btn">Netflix, Amazon Prime, Disney+ or other</button>
-        <button id="producer" class="btn">Producer</button>
-        <button id="actor" class="btn">Actor looking for project</button>
+    <div class="container">
+        <h1>I am a .......</h1>
+        <div class="button-container">
+            <button id="agent" class="btn">Professional Agent</button>
+            <button id="agency" class="btn">Agency</button>
+            <button id="streaming" class="btn">Netflix, Amazon Prime, Disney+ or other</button>
+            <button id="producer" class="btn">Producer</button>
+            <button id="actor" class="btn">Actor looking for project</button>
+        </div>
     </div>
 </Layout>
 
@@ -38,12 +40,28 @@ import Layout from '../layouts/Layout.astro';
 </script>
 
 <style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: url('/path/to/your/background.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
     .button-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
-        margin-top: 2rem;
     }
 
     .btn {
@@ -69,10 +87,5 @@ import Layout from '../layouts/Layout.astro';
     .btn:active {
         transform: translateY(-1px);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        color: white;
-        text-align: center;
     }
 </style>
