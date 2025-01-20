@@ -86,15 +86,15 @@ import Layout from '../layouts/Layout.astro';
   setInterval(moveImageBox, 3000); // Move every 3 seconds
 
     // Debug image loading
-    document.getElementById('sam-image').addEventListener('load', function() {
-        console.log('Image loaded successfully');
-        console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
-    });
+   const image = document.getElementById('sam-image');
 
-    document.getElementById('sam-image').addEventListener('error', function() {
-        console.log('Error loading image');
-        console.log('Image path:', this.src);
-    });
+image.addEventListener('load', function() {
+    console.log('Image loaded successfully');
+    console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+}).addEventListener('error', function() {
+    console.log('Failed to load image');
+    console.log('Attempted image path:', this.src);
+});
 </script>
 
 <style>
