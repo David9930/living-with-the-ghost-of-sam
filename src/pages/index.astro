@@ -76,11 +76,21 @@ import Layout from '../layouts/Layout.astro';
         return { x, y };
     }
 
-    function moveImageBox() {
-        const { x, y } = randomPosition();
-        imageBox.style.transform = `translate(${x}px, ${y}px)`;
-    }
+    const imageBox = document.getElementById('image-box');
 
+function randomPosition() {
+    const x = Math.floor(Math.random() * (window.innerWidth - imageBox.clientWidth));
+    const y = Math.floor(Math.random() * (window.innerHeight - imageBox.clientHeight));
+    return { x, y };
+}
+
+function moveImageBox() {
+    const { x, y } = randomPosition();
+    imageBox.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+// Initialize first position immediately
+moveImageBox();
     // Debug image loading
     document.getElementById('sam-image').addEventListener('load', function() {
         console.log('Image loaded successfully');
@@ -201,7 +211,7 @@ import Layout from '../layouts/Layout.astro';
     position: absolute;
     width: 300px;
     height: 200px;
-    transition: transform 1s ease-in-out;
+    transition: transform .5s ease-in-out;
     background: rgba(255, 255, 255, 0.1);
 }
 #sam-image {
