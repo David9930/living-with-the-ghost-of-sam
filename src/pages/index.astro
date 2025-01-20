@@ -71,8 +71,8 @@ import Layout from '../layouts/Layout.astro';
     const samImage = document.getElementById('sam-image');
 
     function randomPosition() {
-        const x = Math.floor(Math.random() * (window.innerWidth - samImage.width));
-        const y = Math.floor(Math.random() * (window.innerHeight - samImage.height));
+        const x = Math.floor(Math.random() * (window.innerWidth - samImage.clientWidth));
+        const y = Math.floor(Math.random() * (window.innerHeight - samImage.clientHeight));
         return { x, y };
     }
 
@@ -187,8 +187,6 @@ import Layout from '../layouts/Layout.astro';
 
     #sam-image {
         position: absolute;
-        width: 100px; /* Adjust size as needed */
-        height: auto;
         transition: transform 1s ease-in-out;
     }
 </style>
