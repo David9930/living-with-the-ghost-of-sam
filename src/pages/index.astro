@@ -3,191 +3,66 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Living with the Ghost of Sam">
-	<div id="splash" class="splash-container">
-		<div class="login-box">
-			<h1>Welcome</h1>
-			<div class="password-input">
-				<label for="password">Professor</label>
-				<input type="password" id="password" />
-			</div>
-			<button id="submit-btn">Enter</button>
-			<p id="error-message" class="error"></p>
-		</div>
-	</div>
+    <div id="splash" class="splash-container">
+        <div class="login-box">
+            <h1>Welcome</h1>
+            <div class="password-input">
+                <label for="password">Professor</label>
+                <input type="password" id="password" />
+            </div>
+            <button id="submit-btn">Enter</button>
+            <p id="error-message" class="error"></p>
+        </div>
+    </div>
 
-	<main id="content" class="hidden">
-		<h1>Living with the Ghost of Sam</h1>
-		<div class="grid">
-   <a href={`${import.meta.env.BASE_URL}/scripts`} class="card">
-        <h2>Scripts</h2>
-        <p>Access all TV show scripts in PDF format</p>
-    </a>
-    <a href={`${import.meta.env.BASE_URL}/documents`} class="card">
-        <h2>Show Documents</h2>
-        <p>Review evaluation materials and show proposals</p>
-    </a>
-    <a href={`${import.meta.env.BASE_URL}/bible`} class="card">
-        <h2>Character Bible</h2>
-        <p>Detailed character profiles and relationships</p>
-    </a>
-   <a href={`${import.meta.env.BASE_URL}/sam`} class="card ghost-card">
-        <h2>Sam's Corner</h2>
-        <p>Watch exclusive clips featuring Sam</p>
-    </a>
-    <a href={`${import.meta.env.BASE_URL}/about`} class="card">
-        <h2>About the Writer</h2>
-        <p>Writer biography and background</p>
-    </a>
-</div>
-	</main>
+    <main id="content" class="hidden">
+        <h1>Living with the Ghost of Sam</h1>
+        <div class="grid">
+            <a href={`${import.meta.env.BASE_URL}/scripts`} class="card">
+                <h2>Scripts</h2>
+                <p>Access all TV show scripts in PDF format</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/documents`} class="card">
+                <h2>Show Documents</h2>
+                <p>Review evaluation materials and show proposals</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/bible`} class="card">
+                <h2>Character Bible</h2>
+                <p>Detailed character profiles and relationships</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/sam`} class="card ghost-card">
+                <h2>Sam's Corner</h2>
+                <p>Watch exclusive clips featuring Sam</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/about`} class="card">
+                <h2>About the Writer</h2>
+                <p>Writer biography and background</p>
+            </a>
+        </div>
+    </main>
 </Layout>
 
 <script>
-	if (sessionStorage.getItem('authenticated')) {
-		document.getElementById('splash').classList.add('hidden');
-		document.getElementById('content').classList.remove('hidden');
-	}
+    if (sessionStorage.getItem('authenticated')) {
+        document.getElementById('splash').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+    }
 
-	function checkPassword() {
-		const password = document.getElementById('password').value;
-		if (password === 'Terguson') {
-			sessionStorage.setItem('authenticated', 'true');
-			document.getElementById('splash').classList.add('hidden');
-			document.getElementById('content').classList.remove('hidden');
-		} else {
-			document.getElementById('error-message').textContent = 'Incorrect password';
-		}
-	}
+    function checkPassword() {
+        const password = document.getElementById('password').value;
+        if (password === 'Terguson') {
+            sessionStorage.setItem('authenticated', 'true');
+            window.location.href = `${import.meta.env.BASE_URL}/selection`;
+        } else {
+            document.getElementById('error-message').textContent = 'Incorrect password';
+        }
+    }
 
-	document.getElementById('submit-btn').addEventListener('click', checkPassword);
+    document.getElementById('submit-btn').addEventListener('click', checkPassword);
 
-	document.getElementById('password').addEventListener('keypress', function(e) {
-		if (e.key === 'Enter') {
-			checkPassword();
-		}
-	});
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
 </script>
-
-<style>
-	.splash-container {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: #13151a;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		z-index: 1000;
-	}
-
-	.login-box {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 2rem;
-		border-radius: 8px;
-		text-align: center;
-		color: white;
-	}
-
-	.password-input {
-		margin: 1rem 0;
-	}
-
-	.password-input label {
-		display: block;
-		margin-bottom: 0.5rem;
-	}
-
-	.password-input input {
-		padding: 0.5rem;
-		border-radius: 4px;
-		border: 1px solid #64b3f4;
-		background: rgba(255, 255, 255, 0.1);
-		color: white;
-	}
-
-	button {
-		background: #64b3f4;
-		color: white;
-		border: none;
-		padding: 0.5rem 1rem;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: background 0.2s;
-	}
-
-	button:hover {
-		background: #4a8ac7;
-	}
-
-	.error {
-		color: #ff6b6b;
-		margin-top: 0.5rem;
-		min-height: 1.5em;
-	}
-
-	.hidden {
-		display: none;
-	}
-
-	main {
-		margin: auto;
-		padding: 2rem;
-		max-width: 1200px;
-		color: white;
-	}
-
-	h1 {
-		font-size: 3rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin-bottom: 2em;
-		background: linear-gradient(to right, #c2e59c, #64b3f4);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
-
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		padding: 0;
-	}
-
-	.card {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 1.5rem;
-		border-radius: 8px;
-		text-decoration: none;
-		color: white;
-		transition: transform 0.2s, background 0.2s;
-	}
-
-	.card:hover {
-		transform: translateY(-5px);
-		background: rgba(255, 255, 255, 0.15);
-	}
-
-	.ghost-card {
-		background: rgba(255, 255, 255, 0.05);
-		border: 2px solid rgba(100, 179, 244, 0.3);
-	}
-
-	.ghost-card:hover {
-		background: rgba(255, 255, 255, 0.1);
-		border-color: #64b3f4;
-	}
-
-	h2 {
-		margin: 0;
-		font-size: 1.5rem;
-		margin-bottom: 0.5rem;
-	}
-
-	p {
-		margin: 0;
-		opacity: 0.8;
-	}
-</style>
