@@ -174,7 +174,7 @@ import Layout from '../layouts/Layout.astro';
             const password = document.getElementById('password').value;
             if (password === 'Terguson') {
                 sessionStorage.setItem('authenticated', 'true');
-                window.location.href = 'https://david9930.github.io/living-with-the-ghost-of-sam/selection';
+                window.location.href = `${import.meta.env.BASE_URL}selection`;
             } else {
                 document.getElementById('error-message').textContent = 'Incorrect password';
             }
