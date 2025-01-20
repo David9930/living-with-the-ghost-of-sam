@@ -52,8 +52,7 @@ import Layout from '../layouts/Layout.astro';
         const password = document.getElementById('password').value;
         if (password === 'Terguson') {
             sessionStorage.setItem('authenticated', 'true');
-            document.getElementById('splash').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
+            window.location.href = `${import.meta.env.BASE_URL}/selection`;
         } else {
             document.getElementById('error-message').textContent = 'Incorrect password';
         }
