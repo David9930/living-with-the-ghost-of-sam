@@ -14,7 +14,7 @@ import Layout from '../layouts/Layout.astro';
             <p id="error-message" class="error"></p>
         </div>
         <div id="image-box">
-            <img src="/images/SamImagesmall.jpg" id="sam-image" />
+          <img src={`${import.meta.env.BASE_URL}images/SamImagesmall.jpg`} id="sam-image" />
         </div>
     </div>
 
