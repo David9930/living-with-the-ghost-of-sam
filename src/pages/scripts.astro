@@ -2,62 +2,116 @@
 import Layout from '../layouts/Layout.astro';
 // Define the base URL and script data
 const base = import.meta.env.BASE_URL;
-const scriptFiles = [
+const episodes = [
     {
+        number: 1,
         title: "Episode 1",
-        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf"
+        filename: "Living_with_the_Ghost_of_Sam_Ep1.pdf",
+        available: true
     },
-    // Add more episodes here following the same format
+    {
+        number: 2,
+        title: "Episode 2",
+        filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf",
+        available: false
+    },
+    {
+        number: 3,
+        title: "Episode 3",
+        filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf",
+        available: false
+    },
+    {
+        number: 4,
+        title: "Episode 4",
+        filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf",
+        available: false
+    },
+    {
+        number: 5,
+        title: "Episode 5",
+        filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf",
+        available: false
+    },
+    {
+        number: 6,
+        title: "Missing",
+        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf",
+        available: true
+    },
+    {
+        number: 7,
+        title: "Episode 7",
+        filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf",
+        available: false
+    },
+    {
+        number: 8,
+        title: "Episode 8",
+        filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf",
+        available: false
+    },
+    {
+        number: 9,
+        title: "Episode 9",
+        filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf",
+        available: false
+    },
+    {
+        number: 10,
+        title: "Episode 10",
+        filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf",
+        available: false
+    }
 ];
 ---
 <Layout title="TV Scripts">
     <main>
         <h1>TV Show Scripts</h1>
         <div class="scripts-grid">
-            <div class="script-card">
-                <div class="episode-info">
-                    <h3>Episode 6</h3>
-                    <p class="episode-title">"Missing"</p>
-                </div>
-                <div class="button-container">
-                    <a 
-                        href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
-                        class="btn download-btn"
-                        download="Living_with_the_Ghost_of_Sam_Ep6.pdf"
-                        type="application/pdf"
-                    > 
-                        Download
-                    </a>
-                    <a 
-                        href="/living-with-the-ghost-of-sam/scripts/Living_with_the_Ghost_of_Sam_Ep6.pdf"
-                        class="btn view-btn"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        View PDF
-                    </a>
-                </div>
-            </div>
-            <!-- Placeholder cards for future episodes -->
-            {[...Array(11)].map((_, index) => (
+            {episodes.map((episode) => (
                 <div class="script-card">
                     <div class="episode-info">
-                        <h3>Future Episode</h3>
-                        <p class="episode-title">Title TBD</p>
+                        <h3>Episode {episode.number}</h3>
+                        <p class="episode-title">"{episode.title}"</p>
                     </div>
                     <div class="button-container">
-                        <button class="btn btn-disabled" disabled>
-                            Download
-                        </button>
-                        <button class="btn btn-disabled" disabled>
-                            View PDF
-                        </button>
+                        {episode.available ? (
+                            <>
+                                <a 
+                                    href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                    class="btn download-btn"
+                                    download={episode.filename}
+                                    type="application/pdf"
+                                > 
+                                    Download
+                                </a>
+                                <a 
+                                    href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                    class="btn view-btn"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    View PDF
+                                </a>
+                            </>
+                        ) : (
+                            <>
+                                <button class="btn btn-disabled" disabled>
+                                    Download
+                                </button>
+                                <button class="btn btn-disabled" disabled>
+                                    View PDF
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             ))}
         </div>
     </main>
 </Layout>
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap');
 
@@ -93,7 +147,6 @@ const scriptFiles = [
     .scripts-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(4, 1fr);
         gap: 2rem;
         padding: 1rem;
     }
