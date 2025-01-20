@@ -1,1 +1,74 @@
+**Update the initial password page to link to the new selection page:**
 
+**src/pages/index.astro**
+```diff
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Living with the Ghost of Sam">
+    <div id="splash" class="splash-container">
+        <div class="login-box">
+            <h1>Welcome</h1>
+            <div class="password-input">
+                <label for="password">Professor</label>
+                <input type="password" id="password" />
+            </div>
+            <button id="submit-btn">Enter</button>
+            <p id="error-message" class="error"></p>
+        </div>
+    </div>
+
+    <main id="content" class="hidden">
+        <h1>Living with the Ghost of Sam</h1>
+        <div class="grid">
+            <a href={`${import.meta.env.BASE_URL}/scripts`} class="card">
+                <h2>Scripts</h2>
+                <p>Access all TV show scripts in PDF format</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/documents`} class="card">
+                <h2>Show Documents</h2>
+                <p>Review evaluation materials and show proposals</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/bible`} class="card">
+                <h2>Character Bible</h2>
+                <p>Detailed character profiles and relationships</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/sam`} class="card ghost-card">
+                <h2>Sam's Corner</h2>
+                <p>Watch exclusive clips featuring Sam</p>
+            </a>
+            <a href={`${import.meta.env.BASE_URL}/about`} class="card">
+                <h2>About the Writer</h2>
+                <p>Writer biography and background</p>
+            </a>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    if (sessionStorage.getItem('authenticated')) {
+        document.getElementById('splash').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+    }
+
+    function checkPassword() {
+        const password = document.getElementById('password').value;
+        if (password === 'Terguson') {
+            sessionStorage.setItem('authenticated', 'true');
+-            document.getElementById('splash').classList.add('hidden');
+-            document.getElementById('content').classList.remove('hidden');
++            window.location.href = `${import.meta.env.BASE_URL}/selection`;
+        } else {
+            document.getElementById('error-message').textContent = 'Incorrect password';
+        }
+    }
+
+    document.getElementById('submit-btn').addEventListener('click', checkPassword);
+
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
+</script>
