@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="login-box" data-astro-cid-j7pv25f6>
             <h1>Welcome</h1>
             <div class="password-input" data-astro-cid-j7pv25f6>
-                <label for="password" data-astro-cid-j7pv25f6>Professor Who?</label>
+                <label for="password" data-astro-cid-j7pv25f6>Professor Who ?</label>
                 <input type="password" id="password" data-astro-cid-j7pv25f6>
             </div>
             <button id="submit-btn" class="btn" data-astro-cid-j7pv25f6>Enter</button>
@@ -163,18 +163,22 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Authentication check
+        // Enhanced authentication check
         if (sessionStorage.getItem('authenticated')) {
-            document.getElementById('splash').classList.add('hidden');
-            document.getElementById('content').classList.remove('hidden');
+            const splash = document.getElementById('splash');
+            const content = document.getElementById('content');
+            if (splash && content) {
+                splash.classList.add('hidden');
+                content.classList.remove('hidden');
+            }
         }
 
-        // Password validation
+        // Password validation with GitHub Pages path
         function checkPassword() {
             const password = document.getElementById('password').value;
             if (password === 'Terguson') {
                 sessionStorage.setItem('authenticated', 'true');
-                window.location.href = `${import.meta.env.BASE_URL}selection`;
+                window.location.href = '/living-with-the-ghost-of-sam/selection';
             } else {
                 document.getElementById('error-message').textContent = 'Incorrect password';
             }
@@ -188,12 +192,13 @@ import Layout from '../layouts/Layout.astro';
             }
         });
 
-        // Image movement functionality
+        // Enhanced image movement functionality
         const imageBox = document.getElementById('image-box');
+        const samImage = document.getElementById('sam-image');
 
         function randomPosition() {
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
+            const viewportWidth = Math.max(window.innerWidth, 320);
+            const viewportHeight = Math.max(window.innerHeight, 240);
             
             const boxWidth = imageBox.offsetWidth;
             const boxHeight = imageBox.offsetHeight;
@@ -223,7 +228,6 @@ import Layout from '../layouts/Layout.astro';
         window.addEventListener('resize', moveImageBox);
 
         // Image loading debug
-        const samImage = document.getElementById('sam-image');
         samImage.addEventListener('load', function() {
             console.log('Image loaded successfully');
             console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
