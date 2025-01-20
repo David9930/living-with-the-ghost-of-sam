@@ -4,11 +4,13 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Select Your Role">
     <h1>I am a .......</h1>
-    <button id="agent">Professional Agent</button>
-    <button id="agency">Agency</button>
-    <button id="streaming">Netflix, Amazon Prime, Disney+ or other</button>
-    <button id="producer">Producer</button>
-    <button id="actor">Actor looking for project</button>
+    <div class="button-container">
+        <button id="agent" class="btn">Professional Agent</button>
+        <button id="agency" class="btn">Agency</button>
+        <button id="streaming" class="btn">Netflix, Amazon Prime, Disney+ or other</button>
+        <button id="producer" class="btn">Producer</button>
+        <button id="actor" class="btn">Actor looking for project</button>
+    </div>
 </Layout>
 
 <script client:only>
@@ -28,3 +30,29 @@ import Layout from '../layouts/Layout.astro';
         window.location.href = `${import.meta.env.BASE_URL}/actor`;
     });
 </script>
+
+<style>
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .btn {
+        display: inline-block;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+        background: #2196F3;
+    }
+
+    .btn:hover {
+        background: #1976D2;
+    }
+</style>
