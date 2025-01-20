@@ -76,21 +76,14 @@ import Layout from '../layouts/Layout.astro';
         return { x, y };
     }
 
-    const imageBox = document.getElementById('image-box');
+    function moveImageBox() {
+        const { x, y } = randomPosition();
+        imageBox.style.transform = `translate(${x}px, ${y}px)`;
+    }
 
-function randomPosition() {
-    const x = Math.floor(Math.random() * (window.innerWidth - imageBox.clientWidth));
-    const y = Math.floor(Math.random() * (window.innerHeight - imageBox.clientHeight));
-    return { x, y };
-}
-
-function moveImageBox() {
-    const { x, y } = randomPosition();
-    imageBox.style.transform = `translate(${x}px, ${y}px)`;
-}
-
-// Initialize first position immediately
-moveImageBox();
+    // Initialize first position immediately
+    moveImageBox();
+    
     // Debug image loading
     document.getElementById('sam-image').addEventListener('load', function() {
         console.log('Image loaded successfully');
