@@ -81,7 +81,19 @@ import Layout from '../layouts/Layout.astro';
         imageBox.style.transform = `translate(${x}px, ${y}px)`;
     }
 
+    // Debug image loading
+    document.getElementById('sam-image').addEventListener('load', function() {
+        console.log('Image loaded successfully');
+        console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+    });
+
+    document.getElementById('sam-image').addEventListener('error', function() {
+        console.log('Failed to load image');
+        console.log('Attempted image path:', this.src);
+    });
+
     setInterval(moveImageBox, 3000);
+    console.log('Image movement initialized');
 </script>
 
 <style>
