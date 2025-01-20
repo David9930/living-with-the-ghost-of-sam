@@ -3,27 +3,53 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Living with the Ghost of Sam">
-    <div id="splash" class="splash-container">
-        <div class="login-box">
+    <div id="splash" class="splash-container" data-astro-cid-j7pv25f6>
+        <div class="login-box" data-astro-cid-j7pv25f6>
             <h1>Welcome</h1>
-            <div class="password-input">
-                <label for="password">Professor Who?</label>
-                <input type="password" id="password" />
+            <div class="password-input" data-astro-cid-j7pv25f6>
+                <label for="password" data-astro-cid-j7pv25f6>Professor Who?</label>
+                <input type="password" id="password" data-astro-cid-j7pv25f6>
             </div>
-            <button id="submit-btn" class="btn">Enter</button>
-            <p id="error-message" class="error"></p>
+            <button id="submit-btn" class="btn" data-astro-cid-j7pv25f6>Enter</button>
+            <p id="error-message" class="error" data-astro-cid-j7pv25f6></p>
         </div>
-        <div id="image-box">
-            <img src="/images/SamImagesmall.jpg" id="sam-image" alt="Sam" />
+        <div id="image-box" data-astro-cid-j7pv25f6>
+            <img src="https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImagesmall.jpg" 
+                 id="sam-image" 
+                 alt="Sam" 
+                 data-astro-cid-j7pv25f6>
         </div>
     </div>
 
-    <!-- Rest of your content HTML remains the same -->
+    <main id="content" class="hidden" data-astro-cid-j7pv25f6>
+        <h1>Living with the Ghost of Sam</h1>
+        <div class="grid" data-astro-cid-j7pv25f6>
+            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/scripts" class="card" data-astro-cid-j7pv25f6>
+                <h2>Scripts</h2>
+                <p>Access all TV show scripts in PDF format</p>
+            </a>
+            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/documents" class="card" data-astro-cid-j7pv25f6>
+                <h2>Show Documents</h2>
+                <p>Review evaluation materials and show proposals</p>
+            </a>
+            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/bible" class="card" data-astro-cid-j7pv25f6>
+                <h2>Character Bible</h2>
+                <p>Detailed character profiles and relationships</p>
+            </a>
+            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/sam" class="card ghost-card" data-astro-cid-j7pv25f6>
+                <h2>Sam's Corner</h2>
+                <p>Watch exclusive clips featuring Sam</p>
+            </a>
+            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/about" class="card" data-astro-cid-j7pv25f6>
+                <h2>About the Writer</h2>
+                <p>Writer biography and background</p>
+            </a>
+        </div>
+    </main>
 </Layout>
 
 <style>
-    /* Updated CSS with proper specificity */
-    .splash-container {
+    .splash-container[data-astro-cid-j7pv25f6] {
         position: fixed;
         top: 0;
         left: 0;
@@ -37,47 +63,133 @@ import Layout from '../layouts/Layout.astro';
         overflow: hidden;
     }
 
-    #image-box {
+    .login-box[data-astro-cid-j7pv25f6] {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+        z-index: 1001;
+        position: relative;
+    }
+
+    .password-input[data-astro-cid-j7pv25f6] {
+        margin: 1rem 0;
+    }
+
+    .password-input[data-astro-cid-j7pv25f6] label[data-astro-cid-j7pv25f6] {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .password-input[data-astro-cid-j7pv25f6] input[data-astro-cid-j7pv25f6] {
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: none;
+        width: 100%;
+        color: black;
+    }
+
+    .btn[data-astro-cid-j7pv25f6] {
+        display: inline-block;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+        background: #2196F3;
+    }
+
+    .btn[data-astro-cid-j7pv25f6]:hover {
+        background: #1976D2;
+    }
+
+    .error[data-astro-cid-j7pv25f6] {
+        color: red;
+        margin-top: 1rem;
+    }
+
+    .hidden[data-astro-cid-j7pv25f6] {
+        display: none;
+    }
+
+    .grid[data-astro-cid-j7pv25f6] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .card[data-astro-cid-j7pv25f6] {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+        transition: transform 0.2s;
+    }
+
+    .card[data-astro-cid-j7pv25f6]:hover {
+        transform: translateY(-5px);
+    }
+
+    .ghost-card[data-astro-cid-j7pv25f6] {
+        border: 2px dashed #FFD700;
+    }
+
+    #image-box[data-astro-cid-j7pv25f6] {
         position: absolute;
         width: 300px;
         height: 200px;
         transition: transform 0.5s ease-in-out;
         background: rgba(255, 255, 255, 0.1);
         pointer-events: none;
-        /* Ensure the image box appears behind the login box */
         z-index: 1000;
     }
 
-    .login-box {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: center;
-        color: white;
-        /* Ensure login box appears above the image */
-        z-index: 1001;
-        position: relative;
-    }
-
-    #sam-image {
+    #sam-image[data-astro-cid-j7pv25f6] {
         width: 100%;
         height: 100%;
         object-fit: cover;
         display: block;
+        opacity: 1;
+        visibility: visible;
     }
-
-    /* Rest of your CSS remains the same */
 </style>
 
 <script>
-    // Modified JavaScript for better initialization
     document.addEventListener('DOMContentLoaded', function() {
-        const imageBox = document.getElementById('image-box');
-        
-        if (!imageBox) {
-            console.error('Image box not found');
-            return;
+        // Authentication check
+        if (sessionStorage.getItem('authenticated')) {
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
         }
+
+        // Password validation
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === 'Terguson') {
+                sessionStorage.setItem('authenticated', 'true');
+                window.location.href = 'https://david9930.github.io/living-with-the-ghost-of-sam/selection';
+            } else {
+                document.getElementById('error-message').textContent = 'Incorrect password';
+            }
+        }
+
+        // Event listeners for password submission
+        document.getElementById('submit-btn').addEventListener('click', checkPassword);
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Image movement functionality
+        const imageBox = document.getElementById('image-box');
 
         function randomPosition() {
             const viewportWidth = window.innerWidth;
@@ -97,21 +209,29 @@ import Layout from '../layouts/Layout.astro';
 
         function moveImageBox() {
             const { x, y } = randomPosition();
-            // Force GPU acceleration and ensure transform is applied
             imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
             imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
         }
 
-        // Ensure initial position is set
+        // Initialize movement with requestAnimationFrame
         requestAnimationFrame(() => {
             moveImageBox();
-            // Start the interval after initial position is set
             setInterval(moveImageBox, 3000);
         });
 
         // Handle window resizing
         window.addEventListener('resize', moveImageBox);
-    });
 
-    // Rest of your authentication code remains the same
+        // Image loading debug
+        const samImage = document.getElementById('sam-image');
+        samImage.addEventListener('load', function() {
+            console.log('Image loaded successfully');
+            console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+        });
+
+        samImage.addEventListener('error', function() {
+            console.log('Failed to load image');
+            console.log('Attempted image path:', this.src);
+        });
+    });
 </script>
