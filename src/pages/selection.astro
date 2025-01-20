@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Select Your Role" showNavigation={false}>
     <div class="container">
-        <h1>I am a .......</h1>
+        <h1 class="pulsing-text">I am a .......</h1>
         <div class="button-container">
             <button id="agent" class="btn">Professional Agent</button>
             <button id="agency" class="btn">Agency</button>
@@ -53,8 +53,24 @@ import Layout from '../layouts/Layout.astro';
     }
 
     h1 {
-        font-size: 2.5rem;
+        font-size: 4rem; /* Increased size */
         margin-bottom: 2rem;
+    }
+
+    .pulsing-text {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
 
     .button-container {
