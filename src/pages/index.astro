@@ -45,7 +45,7 @@ import Layout from '../layouts/Layout.astro';
     </main>
 </Layout>
 
-<script>
+<script client:load>
     if (sessionStorage.getItem('authenticated')) {
         document.getElementById('splash').classList.add('hidden');
         document.getElementById('content').classList.remove('hidden');
@@ -53,24 +53,21 @@ import Layout from '../layouts/Layout.astro';
 
     function checkPassword() {
         const password = document.getElementById('password').value;
-       if (password === 'Terguson') {
-         sessionStorage.setItem('authenticated', 'true');
-         window.location.href = `${import.meta.env.BASE_URL}/selection.astro`;
-}
+        if (password === 'Terguson') {
+            sessionStorage.setItem('authenticated', 'true');
+            window.location.href = `${import.meta.env.BASE_URL}selection`;
         } else {
             document.getElementById('error-message').textContent = 'Incorrect password';
         }
     }
 
     document.getElementById('submit-btn').addEventListener('click', checkPassword);
-
     document.getElementById('password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             checkPassword();
         }
     });
 
-    // Randomly move the box containing SamImagesmall.jpg across the screen
     const imageBox = document.getElementById('image-box');
 
     function randomPosition() {
@@ -84,18 +81,7 @@ import Layout from '../layouts/Layout.astro';
         imageBox.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-  setInterval(moveImageBox, 3000); // Move every 3 seconds
-
-    // Debug image loading
-   const image = document.getElementById('sam-image');
-
-image.addEventListener('load', function() {
-    console.log('Image loaded successfully');
-    console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
-}).addEventListener('error', function() {
-    console.log('Failed to load image');
-    console.log('Attempted image path:', this.src);
-});
+    setInterval(moveImageBox, 3000);
 </script>
 
 <style>
