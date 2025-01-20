@@ -185,10 +185,11 @@ import Layout from '../layouts/Layout.astro';
         border: 2px dashed #FFD700;
     }
 
-    #sam-image {
+   #sam-image {
     position: absolute;
-    width: 300px; /* Adjust as needed */
-    height: 200px; /* Adjust as needed */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire container */
     transition: transform 1s ease-in-out;
 }
 </style>
