@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-
 <Layout title="Sam's Corner - Living with the Ghost of Sam">
 	<main>
 		<h1>Sam's Corner</h1>
@@ -11,10 +10,11 @@ import Layout from '../layouts/Layout.astro';
 				<div class="video-container">
 					<iframe
 						src="about:blank"
-						data-src="https://www.youtube.com/embed/VIDEO_ID_1"
+						data-src="https://www.youtube.com/embed/K44DriPrLUk?si=tbzIwwXBVKSsbW47" width="560" height="315"
 						title="Episode 1 Teaser"
 						frameborder="0"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin"
 						allowfullscreen
 					></iframe>
 				</div>
@@ -61,12 +61,10 @@ import Layout from '../layouts/Layout.astro';
 		</div>
 	</main>
 </Layout>
-
 <script>
 	if (!sessionStorage.getItem('authenticated')) {
 		window.location.href = '/';
 	}
-
 	document.addEventListener('DOMContentLoaded', function() {
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
@@ -80,13 +78,11 @@ import Layout from '../layouts/Layout.astro';
 		}, {
 			threshold: 0.1
 		});
-
 		document.querySelectorAll('.video-container').forEach(container => {
 			observer.observe(container);
 		});
 	});
 </script>
-
 <style>
 	main {
 		margin: auto;
@@ -94,7 +90,6 @@ import Layout from '../layouts/Layout.astro';
 		max-width: 1200px;
 		color: white;
 	}
-
 	h1 {
 		font-size: 2.5rem;
 		text-align: center;
@@ -103,31 +98,26 @@ import Layout from '../layouts/Layout.astro';
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
-
 	.video-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 		gap: 2rem;
 	}
-
 	.video-card {
 		background: rgba(255, 255, 255, 0.1);
 		padding: 1.5rem;
 		border-radius: 8px;
 	}
-
 	.video-card h2 {
 		margin-bottom: 1rem;
 		color: #64b3f4;
 	}
-
 	.video-container {
 		position: relative;
 		padding-bottom: 56.25%; /* 16:9 aspect ratio */
 		height: 0;
 		overflow: hidden;
 	}
-
 	.video-container iframe {
 		position: absolute;
 		top: 0;
@@ -136,7 +126,6 @@ import Layout from '../layouts/Layout.astro';
 		height: 100%;
 		border-radius: 4px;
 	}
-
 	@media (max-width: 768px) {
 		.video-grid {
 			grid-template-columns: 1fr;
