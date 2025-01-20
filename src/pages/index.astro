@@ -187,17 +187,17 @@ import Layout from '../layouts/Layout.astro';
         border: 2px dashed #FFD700;
     }
 
-    #image-box {
+   #image-box {
     position: absolute;
     width: 300px;
     height: 200px;
-    overflow: hidden; /* Add this to contain the image */
-    background: rgba(255, 255, 255, 0.1); /* Optional: helps visualize the container */
+    transition: transform 1s ease-in-out;
+    background: rgba(255, 255, 255, 0.1);
 }
 #sam-image {
-    width: 300px;    /* Match container width */
-    height: 200px;   /* Match container height */
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    display: block;  /* Removes any default spacing */
+    display: block;
 }
 </style>
