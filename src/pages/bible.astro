@@ -1,75 +1,75 @@
-----
+---
 import Layout from '../../layouts/Layout.astro';
-----
+---
 
 <Layout title="Character Bible">
-	<main>
-		<h1>Character Bible</h1>
-		<div class="characters-grid">
-			<div class="char-card">
-				<h2>Main Characters</h2>
-				<ul>
-					<li>
-						<h3>Character Name</h3>
-						<p>Brief character description and background</p>
-						<a href="/characters/main.pdf" class="details-btn">Full Details</a>
-					</li>
-				</ul>
-			</div>
-			<div class="char-card">
-				<h2>Supporting Characters</h2>
-				<ul>
-					<li>
-						<h3>Character Name</h3>
-						<p>Brief character description and background</p>
-						<a href="/characters/supporting.pdf" class="details-btn">Full Details</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</main>
+    <main>
+        <h1>Character Bible</h1>
+        <div class="characters-grid">
+            <div class="char-card">
+                <h2>Main Characters</h2>
+                <ul>
+                    <li>
+                        <h3>Character Name</h3>
+                        <p>Brief character description and background</p>
+                        <a href="/characters/main.pdf" class="details-btn">Full Details</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="char-card">
+                <h2>Supporting Characters</h2>
+                <ul>
+                    <li>
+                        <h3>Character Name</h3>
+                        <p>Brief character description and background</p>
+                        <a href="/characters/supporting.pdf" class="details-btn">Full Details</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 2rem;
-		max-width: 1200px;
-		color: white;
-	}
-	h1 {
-		font-size: 2.5rem;
-		text-align: center;
-		margin-bottom: 2rem;
-	}
-	.characters-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-		gap: 2rem;
-	}
-	.char-card {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	ul {
-		list-style: none;
-		padding: 0;
-	}
-	li {
-		margin-bottom: 1.5rem;
-	}
-	.details-btn {
-		display: inline-block;
-		background: #9C27B0;
-		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: 4px;
-		text-decoration: none;
-		margin-top: 0.5rem;
-		transition: background 0.2s;
-	}
-	.details-btn:hover {
-		background: #7B1FA2;
-	}
+    main {
+        margin: auto;
+        padding: 2rem;
+        max-width: 1200px;
+        color: white;
+    }
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .characters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+    }
+    .char-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 1.5rem;
+    }
+    .details-btn {
+        display: inline-block;
+        background: #9C27B0;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-top: 0.5rem;
+        transition: background 0.2s;
+    }
+    .details-btn:hover {
+        background: #7B1FA2;
+    }
 </style>
