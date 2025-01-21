@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
 const base = import.meta.env.BASE_URL;
 ---
 <Layout title="Select Your Role" showNavigation={false}>
@@ -16,7 +15,8 @@ const base = import.meta.env.BASE_URL;
         </div>
     </div>
 </Layout>
-<style define:vars={{ base }}>
+
+<style>
     .container {
         display: flex;
         flex-direction: column;
@@ -24,7 +24,7 @@ const base = import.meta.env.BASE_URL;
         justify-content: flex-start;
         min-height: 100vh;
         padding: 1rem;
-        background: url(${base}/images/SamImage.jpg) no-repeat center center fixed;
+        background: url('/living-with-the-ghost-of-sam/images/SamImage.jpg') no-repeat center center fixed;
         background-size: cover;
     }
     h1 {
