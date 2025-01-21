@@ -1,1 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
 
+<Layout title="Professional Agent" showNavigation={true}>
+    <div class="container">
+        <div class="content">
+            <h1>Professional Agent Portal</h1>
+            <p class="subtitle">Welcome to the dedicated space for professional agents</p>
+            
+            <!-- Content specific to professional agents will go here -->
+            <div class="info-section">
+                <h2>Next Steps</h2>
+                <p>Content coming soon...</p>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .container {
+        padding-top: 70px; /* Match navigation height */
+        min-height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('/images/SamImage.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        color: white;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        color: #2196F3;
+    }
+
+    .info-section {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-top: 2rem;
+    }
+
+    h2 {
+        color: #2196F3;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .content {
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+        }
+    }
+</style>
