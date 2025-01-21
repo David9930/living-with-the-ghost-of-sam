@@ -1,6 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
 ---
-<Layout title="Producer">
+<Layout title="Producer" showNavigation={true}>
+    <Navigation />
     <div>Producer Page Coming Soon</div>
 </Layout>
