@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
         </div>
     </div>
 </Layout>
-<style>
+<style define:vars={{ base }}>
     .container {
         display: flex;
         flex-direction: column;
@@ -24,7 +24,7 @@ const base = import.meta.env.BASE_URL;
         justify-content: flex-start;
         min-height: 100vh;
         padding: 1rem;
-        background: url('/images/SamImage.jpg') no-repeat center center fixed;
+        background: url(${base}/images/SamImage.jpg) no-repeat center center fixed;
         background-size: cover;
     }
     h1 {
