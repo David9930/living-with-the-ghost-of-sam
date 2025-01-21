@@ -1,42 +1,51 @@
 ---
 // src/components/Navigation.astro
 ---
-<nav class="navigation">
+
+<nav class="nav-container">
     <div class="nav-content">
-        <a href="/" class="logo">Living with the Ghost of Sam</a>
+        <a href="/" class="nav-title">Living with the Ghost of Sam</a>
         <div class="nav-links">
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
-            <a href="/roles" class="highlight">Select Role</a>
+            <a href="/" class="nav-link">Home</a>
+            <a href="/about" class="nav-link">About</a>
+            <a href="/contact" class="nav-link">Contact</a>
         </div>
     </div>
 </nav>
 
 <style>
-    .navigation {
+    .nav-container {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
+        height: 70px;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
         z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-content {
         max-width: 1200px;
+        height: 100%;
         margin: 0 auto;
-        padding: 1rem 2rem;
+        padding: 0 2rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .logo {
+    .nav-title {
         color: white;
-        text-decoration: none;
         font-size: 1.5rem;
         font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .nav-title:hover {
+        color: #2196F3;
     }
 
     .nav-links {
@@ -44,36 +53,35 @@
         gap: 2rem;
     }
 
-    .nav-links a {
+    .nav-link {
         color: white;
         text-decoration: none;
-        transition: color 0.2s;
         font-size: 1rem;
-    }
-
-    .nav-links a:hover {
-        color: #2196F3;
-    }
-
-    .highlight {
-        background: #2196F3;
         padding: 0.5rem 1rem;
         border-radius: 4px;
+        transition: all 0.3s ease;
     }
 
-    .highlight:hover {
-        background: #1976D2;
+    .nav-link:hover {
+        background: rgba(33, 150, 243, 0.2);
+        color: #2196F3;
     }
 
     @media (max-width: 768px) {
         .nav-content {
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
+            padding: 0 1rem;
+        }
+
+        .nav-title {
+            font-size: 1.2rem;
         }
 
         .nav-links {
             gap: 1rem;
+        }
+
+        .nav-link {
+            padding: 0.5rem;
         }
     }
 </style>
