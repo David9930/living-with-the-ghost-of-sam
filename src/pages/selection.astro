@@ -5,15 +5,22 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
         <h1 class="pulsing-text">I am a .......</h1>
         <div class="button-container">
-            <a href="/roles/professional-agent" class="btn">Professional Agent</a>
-            <a href="/roles/agency" class="btn">Agency</a>
-            <a href="/roles/streaming-service" class="btn">Netflix-Amazon Prime-Disney+ or other</a>
-            <a href="/roles/actor" class="btn">Actor Looking for a Script</a>
-            <a href="/roles/producer" class="btn">Wealthy Producer</a>
-            <a href="/roles/other" class="btn">None of the above</a>
+            <button id="agent" class="btn">Professional Agent</button>
+            <button id="agency" class="btn">Agency</button>
+            <button id="service" class="btn">Netflix-Amazon Prime-Disney+ or other</button>
+            <button id="actor" class="btn">Actor Looking for a Script</button>
+            <button id="producer" class="btn">Wealthy Producer</button>
+            <button id="none" class="btn">None of the above</button>
         </div>
     </div>
 </Layout>
+
+<script>
+    // Add click handler for Professional Agent button
+    document.getElementById('agent').addEventListener('click', () => {
+        window.location.href = '/roles/professional-agent';
+    });
+</script>
 
 <style>
     .container {
@@ -62,9 +69,6 @@ import Layout from '../layouts/Layout.astro';
         cursor: pointer;
         transition: transform 0.2s, background-color 0.2s;
         min-width: 200px;
-        text-decoration: none;
-        text-align: center;
-        display: inline-block;
     }
     .btn:hover {
         transform: translateY(-2px);
