@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { title, showNavigation = true } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!DOCTYPE html>
@@ -13,7 +14,7 @@ const { title, showNavigation = true } = Astro.props;
         <meta charset="UTF-8" />
         <meta name="description" content="Living with the Ghost of Sam">
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
         <meta name="generator" content={Astro.generator} />
         <title>{title} | Living with the Ghost of Sam</title>
     </head>
@@ -21,10 +22,10 @@ const { title, showNavigation = true } = Astro.props;
         {showNavigation && (
             <nav>
                 <div class="nav-content">
-                    <a href="/" class="nav-brand">Living with the Ghost of Sam</a>
+                    <a href={`${base}`} class="nav-brand">Living with the Ghost of Sam</a>
                     <div class="nav-links">
-                        <a href="/scripts">Scripts</a>
-                        <a href="/bible">Bible</a>
+                        <a href={`${base}scripts`}>Scripts</a>
+                        <a href={`${base}bible`}>Bible</a>
                     </div>
                 </div>
             </nav>
