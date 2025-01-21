@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Professional Agent">
@@ -28,13 +30,13 @@ import Layout from '../../layouts/Layout.astro';
             <div class="info-card">
                 <h2>Available Materials</h2>
                 <div class="materials-grid">
-                    <a href="/scripts" class="material-link">
+                    <a href={`${base}scripts`} class="material-link">
                         <div class="material-card">
                             <h3>Scripts</h3>
                             <p>Access full episode scripts</p>
                         </div>
                     </a>
-                    <a href="/bible" class="material-link">
+                    <a href={`${base}bible`} class="material-link">
                         <div class="material-card">
                             <h3>Character Bible</h3>
                             <p>Detailed character backgrounds and development</p>
@@ -52,13 +54,13 @@ import Layout from '../../layouts/Layout.astro';
     </main>
 </Layout>
 
-<style>
+<style define:vars={{ base }}>
     main {
         color: white;
     }
 
     .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/SamImage.jpg') no-repeat center center;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${base}/images/SamImage.jpg) no-repeat center center;
         background-size: cover;
         padding: 4rem 2rem;
         text-align: center;
