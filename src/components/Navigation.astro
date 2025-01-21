@@ -1,64 +1,79 @@
 ---
-const currentPath = Astro.url.pathname;
-const base = import.meta.env.BASE_URL;
-// Remove the base path from currentPath for comparison
-const normalizedPath = currentPath.replace(base, '/');
+// src/components/Navigation.astro
 ---
 <nav class="navigation">
-	<a href={base} class="home-link">Living with the Ghost of Sam</a>
-	<div class="nav-links">
-		<a href={`${base}/scripts`} class={normalizedPath === '/scripts' ? 'active' : ''}>Scripts</a>
-		<a href={`${base}/documents`} class={normalizedPath === '/documents' ? 'active' : ''}>Documents</a>
-		<a href={`${base}/bible`} class={normalizedPath === '/bible' ? 'active' : ''}>Character Bible</a>
-		<a href={`${base}/sam`} class={normalizedPath === '/sam' ? 'active' : ''}>Sam's Corner</a>
-		<a href={`${base}/about`} class={normalizedPath === '/about' ? 'active' : ''}>About</a>
-	</div>
+    <div class="nav-content">
+        <a href="/" class="logo">Living with the Ghost of Sam</a>
+        <div class="nav-links">
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+            <a href="/roles" class="highlight">Select Role</a>
+        </div>
+    </div>
 </nav>
+
 <style>
-	.navigation {
-		background: rgba(255, 255, 255, 0.1);
-		padding: 1rem 2rem;
-		margin-bottom: 2rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.home-link {
-		color: #64b3f4;
-		text-decoration: none;
-		font-weight: bold;
-		font-size: 1.2rem;
-		transition: color 0.2s;
-	}
-	.home-link:hover {
-		color: #c2e59c;
-	}
-	.nav-links {
-		display: flex;
-		gap: 1.5rem;
-	}
-	.nav-links a {
-		color: white;
-		text-decoration: none;
-		opacity: 0.8;
-		transition: opacity 0.2s;
-	}
-	.nav-links a:hover {
-		opacity: 1;
-	}
-	.nav-links a.active {
-		color: #64b3f4;
-		opacity: 1;
-	}
-	@media (max-width: 600px) {
-		.navigation {
-			flex-direction: column;
-			gap: 1rem;
-			text-align: center;
-		}
-		.nav-links {
-			flex-direction: column;
-			gap: 0.5rem;
-		}
-	}
+    .navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+    }
+
+    .nav-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.2s;
+        font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+        color: #2196F3;
+    }
+
+    .highlight {
+        background: #2196F3;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+    }
+
+    .highlight:hover {
+        background: #1976D2;
+    }
+
+    @media (max-width: 768px) {
+        .nav-content {
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .nav-links {
+            gap: 1rem;
+        }
+    }
 </style>
