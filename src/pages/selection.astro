@@ -1,196 +1,36 @@
----
-import Layout from '../layouts/Layout.astro';
----
+ import Layout from '../layouts/Layout.astro';
 
-<Layout title="Living with the Ghost of Sam">
-    <div id="splash" class="splash-container">
-        <div class="login-box">
-            <h1>Welcome</h1>
-            <div class="password-input">
-                <label for="password">Professor</label>
-                <input type="password" id="password" />
-            </div>
-            <button id="submit-btn">Enter</button>
-            <p id="error-message" class="error"></p>
-        </div>
-        <img src="/images/SamImagesmall.jpg" id="sam-image" />
-    </div>
-
-    <main id="content" class="hidden">
-        <h1>Living with the Ghost of Sam</h1>
-        <div class="grid">
-            <a href={`${import.meta.env.BASE_URL}/scripts`} class="card">
-                <h2>Scripts</h2>
-                <p>Access all TV show scripts in PDF format</p>
-            </a>
-            <a href={`${import.meta.env.BASE_URL}/documents`} class="card">
-                <h2>Show Documents</h2>
-                <p>Review evaluation materials and show proposals</p>
-            </a>
-            <a href={`${import.meta.env.BASE_URL}/bible`} class="card">
-                <h2>Character Bible</h2>
-                <p>Detailed character profiles and relationships</p>
-            </a>
-            <a href={`${import.meta.env.BASE_URL}/sam`} class="card ghost-card">
-                <h2>Sam's Corner</h2>
-                <p>Watch exclusive clips featuring Sam</p>
-            </a>
-            <a href={`${import.meta.env.BASE_URL}/about`} class="card">
-                <h2>About the Writer</h2>
-                <p>Writer biography and background</p>
-            </a>
-        </div>
-    </main>
-</Layout>
-
-<script>
-    if (sessionStorage.getItem('authenticated')) {
-        document.getElementById('splash').classList.add('hidden');
-        document.getElementById('content').classList.remove('hidden');
+<Layout title="Select Your Role" showNavigation={false}>
+    <div class="container">
+        <h1>I am a .......</h1>
+        <h1 class="pulsing-text">I am a .......</h1>
+        <div class="button-container">
+            <button id="agent" class="btn">Professional Agent</button>
+            <button id="agency" class="btn">Agency</button>
+@@ -53,10 +53,26 @@ import Layout from '../layouts/Layout.astro';
     }
 
-    function checkPassword() {
-        const password = document.getElementById('password').value;
-        if (password === 'Terguson') {
-            sessionStorage.setItem('authenticated', 'true');
-            window.location.href = `${import.meta.env.BASE_URL}/selection`;
-        } else {
-            document.getElementById('error-message').textContent = 'Incorrect password';
+    h1 {
+        font-size: 2.5rem;
+        font-size: 4rem; /* Increased size */
+        margin-bottom: 2rem;
+    }
+
+    .pulsing-text {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
         }
     }
-
-    document.getElementById('submit-btn').addEventListener('click', checkPassword);
-
-    document.getElementById('password').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            checkPassword();
-        }
-    });
-
-    // Randomly move the SamImagesmall.jpg across the screen
-    const samImage = document.getElementById('sam-image');
-
-    function randomPosition() {
-        const x = Math.floor(Math.random() * (window.innerWidth - samImage.clientWidth));
-        const y = Math.floor(Math.random() * (window.innerHeight - samImage.clientHeight));
-        return { x, y };
-    }
-
-    function moveSamImage() {
-        const { x, y } = randomPosition();
-        samImage.style.transform = `translate(${x}px, ${y}px)`;
-    }
-
-    setInterval(moveSamImage, 3000); // Move every 3 seconds
-</script>
-
-<style>
-    .splash-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #13151a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .login-box {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: center;
-        color: white;
-        width: 300px; /* Adjust width as needed */
-        height: 200px; /* Adjust height as needed */
-    }
-
-    .password-input {
-        margin: 1rem 0;
-    }
-
-    .password-input label {
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .password-input input {
-        padding: 0.5rem;
-        border-radius: 4px;
-        border: none;
-        width: 100%;
-        color: black;
-    }
-
     .button-container {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
 
-    .btn {
-        display: inline-block;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 4px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background 0.2s;
-        background: #2196F3;
-    }
-
-    .btn:hover {
-        background: #1976D2;
-    }
-
-    .error {
-        color: red;
-        margin-top: 1rem;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-top: 2rem;
-    }
-
-    .card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 1rem;
-        border-radius: 8px;
-        text-align: center;
-        color: white;
-        text-decoration: none;
-    }
-
-    .card h2 {
-        margin: 0;
-        font-size: 1.5rem;
-    }
-
-    .card p {
-        margin: 0.5rem 0 0;
-    }
-
-    .ghost-card {
-        border: 2px dashed #FFD700;
-    }
-
-    #sam-image {
-        position: absolute;
-        width: 300px; /* Adjust width to match the login-box */
-        height: 200px; /* Adjust height to match the login-box */
-        transition: transform 1s ease-in-out;
-    }
-</style>
