@@ -1,74 +1,176 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Navigation from '../../components/Navigation.astro';
 ---
 
-<Layout title="Professional Agent" showNavigation={true}>
-    <Navigation />
-    <div class="container">
-        <div class="content">
-            <h1>Professional Agent Portal</h1>
-            <p class="subtitle">Welcome to the dedicated space for professional agents</p>
-            
-            <!-- Content specific to professional agents will go here -->
-            <div class="info-section">
-                <h2>Next Steps</h2>
-                <p>Content coming soon...</p>
-            </div>
+<Layout title="Professional Agent">
+    <main>
+        <div class="hero">
+            <h1>Welcome, Professional Agent</h1>
+            <p class="subtitle">We're excited to share this unique opportunity with you</p>
         </div>
-    </div>
+
+        <section class="content">
+            <div class="info-card">
+                <h2>Project Overview</h2>
+                <p>Living with the Ghost of Sam is a gripping supernatural crime drama series that blends elements of mystery, suspense, and emotional depth. The story follows a detective haunted by the spirit of a legendary serial killer as they work together to solve modern crimes.</p>
+            </div>
+
+            <div class="info-card">
+                <h2>Why This Project?</h2>
+                <ul>
+                    <li>Unique premise combining crime and supernatural elements</li>
+                    <li>Strong character development and emotional depth</li>
+                    <li>Built-in audience appeal across multiple genres</li>
+                    <li>Potential for multiple seasons</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h2>Available Materials</h2>
+                <div class="materials-grid">
+                    <a href="/scripts" class="material-link">
+                        <div class="material-card">
+                            <h3>Scripts</h3>
+                            <p>Access full episode scripts</p>
+                        </div>
+                    </a>
+                    <a href="/bible" class="material-link">
+                        <div class="material-card">
+                            <h3>Character Bible</h3>
+                            <p>Detailed character backgrounds and development</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="info-card contact">
+                <h2>Next Steps</h2>
+                <p>If you're interested in representing this project, please reach out to us at:</p>
+                <a href="mailto:contact@example.com" class="contact-btn">Contact Us</a>
+            </div>
+        </section>
+    </main>
 </Layout>
 
 <style>
-    .container {
-        padding-top: 70px; /* Match navigation height */
-        min-height: 100vh;
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                  url('/images/SamImage.jpg') no-repeat center center fixed;
+    main {
+        color: white;
+    }
+
+    .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/SamImage.jpg') no-repeat center center;
         background-size: cover;
+        padding: 4rem 2rem;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        margin: 0;
+        margin-bottom: 1rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+        opacity: 0.9;
     }
 
     .content {
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
-        color: white;
     }
 
-    h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
-
-    .subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-        color: #2196F3;
-    }
-
-    .info-section {
-        background: rgba(0, 0, 0, 0.7);
+    .info-card {
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 8px;
         padding: 2rem;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
-    h2 {
-        color: #2196F3;
-        margin-bottom: 1rem;
+    .info-card h2 {
+        color: #FFD700;
+        margin-top: 0;
+    }
+
+    .info-card ul {
+        padding-left: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .info-card li {
+        margin-bottom: 0.5rem;
+    }
+
+    .materials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .material-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .material-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 6px;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .material-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .material-card h3 {
+        color: #FFD700;
+        margin: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .material-card p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .contact {
+        text-align: center;
+    }
+
+    .contact-btn {
+        display: inline-block;
+        background: #2196F3;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        text-decoration: none;
+        margin-top: 1rem;
+        transition: background-color 0.2s;
+    }
+
+    .contact-btn:hover {
+        background: #1976D2;
     }
 
     @media (max-width: 768px) {
-        .content {
-            padding: 1rem;
-        }
-
-        h1 {
-            font-size: 2rem;
+        .hero h1 {
+            font-size: 2.5rem;
         }
 
         .subtitle {
             font-size: 1.2rem;
+        }
+
+        .content {
+            padding: 1rem;
+        }
+
+        .materials-grid {
+            grid-template-columns: 1fr;
         }
     }
 </style>
