@@ -1,33 +1,85 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-
 const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Professional Agent">
     <main>
         <div class="hero">
-            <h1>Welcome, Professional Agent</h1>
-            <p class="subtitle">We're excited to share this unique opportunity with you</p>
+            <h1>For Agents: Pioneering the Future While Preserving the Present</h1>
+            <p class="subtitle">Shape the next chapter of entertainment while protecting your clients' interests</p>
         </div>
 
         <section class="content">
-            <div class="info-card">
-                <h2>Project Overview</h2>
-                <p>Living with the Ghost of Sam is a gripping supernatural crime drama series that blends elements of mystery, suspense, and emotional depth. The story follows a detective haunted by the spirit of a legendary serial killer as they work together to solve modern crimes.</p>
+            <div class="info-card vision">
+                <h2>The Vision</h2>
+                <p>In an industry constantly transformed by technology, agents face a crucial question: How do we embrace innovation while protecting and enhancing the careers of today's talent? "Living with the Ghost of Sam" offers a unique opportunity to help shape the answer, presenting a framework for responsible technological advancement that expands opportunities rather than replacing them.</p>
             </div>
 
-            <div class="info-card">
-                <h2>Why This Project?</h2>
+            <div class="info-card opportunity">
+                <h2>A New Revenue Stream, Not a Replacement</h2>
+                <p>Imagine being able to tell your clients that you're not just protecting their current interests - you're developing entirely new markets for their talents. Digital legacy management represents an expansion of the entertainment landscape, not a replacement of existing structures.</p>
+                
+                <div class="highlight-box">
+                    <h3>Technology-Performance Synergy</h3>
+                    <ul>
+                        <li>Living actors remain central to the narrative</li>
+                        <li>AI enhancement serves the story rather than driving it</li>
+                        <li>Digital recreations complement rather than compete with current talent</li>
+                        <li>New roles emerge for technical advisors and performance consultants</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-card opportunities">
+                <h2>New Opportunities for Current Talent</h2>
+                <div class="two-column">
+                    <div>
+                        <h3>For Actors:</h3>
+                        <ul>
+                            <li>Dual roles interacting with digital recreations</li>
+                            <li>New performance techniques combining traditional and digital methods</li>
+                            <li>Pioneering hybrid performance styles</li>
+                            <li>Character development alongside AI enhancement</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Emerging Technical Roles:</h3>
+                        <ul>
+                            <li>Performance consultants</li>
+                            <li>Digital asset managers</li>
+                            <li>AI interaction specialists</li>
+                            <li>Legacy preservation experts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card protection">
+                <h2>Protected Interests, Enhanced Opportunities</h2>
+                <p>We understand the concerns about AI in entertainment. That's why this project emphasizes:</p>
                 <ul>
-                    <li>Unique premise combining crime and supernatural elements</li>
-                    <li>Strong character development and emotional depth</li>
-                    <li>Built-in audience appeal across multiple genres</li>
-                    <li>Potential for multiple seasons</li>
+                    <li>Strict limitations to posthumous recreation with estate approval</li>
+                    <li>Clear boundaries between digital recreation and live performance</li>
+                    <li>Enhanced protections for performer likeness rights</li>
+                    <li>New revenue streams for current performers who choose to participate</li>
+                    <li>Additional employment opportunities in emerging technical roles</li>
                 </ul>
             </div>
 
-            <div class="info-card">
+            <div class="info-card business-case">
+                <h2>The Business Case</h2>
+                <p>The numbers speak to expanding opportunities rather than replacement:</p>
+                <ul>
+                    <li>Historical precedent shows new technology creates more entertainment jobs</li>
+                    <li>Digital recreation projects require larger, more diverse production teams</li>
+                    <li>Hybrid performances command premium compensation</li>
+                    <li>New technical roles offer additional representation opportunities</li>
+                    <li>Estate management becomes an ongoing revenue stream</li>
+                </ul>
+            </div>
+
+            <div class="info-card materials">
                 <h2>Available Materials</h2>
                 <div class="materials-grid">
                     <a href={`${base}scripts`} class="material-link">
@@ -46,35 +98,41 @@ const base = import.meta.env.BASE_URL;
             </div>
 
             <div class="info-card contact">
-                <h2>Next Steps</h2>
-                <p>If you're interested in representing this project, please reach out to us at:</p>
+                <h2>Shape the Future of Entertainment</h2>
+                <p>Ready to be part of entertainment's next chapter while protecting your clients' interests?</p>
                 <a href="mailto:contact@example.com" class="contact-btn">Contact Us</a>
             </div>
         </section>
     </main>
 </Layout>
 
-<style define:vars={{ base }}>
+<style>
     main {
         color: white;
     }
 
     .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${base}/images/SamImage.jpg) no-repeat center center;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/living-with-the-ghost-of-sam/images/SamImage.jpg') no-repeat center center;
         background-size: cover;
         padding: 4rem 2rem;
         text-align: center;
     }
 
     .hero h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
         margin: 0;
         margin-bottom: 1rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .subtitle {
         font-size: 1.5rem;
         opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .content {
@@ -93,6 +151,13 @@ const base = import.meta.env.BASE_URL;
     .info-card h2 {
         color: #FFD700;
         margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    .info-card h3 {
+        color: #FFD700;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
     }
 
     .info-card ul {
@@ -101,7 +166,24 @@ const base = import.meta.env.BASE_URL;
     }
 
     .info-card li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .highlight-box {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 6px;
+        margin-top: 1.5rem;
+    }
+
+    .highlight-box h3 {
+        margin-top: 0;
+    }
+
+    .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
     }
 
     .materials-grid {
@@ -128,17 +210,6 @@ const base = import.meta.env.BASE_URL;
         background: rgba(255, 255, 255, 0.1);
     }
 
-    .material-card h3 {
-        color: #FFD700;
-        margin: 0;
-        margin-bottom: 0.5rem;
-    }
-
-    .material-card p {
-        margin: 0;
-        opacity: 0.9;
-    }
-
     .contact {
         text-align: center;
     }
@@ -160,7 +231,7 @@ const base = import.meta.env.BASE_URL;
 
     @media (max-width: 768px) {
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
         }
 
         .subtitle {
@@ -169,6 +240,10 @@ const base = import.meta.env.BASE_URL;
 
         .content {
             padding: 1rem;
+        }
+
+        .two-column {
+            grid-template-columns: 1fr;
         }
 
         .materials-grid {
