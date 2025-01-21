@@ -174,7 +174,7 @@ import Layout from '../layouts/Layout.astro';
         }
 
         // Password validation with GitHub Pages path
-        function checkPassword() {
+       function checkPassword() {
     const password = document.getElementById('password').value;
     if (password === 'Terguson') {
         sessionStorage.setItem('authenticated', 'true');
@@ -183,7 +183,6 @@ import Layout from '../layouts/Layout.astro';
         document.getElementById('error-message').textContent = 'Incorrect password';
     }
 }
-
         // Event listeners for password submission
         document.getElementById('submit-btn').addEventListener('click', checkPassword);
         document.getElementById('password').addEventListener('keypress', function(e) {
