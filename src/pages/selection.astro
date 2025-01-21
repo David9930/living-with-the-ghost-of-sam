@@ -14,14 +14,12 @@ import Layout from '../layouts/Layout.astro';
         </div>
     </div>
 </Layout>
-
 <script>
     // Add click handler for Professional Agent button
     document.getElementById('agent').addEventListener('click', () => {
-        window.location.href = '/roles/professional-agent';
+        window.location.href = './roles/professional-agent';  // Changed from absolute to relative path
     });
 </script>
-
 <style>
     .container {
         display: flex;
