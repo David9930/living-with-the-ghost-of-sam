@@ -12,12 +12,12 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true  # Changed to true to prevent queuing
+  cancel-in-progress: true  # This will cancel running deployments if a new one is triggered
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5  # Reduced from default 360 minutes to 5 minutes
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,18 +25,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+          cache: 'npm'  # Added caching for faster builds
       - name: Install dependencies
         run: npm ci
+        timeout-minutes: 2  # Added timeout for install step
       - name: Build Astro
         run: npm run build
+        timeout-minutes: 2  # Added timeout for build step
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+        timeout-minutes: 1  # Added timeout for upload step
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 3  # Reduced deploy timeout
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -44,3 +49,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        timeout-minutes: 2  # Added timeout for deployment step
