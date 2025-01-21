@@ -1,6 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
 ---
-<Layout title="Agency">
+<Layout title="Agency" showNavigation={true}>
+    <Navigation />
     <div>Agency Page Coming Soon</div>
 </Layout>
