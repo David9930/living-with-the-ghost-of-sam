@@ -195,27 +195,27 @@ import Layout from '../layouts/Layout.astro';
         const imageBox = document.getElementById('image-box');
         const samImage = document.getElementById('sam-image');
 
-        function randomPosition() {
-            const viewportWidth = Math.max(window.innerWidth, 320);
-            const viewportHeight = Math.max(window.innerHeight, 240);
-            
-            const boxWidth = imageBox.offsetWidth;
-            const boxHeight = imageBox.offsetHeight;
-            
-            const maxX = viewportWidth - boxWidth;
-            const maxY = viewportHeight - boxHeight;
-            
-            const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
-            const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-            
-            return { x, y };
-        }
+       function randomPosition() {
+    const viewportWidth = Math.max(window.innerWidth, 320);
+    const viewportHeight = Math.max(window.innerHeight, 240);
+    
+    const boxWidth = imageBox.offsetWidth;
+    const boxHeight = imageBox.offsetHeight;
+    
+    const maxX = viewportWidth - boxWidth;
+    const maxY = viewportHeight - boxHeight;
+    
+    const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
+    const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
+    
+    return { x, y };
+}
 
-        function moveImageBox() {
-            const { x, y } = randomPosition();
-            imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-            imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
-        }
+function moveImageBox() {
+    const { x, y } = randomPosition();
+    imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
+}
 
         // Initialize movement with requestAnimationFrame
         requestAnimationFrame(() => {
