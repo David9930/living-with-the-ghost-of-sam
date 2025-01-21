@@ -21,9 +21,9 @@ import Layout from '../layouts/Layout.astro';
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start; /* Change from center to flex-start */
         min-height: 100vh;
-        padding: 2rem;
+        padding: 1rem; /* Reduced padding */
         background: url('/images/SamImage.jpg') no-repeat center center fixed;
         background-size: cover;
     }
@@ -31,12 +31,12 @@ import Layout from '../layouts/Layout.astro';
     h1 {
         font-size: 4rem;
         margin-bottom: 2rem;
-        color: white; /* White color for pulsing text */
+        color: white;
     }
 
     .pulsing-text {
         animation: pulse 2s infinite;
-        color: white; /* White color for pulsing text */
+        color: white;
     }
 
     @keyframes pulse {
