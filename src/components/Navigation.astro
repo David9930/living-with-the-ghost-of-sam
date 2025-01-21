@@ -1,14 +1,12 @@
 ---
 // src/components/Navigation.astro
 ---
-
 <nav class="nav-container">
     <div class="nav-content">
         <a href="/" class="nav-title">Living with the Ghost of Sam</a>
         <div class="nav-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/about" class="nav-link">About</a>
-            <a href="/contact" class="nav-link">Contact</a>
+            {/* Temporarily removed About and Contact until pages are created */}
         </div>
     </div>
 </nav>
@@ -25,7 +23,6 @@
         z-index: 1000;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-
     .nav-content {
         max-width: 1200px;
         height: 100%;
@@ -35,7 +32,6 @@
         justify-content: space-between;
         align-items: center;
     }
-
     .nav-title {
         color: white;
         font-size: 1.5rem;
@@ -43,16 +39,13 @@
         text-decoration: none;
         transition: color 0.3s ease;
     }
-
     .nav-title:hover {
         color: #2196F3;
     }
-
     .nav-links {
         display: flex;
         gap: 2rem;
     }
-
     .nav-link {
         color: white;
         text-decoration: none;
@@ -61,25 +54,20 @@
         border-radius: 4px;
         transition: all 0.3s ease;
     }
-
     .nav-link:hover {
         background: rgba(33, 150, 243, 0.2);
         color: #2196F3;
     }
-
     @media (max-width: 768px) {
         .nav-content {
             padding: 0 1rem;
         }
-
         .nav-title {
             font-size: 1.2rem;
         }
-
         .nav-links {
             gap: 1rem;
         }
-
         .nav-link {
             padding: 0.5rem;
         }
