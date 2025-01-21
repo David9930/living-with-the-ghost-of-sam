@@ -1,21 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
----
 
+const base = import.meta.env.BASE_URL;
+---
 <Layout title="Select Your Role" showNavigation={false}>
     <div class="container">
         <h1 class="pulsing-text">I am a .......</h1>
         <div class="button-container">
-            <a href="roles/professional-agent" class="btn">Professional Agent</a>
-            <button id="agency" class="btn">Agency</button>
-            <button id="service" class="btn">Netflix-Amazon Prime-Disney+ or other</button>
-            <button id="actor" class="btn">Actor Looking for a Script</button>
-            <button id="producer" class="btn">Wealthy Producer</button>
-            <button id="none" class="btn">None of the above</button>
+            <a href={`${base}roles/professional-agent`} class="btn">Professional Agent</a>
+            <a href={`${base}roles/agency`} class="btn">Agency</a>
+            <a href={`${base}roles/streaming-service`} class="btn">Netflix-Amazon Prime-Disney+ or other</a>
+            <a href={`${base}roles/actor`} class="btn">Actor Looking for a Script</a>
+            <a href={`${base}roles/producer`} class="btn">Wealthy Producer</a>
+            <a href={`${base}`} class="btn">None of the above</a>
         </div>
     </div>
 </Layout>
-
 <style>
     .container {
         display: flex;
