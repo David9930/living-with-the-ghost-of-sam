@@ -91,93 +91,91 @@ const ScriptsWheel = () => {
     };
 
     return (
-        <div className="w-full max-w-2xl mx-auto px-4">
-            <h1 className="text-4xl text-center text-white mb-12 font-bold">TV Show Scripts</h1>
+        <div className="w-full max-w-md mx-auto px-4">
+            <h1 className="text-4xl text-center text-white mb-8 font-bold">TV Show Scripts</h1>
             
-            <div className="relative h-96">
-                {/* Navigation Buttons */}
-                <button 
-                    onClick={moveUp}
-                    className="absolute left-1/2 -translate-x-1/2 top-0 -translate-y-12 
-                             bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
-                >
-                    <ChevronUp className="w-8 h-8 text-white" />
-                </button>
-                
-                {/* Wheel Container */}
-                <div className="relative h-full overflow-hidden rounded-lg bg-black/30">
-                    {/* Episode Cards */}
-                    <div className="absolute w-full h-full transition-transform duration-500"
-                         style={{ transform: `translateY(-${currentIndex * 33.33}%)` }}>
+            {/* Fixed height container */}
+            <div className="relative h-96 mb-8">
+                {/* Main viewing window with fixed height */}
+                <div className="absolute inset-0 bg-black/20 rounded-lg overflow-hidden">
+                    <div className="relative h-full">
                         {getVisibleEpisodes().map((episode, idx) => (
                             <div 
                                 key={episode.number}
-                                className={`absolute w-full transition-all duration-500
-                                          ${idx === 0 ? 'top-0 opacity-50 scale-90' : 
+                                className={`absolute w-full p-4 transition-all duration-300
+                                          ${idx === 0 ? 'top-0 opacity-50 scale-95' : 
                                             idx === 1 ? 'top-1/3 opacity-100 scale-100' :
-                                                      'top-2/3 opacity-50 scale-90'}
-                                          transform-gpu`}
+                                                      'top-2/3 opacity-50 scale-95'}`}
                             >
-                                <div className="mx-auto w-full max-w-lg p-6 bg-white/10 rounded-lg 
-                                              backdrop-blur-sm shadow-xl">
-                                    <div className="text-center mb-4">
-                                        <h3 className="text-2xl text-white mb-2">Episode {episode.number}</h3>
-                                        <p className="text-xl text-yellow-400 italic font-serif">"{episode.title}"</p>
-                                    </div>
-                                    
-                                    <div className="flex justify-center gap-4">
-                                        {episode.available ? (
-                                            <>
-                                                <a 
-                                                    href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 
-                                                             rounded transition-colors duration-200"
-                                                    download={episode.filename}
-                                                    type="application/pdf"
-                                                >
-                                                    Download
-                                                </a>
-                                                <a 
-                                                    href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 
-                                                             rounded transition-colors duration-200"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    View PDF
-                                                </a>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <button 
-                                                    className="bg-gray-500 text-gray-300 px-4 py-2 
-                                                             rounded cursor-not-allowed"
-                                                    disabled
-                                                >
-                                                    Download
-                                                </button>
-                                                <button 
-                                                    className="bg-gray-500 text-gray-300 px-4 py-2 
-                                                             rounded cursor-not-allowed"
-                                                    disabled
-                                                >
-                                                    View PDF
-                                                </button>
-                                            </>
-                                        )}
+                                {/* Individual episode card */}
+                                <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                                    <div className="text-center space-y-3">
+                                        <h3 className="text-2xl text-white font-bold">
+                                            Episode {episode.number}
+                                        </h3>
+                                        <p className="text-xl text-yellow-400 italic font-serif">
+                                            "{episode.title}"
+                                        </p>
+                                        <div className="flex flex-col gap-2 mt-4">
+                                            {episode.available ? (
+                                                <>
+                                                    <a 
+                                                        href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                                        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded transition-colors duration-200 text-center"
+                                                        download={episode.filename}
+                                                        type="application/pdf"
+                                                    >
+                                                        Download
+                                                    </a>
+                                                    <a 
+                                                        href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors duration-200 text-center"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        View PDF
+                                                    </a>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button 
+                                                        className="bg-gray-500 text-gray-300 py-2 px-4 rounded cursor-not-allowed"
+                                                        disabled
+                                                    >
+                                                        Download
+                                                    </button>
+                                                    <button 
+                                                        className="bg-gray-500 text-gray-300 py-2 px-4 rounded cursor-not-allowed"
+                                                        disabled
+                                                    >
+                                                        View PDF
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
-                
+            </div>
+
+            {/* Navigation controls below the container */}
+            <div className="flex justify-center gap-4">
+                <button 
+                    onClick={moveUp}
+                    className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-200"
+                    aria-label="Previous episode"
+                >
+                    <ChevronUp className="w-6 h-6 text-white" />
+                </button>
                 <button 
                     onClick={moveDown}
-                    className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-12 
-                             bg-white/10 hover:bg-white/20 p-2 rounded-full z-10"
+                    className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-200"
+                    aria-label="Next episode"
                 >
-                    <ChevronDown className="w-8 h-8 text-white" />
+                    <ChevronDown className="w-6 h-6 text-white" />
                 </button>
             </div>
         </div>
