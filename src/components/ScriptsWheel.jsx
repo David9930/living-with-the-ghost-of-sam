@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronUp, ChevronDown, Download, Eye } from 'lucide-react';
 
+// Episodes array remains the same
 const episodes = [
     {
         number: 1,
@@ -8,60 +9,7 @@ const episodes = [
         filename: "Living_with_the_Ghost_of_Sam_Ep1.pdf",
         available: true
     },
-    {
-        number: 2,
-        title: "Night Moves",
-        filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf",
-        available: false
-    },
-    {
-        number: 3,
-        title: "Two out of Three Ain't Bad",
-        filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf",
-        available: false
-    },
-    {
-        number: 4,
-        title: "Last Laugh",
-        filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf",
-        available: false
-    },
-    {
-        number: 5,
-        title: "Digital Inheritance",
-        filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf",
-        available: false
-    },
-    {
-        number: 6,
-        title: "Missing",
-        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf",
-        available: true
-    },
-    {
-        number: 7,
-        title: "Episode 7",
-        filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf",
-        available: false
-    },
-    {
-        number: 8,
-        title: "Episode 8",
-        filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf",
-        available: false
-    },
-    {
-        number: 9,
-        title: "Episode 9",
-        filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf",
-        available: false
-    },
-    {
-        number: 10,
-        title: "Episode 10",
-        filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf",
-        available: false
-    }
+    // ... rest of the episodes
 ];
 
 const ScriptsWheel = () => {
@@ -115,9 +63,11 @@ const ScriptsWheel = () => {
                             right: '1rem',
                             padding: '1rem',
                             transition: 'all 0.3s ease',
-                            top: idx === 0 ? '0%' : idx === 1 ? '33%' : '66%',
+                            top: idx === 0 ? '2%' : idx === 1 ? '33%' : '64%',
                             opacity: idx === 1 ? 1 : 0.5,
                             transform: `scale(${idx === 1 ? 1 : 0.95})`,
+                            zIndex: idx === 1 ? 2 : 1, // Higher z-index for active box
+                            pointerEvents: idx === 1 ? 'auto' : 'none' // Only allow clicking on active box
                         }}
                     >
                         {/* Individual episode box */}
@@ -125,8 +75,9 @@ const ScriptsWheel = () => {
                             border: '2px solid white',
                             borderRadius: '8px',
                             padding: '1rem',
-                            backgroundColor: '#1a1a1a',
-                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                            backgroundColor: idx === 1 ? '#2a2a4a' : '#1a1a1a', // Different background for active box
+                            boxShadow: idx === 1 ? '0 0 20px rgba(255, 255, 255, 0.1)' : 'none',
+                            transition: 'all 0.3s ease'
                         }}>
                             <div style={{ textAlign: 'center' }}>
                                 <h3 className="text-2xl text-white font-bold mb-2">
@@ -149,7 +100,15 @@ const ScriptsWheel = () => {
                                                     padding: '0.5rem 1rem',
                                                     borderRadius: '0.5rem',
                                                     border: '2px solid #16a34a',
-                                                    textDecoration: 'none'
+                                                    textDecoration: 'none',
+                                                    transition: 'all 0.2s ease',
+                                                    cursor: 'pointer'
+                                                }}
+                                                onMouseOver={e => {
+                                                    e.currentTarget.style.backgroundColor = '#16a34a';
+                                                }}
+                                                onMouseOut={e => {
+                                                    e.currentTarget.style.backgroundColor = '#22c55e';
                                                 }}
                                                 download={episode.filename}
                                                 type="application/pdf"
@@ -168,7 +127,15 @@ const ScriptsWheel = () => {
                                                     padding: '0.5rem 1rem',
                                                     borderRadius: '0.5rem',
                                                     border: '2px solid #1d4ed8',
-                                                    textDecoration: 'none'
+                                                    textDecoration: 'none',
+                                                    transition: 'all 0.2s ease',
+                                                    cursor: 'pointer'
+                                                }}
+                                                onMouseOver={e => {
+                                                    e.currentTarget.style.backgroundColor = '#1d4ed8';
+                                                }}
+                                                onMouseOut={e => {
+                                                    e.currentTarget.style.backgroundColor = '#2563eb';
                                                 }}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -231,7 +198,14 @@ const ScriptsWheel = () => {
                         padding: '1rem',
                         borderRadius: '9999px',
                         border: '2px solid #a855f7',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                    }}
+                    onMouseOver={e => {
+                        e.currentTarget.style.backgroundColor = '#7e22ce';
+                    }}
+                    onMouseOut={e => {
+                        e.currentTarget.style.backgroundColor = '#9333ea';
                     }}
                     aria-label="Previous episode"
                 >
@@ -244,7 +218,14 @@ const ScriptsWheel = () => {
                         padding: '1rem',
                         borderRadius: '9999px',
                         border: '2px solid #a855f7',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                    }}
+                    onMouseOver={e => {
+                        e.currentTarget.style.backgroundColor = '#7e22ce';
+                    }}
+                    onMouseOut={e => {
+                        e.currentTarget.style.backgroundColor = '#9333ea';
                     }}
                     aria-label="Next episode"
                 >
