@@ -276,7 +276,7 @@ const ScriptsWheel = () => {
         <div className="w-full max-w-xl mx-auto px-8" style={{ 
             position: 'relative', 
             zIndex: '1',
-            marginTop: '-3rem' // Pull everything up closer to the header
+            marginTop: '-20rem' // Pull everything up closer to the header
         }}>
             <h1 className="text-4xl text-center text-white mb-8 font-bold">
                 TV Show Script Selector
