@@ -90,94 +90,162 @@ const ScriptsWheel = () => {
     };
 
     return (
-        <div className="w-full max-w-lg mx-auto px-4">
+        <div className="w-full max-w-xl mx-auto px-8">
             <h1 className="text-4xl text-center text-white mb-8 font-bold">
                 TV Show Scripts
             </h1>
             
-            {/* Main container with solid border */}
-            <div className="relative h-96 mb-8 border-4 border-white rounded-lg bg-black">
-                {/* Episodes container */}
-                <div className="absolute inset-0 bg-gray-900 rounded-lg">
-                    <div className="relative h-full p-4">
-                        {getVisibleEpisodes().map((episode, idx) => (
-                            <div 
-                                key={episode.number}
-                                className={`absolute w-full p-2 transition-all duration-300
-                                          ${idx === 0 ? 'top-0 opacity-50' : 
-                                            idx === 1 ? 'top-1/3 opacity-100' :
-                                                      'top-2/3 opacity-50'}`}
-                            >
-                                {/* Individual episode box */}
-                                <div className="border-2 border-white rounded-lg p-4 bg-gray-800">
-                                    <div className="text-center">
-                                        <h3 className="text-2xl text-white font-bold mb-2">
-                                            Episode {episode.number}
-                                        </h3>
-                                        <p className="text-xl text-yellow-400 italic mb-4">
-                                            "{episode.title}"
-                                        </p>
-                                        <div className="flex gap-4 justify-center">
-                                            {episode.available ? (
-                                                <>
-                                                    <a 
-                                                        href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                        className="flex items-center gap-2 bg-green-600 text-white py-2 px-4 rounded-lg border-2 border-green-500"
-                                                        download={episode.filename}
-                                                        type="application/pdf"
-                                                    >
-                                                        <Download size={18} />
-                                                        Download
-                                                    </a>
-                                                    <a 
-                                                        href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                        className="flex items-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-lg border-2 border-blue-500"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        <Eye size={18} />
-                                                        View PDF
-                                                    </a>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <button 
-                                                        className="flex items-center gap-2 bg-gray-700 text-gray-400 py-2 px-4 rounded-lg border-2 border-gray-600"
-                                                        disabled
-                                                    >
-                                                        <Download size={18} />
-                                                        Download
-                                                    </button>
-                                                    <button 
-                                                        className="flex items-center gap-2 bg-gray-700 text-gray-400 py-2 px-4 rounded-lg border-2 border-gray-600"
-                                                        disabled
-                                                    >
-                                                        <Eye size={18} />
-                                                        View PDF
-                                                    </button>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
+            {/* Fixed-size main container */}
+            <div style={{ 
+                border: '4px solid white',
+                borderRadius: '8px',
+                height: '480px',
+                position: 'relative',
+                backgroundColor: '#111',
+                marginBottom: '2rem',
+                padding: '1rem',
+                overflow: 'hidden'
+            }}>
+                {getVisibleEpisodes().map((episode, idx) => (
+                    <div 
+                        key={episode.number}
+                        style={{
+                            position: 'absolute',
+                            left: '1rem',
+                            right: '1rem',
+                            padding: '1rem',
+                            transition: 'all 0.3s ease',
+                            top: idx === 0 ? '0%' : idx === 1 ? '33%' : '66%',
+                            opacity: idx === 1 ? 1 : 0.5,
+                            transform: `scale(${idx === 1 ? 1 : 0.95})`,
+                        }}
+                    >
+                        {/* Individual episode box */}
+                        <div style={{
+                            border: '2px solid white',
+                            borderRadius: '8px',
+                            padding: '1rem',
+                            backgroundColor: '#1a1a1a',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                        }}>
+                            <div style={{ textAlign: 'center' }}>
+                                <h3 className="text-2xl text-white font-bold mb-2">
+                                    Episode {episode.number}
+                                </h3>
+                                <p className="text-xl text-yellow-400 italic mb-4">
+                                    "{episode.title}"
+                                </p>
+                                <div className="flex gap-4 justify-center">
+                                    {episode.available ? (
+                                        <>
+                                            <a 
+                                                href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    backgroundColor: '#22c55e',
+                                                    color: 'white',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '0.5rem',
+                                                    border: '2px solid #16a34a',
+                                                    textDecoration: 'none'
+                                                }}
+                                                download={episode.filename}
+                                                type="application/pdf"
+                                            >
+                                                <Download size={18} />
+                                                Download
+                                            </a>
+                                            <a 
+                                                href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    backgroundColor: '#2563eb',
+                                                    color: 'white',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '0.5rem',
+                                                    border: '2px solid #1d4ed8',
+                                                    textDecoration: 'none'
+                                                }}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <Eye size={18} />
+                                                View PDF
+                                            </a>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button 
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    backgroundColor: '#374151',
+                                                    color: '#9ca3af',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '0.5rem',
+                                                    border: '2px solid #4b5563',
+                                                    cursor: 'not-allowed'
+                                                }}
+                                                disabled
+                                            >
+                                                <Download size={18} />
+                                                Download
+                                            </button>
+                                            <button 
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.5rem',
+                                                    backgroundColor: '#374151',
+                                                    color: '#9ca3af',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '0.5rem',
+                                                    border: '2px solid #4b5563',
+                                                    cursor: 'not-allowed'
+                                                }}
+                                                disabled
+                                            >
+                                                <Eye size={18} />
+                                                View PDF
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
 
             {/* Navigation controls */}
             <div className="flex justify-center gap-6">
                 <button 
                     onClick={moveUp}
-                    className="bg-purple-600 p-4 rounded-full border-2 border-purple-500"
+                    style={{
+                        backgroundColor: '#9333ea',
+                        padding: '1rem',
+                        borderRadius: '9999px',
+                        border: '2px solid #a855f7',
+                        cursor: 'pointer'
+                    }}
                     aria-label="Previous episode"
                 >
                     <ChevronUp className="w-6 h-6 text-white" />
                 </button>
                 <button 
                     onClick={moveDown}
-                    className="bg-purple-600 p-4 rounded-full border-2 border-purple-500"
+                    style={{
+                        backgroundColor: '#9333ea',
+                        padding: '1rem',
+                        borderRadius: '9999px',
+                        border: '2px solid #a855f7',
+                        cursor: 'pointer'
+                    }}
                     aria-label="Next episode"
                 >
                     <ChevronDown className="w-6 h-6 text-white" />
