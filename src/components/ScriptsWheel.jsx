@@ -278,7 +278,7 @@ const ScriptsWheel = () => {
             zIndex: '1',
             marginTop: '-13rem' // Pull everything up closer to the header
         }}>
-            <h1 className="text-4xl text-center text-white mb-8 font-bold">
+            <h1 className="text-3xl text-center text-white mb-8 font-bold">
                 TV Show Script Selector
             </h1>
             
