@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Download, Eye } from 'lucide-react';
 
 const episodes = [
     {
@@ -79,7 +79,6 @@ const ScriptsWheel = () => {
         );
     };
 
-    // Get visible episodes (current + one above and below)
     const getVisibleEpisodes = () => {
         const above = currentIndex === 0 ? episodes.length - 1 : currentIndex - 1;
         const below = currentIndex === episodes.length - 1 ? 0 : currentIndex + 1;
@@ -92,62 +91,77 @@ const ScriptsWheel = () => {
 
     return (
         <div className="w-full max-w-md mx-auto px-4">
-            <h1 className="text-4xl text-center text-white mb-8 font-bold">TV Show Scripts</h1>
+            <h1 className="text-4xl text-center text-white mb-8 font-bold">
+                TV Show Scripts
+            </h1>
             
-            {/* Fixed height container */}
-            <div className="relative h-96 mb-8">
-                {/* Main viewing window with fixed height */}
-                <div className="absolute inset-0 bg-black/20 rounded-lg overflow-hidden">
+            {/* Main container with glass effect and border */}
+            <div className="relative h-96 mb-8 rounded-xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 shadow-2xl overflow-hidden">
+                {/* Inner frame with additional styling */}
+                <div className="absolute inset-2 bg-black/40 rounded-lg overflow-hidden border border-white/10">
                     <div className="relative h-full">
                         {getVisibleEpisodes().map((episode, idx) => (
                             <div 
                                 key={episode.number}
                                 className={`absolute w-full p-4 transition-all duration-300
-                                          ${idx === 0 ? 'top-0 opacity-50 scale-95' : 
+                                          ${idx === 0 ? 'top-0 opacity-50 scale-95 translate-y-4' : 
                                             idx === 1 ? 'top-1/3 opacity-100 scale-100' :
-                                                      'top-2/3 opacity-50 scale-95'}`}
+                                                      'top-2/3 opacity-50 scale-95 -translate-y-4'}`}
                             >
-                                {/* Individual episode card */}
-                                <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                                {/* Episode card with modern styling */}
+                                <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/90 rounded-xl p-5 border border-white/10 shadow-lg">
                                     <div className="text-center space-y-3">
-                                        <h3 className="text-2xl text-white font-bold">
-                                            Episode {episode.number}
-                                        </h3>
-                                        <p className="text-xl text-yellow-400 italic font-serif">
+                                        {/* Episode number with decorative line */}
+                                        <div className="flex items-center justify-center gap-3">
+                                            <div className="h-px w-12 bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent"></div>
+                                            <h3 className="text-2xl text-white font-bold">
+                                                Episode {episode.number}
+                                            </h3>
+                                            <div className="h-px w-12 bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent"></div>
+                                        </div>
+                                        
+                                        {/* Episode title with glowing effect */}
+                                        <p className="text-xl text-yellow-400 italic font-serif drop-shadow-[0_0_15px_rgba(234,179,8,0.3)]">
                                             "{episode.title}"
                                         </p>
-                                        <div className="flex flex-col gap-2 mt-4">
+                                        
+                                        {/* Button container */}
+                                        <div className="flex gap-3 justify-center mt-4">
                                             {episode.available ? (
                                                 <>
                                                     <a 
                                                         href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                        className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded transition-colors duration-200 text-center"
+                                                        className="flex items-center gap-2 bg-gradient-to-br from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white py-2 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-green-500/25"
                                                         download={episode.filename}
                                                         type="application/pdf"
                                                     >
+                                                        <Download size={18} />
                                                         Download
                                                     </a>
                                                     <a 
                                                         href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
-                                                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors duration-200 text-center"
+                                                        className="flex items-center gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white py-2 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                     >
+                                                        <Eye size={18} />
                                                         View PDF
                                                     </a>
                                                 </>
                                             ) : (
                                                 <>
                                                     <button 
-                                                        className="bg-gray-500 text-gray-300 py-2 px-4 rounded cursor-not-allowed"
+                                                        className="flex items-center gap-2 bg-gray-700/50 text-gray-400 py-2 px-4 rounded-lg cursor-not-allowed"
                                                         disabled
                                                     >
+                                                        <Download size={18} />
                                                         Download
                                                     </button>
                                                     <button 
-                                                        className="bg-gray-500 text-gray-300 py-2 px-4 rounded cursor-not-allowed"
+                                                        className="flex items-center gap-2 bg-gray-700/50 text-gray-400 py-2 px-4 rounded-lg cursor-not-allowed"
                                                         disabled
                                                     >
+                                                        <Eye size={18} />
                                                         View PDF
                                                     </button>
                                                 </>
@@ -161,21 +175,21 @@ const ScriptsWheel = () => {
                 </div>
             </div>
 
-            {/* Navigation controls below the container */}
-            <div className="flex justify-center gap-4">
+            {/* Navigation controls with modern styling */}
+            <div className="flex justify-center gap-6">
                 <button 
                     onClick={moveUp}
-                    className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-200"
+                    className="bg-gradient-to-br from-purple-600/80 to-purple-700/80 hover:from-purple-500/80 hover:to-purple-600/80 p-4 rounded-full transition-all duration-200 shadow-lg hover:shadow-purple-500/25 group"
                     aria-label="Previous episode"
                 >
-                    <ChevronUp className="w-6 h-6 text-white" />
+                    <ChevronUp className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
                 </button>
                 <button 
                     onClick={moveDown}
-                    className="bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors duration-200"
+                    className="bg-gradient-to-br from-purple-600/80 to-purple-700/80 hover:from-purple-500/80 hover:to-purple-600/80 p-4 rounded-full transition-all duration-200 shadow-lg hover:shadow-purple-500/25 group"
                     aria-label="Next episode"
                 >
-                    <ChevronDown className="w-6 h-6 text-white" />
+                    <ChevronDown className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
                 </button>
             </div>
         </div>
