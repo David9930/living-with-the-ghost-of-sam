@@ -1,7 +1,68 @@
 import React, { useState } from 'react';
 import { ChevronUp, ChevronDown, Download, Eye } from 'lucide-react';
 
-// ... episodes array stays the same ...
+const episodes = [
+    {
+        number: 1,
+        title: "Leap of Faith",
+        filename: "Living_with_the_Ghost_of_Sam_Ep1.pdf",
+        available: true
+    },
+    {
+        number: 2,
+        title: "Night Moves",
+        filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf",
+        available: false
+    },
+    {
+        number: 3,
+        title: "Two out of Three Ain't Bad",
+        filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf",
+        available: false
+    },
+    {
+        number: 4,
+        title: "Last Laugh",
+        filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf",
+        available: false
+    },
+    {
+        number: 5,
+        title: "Digital Inheritance",
+        filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf",
+        available: false
+    },
+    {
+        number: 6,
+        title: "Missing",
+        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf",
+        available: true
+    },
+    {
+        number: 7,
+        title: "Episode 7",
+        filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf",
+        available: false
+    },
+    {
+        number: 8,
+        title: "Episode 8",
+        filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf",
+        available: false
+    },
+    {
+        number: 9,
+        title: "Episode 9",
+        filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf",
+        available: false
+    },
+    {
+        number: 10,
+        title: "Episode 10",
+        filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf",
+        available: false
+    }
+];
 
 const ScriptsWheel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
