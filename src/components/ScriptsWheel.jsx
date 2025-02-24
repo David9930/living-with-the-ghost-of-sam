@@ -3,66 +3,16 @@ import { ChevronUp, ChevronDown, Download, Eye } from 'lucide-react';
 
 // Episodes array
 const episodes = [
-    {
-        number: 1,
-        title: "Leap of Faith",
-        filename: "Living_with_the_Ghost_of_Sam_Ep1.pdf",
-        available: true
-    },
-    {
-        number: 2,
-        title: "Night Moves",
-        filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf",
-        available: false
-    },
-    {
-        number: 3,
-        title: "Two out of Three Ain't Bad",
-        filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf",
-        available: false
-    },
-    {
-        number: 4,
-        title: "Last Laugh",
-        filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf",
-        available: false
-    },
-    {
-        number: 5,
-        title: "Digital Inheritance",
-        filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf",
-        available: false
-    },
-    {
-        number: 6,
-        title: "Missing",
-        filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf",
-        available: true
-    },
-    {
-        number: 7,
-        title: "Episode 7",
-        filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf",
-        available: false
-    },
-    {
-        number: 8,
-        title: "Episode 8",
-        filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf",
-        available: false
-    },
-    {
-        number: 9,
-        title: "Episode 9",
-        filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf",
-        available: false
-    },
-    {
-        number: 10,
-        title: "Episode 10",
-        filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf",
-        available: false
-    }
+    { number: 1, title: "Leap of Faith", filename: "Living_with_the_Ghost_of_Sam_Ep1.pdf", available: true },
+    { number: 2, title: "Night Moves", filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf", available: true },
+    { number: 3, title: "Two out of Three Ain't Bad", filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf", available: true },
+    { number: 4, title: "Last Laugh", filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf", available: true },
+    { number: 5, title: "Digital Inheritance", filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf", available: true },
+    { number: 6, title: "Missing", filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf", available: true },
+    { number: 7, title: "Command Performance", filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf", available: true },
+    { number: 8, title: "The Strange Emergence of Ms Peel", filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf", available: true },
+    { number: 9, title: ""5 Comedians Walk into a bar…...", filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf", available: true },
+    { number: 10, title: "The Big Shoe...", filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf", available: true }
 ];
 
 // Helper function defined before the main component
@@ -186,13 +136,13 @@ const renderEpisodeBox = (episode, isActive) => (
 // Main component
 const ScriptsWheel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    
+
     const moveUp = () => {
         setCurrentIndex((prevIndex) => 
             prevIndex === 0 ? episodes.length - 1 : prevIndex - 1
         );
     };
-    
+
     const moveDown = () => {
         setCurrentIndex((prevIndex) => 
             prevIndex === episodes.length - 1 ? 0 : prevIndex + 1
@@ -238,16 +188,16 @@ const ScriptsWheel = () => {
         function randomPosition() {
             const viewportWidth = Math.max(window.innerWidth, 320);
             const viewportHeight = Math.max(window.innerHeight, 240);
-            
+
             const boxWidth = 300;
             const boxHeight = 200;
-            
+
             const maxX = viewportWidth - boxWidth;
             const maxY = viewportHeight - boxHeight;
-            
+
             const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
             const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-            
+
             return { x, y };
         }
 
