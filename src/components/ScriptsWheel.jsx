@@ -11,7 +11,7 @@ const episodes = [
     { number: 6, title: "Missing", filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf", available: true },
     { number: 7, title: "Command Performance", filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf", available: true },
     { number: 8, title: "The Strange Emergence of Ms Peel", filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf", available: true },
-    { number: 9, title: ""5 Comedians Walk into a bar…...", filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf", available: true },
+    { number: 9, title: "5 Comedians Walk into a bar…...", filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf", available: true },
     { number: 10, title: "The Big Shoe...", filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf", available: true }
 ];
 
