@@ -1,23 +1,31 @@
-
 ---
 import Layout from '../layouts/Layout.astro';
-import ScriptsWheel from '../components/ScriptsWheel.jsx';  // Make sure this path is correct
 ---
-//
-<Layout title="TV Scripts">
-    <main>
-        <ScriptsWheel client:load />
+
+<Layout title="Character Profiles">
+    <main class="flex min-h-screen flex-col items-center justify-center p-4">
+        <div class="character-wheel-container">
+            <CharacterWheel client:load />
+        </div>
     </main>
 </Layout>
 
+<script>
+    // The floating image effect will be initialized by the React component
+</script>
+
 <style>
-    main {
-        margin: auto;
-        padding: 2rem;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .character-wheel-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
     }
 </style>
 
+<script>
+    import { render } from 'react-dom';
+    import CharacterWheel from '../components/Character_Wheel/CharacterWheel.jsx';
+    
+    // Mount the React component
+    render(<CharacterWheel />, document.querySelector('.character-wheel-container'));
+</script>
