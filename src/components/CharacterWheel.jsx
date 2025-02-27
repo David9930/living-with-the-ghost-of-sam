@@ -1,23 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
 import { ChevronUp, ChevronDown, Download, Eye } from 'lucide-react';
 
-// Episodes array
-const episodes = [
-    { number: 1, title: "Derek Kinison", filename: "DerekKinisonProfile.pdf", available: true },
-    { number: 2, title: "Night Moves", filename: "Living_with_the_Ghost_of_Sam_Ep2.pdf", available: true },
-    { number: 3, title: "Two out of Three Ain't Bad", filename: "Living_with_the_Ghost_of_Sam_Ep3.pdf", available: true },
-    { number: 4, title: "Last Laugh", filename: "Living_with_the_Ghost_of_Sam_Ep4.pdf", available: true },
-    { number: 5, title: "Digital Inheritance", filename: "Living_with_the_Ghost_of_Sam_Ep5.pdf", available: true },
-    { number: 6, title: "Missing", filename: "Living_with_the_Ghost_of_Sam_Ep6.pdf", available: true },
-    { number: 7, title: "Command Performance", filename: "Living_with_the_Ghost_of_Sam_Ep7.pdf", available: true },
-    { number: 8, title: "The Strange Emergence of Ms Peel", filename: "Living_with_the_Ghost_of_Sam_Ep8.pdf", available: true },
-    { number: 9, title: "5 Comedians Walk into a bar…...", filename: "Living_with_the_Ghost_of_Sam_Ep9.pdf", available: true },
-    { number: 10, title: "The Big Shoe...", filename: "Living_with_the_Ghost_of_Sam_Ep10.pdf", available: true }
+// Character profiles array
+const characters = [
+    { number: 1, name: "Derek Kinison", filename: "DerekKinisonProfile.pdf", available: true },
+    // Add more character profiles here as you create them
+    // Example:
+    // { number: 2, name: "Another Character", filename: "AnotherCharacterProfile.pdf", available: false },
 ];
 
 // Helper function defined before the main component
-const renderEpisodeBox = (episode, isActive) => (
+const renderCharacterBox = (character, isActive) => (
     <div style={{
         border: '2px solid white',
         borderRadius: '8px',
@@ -28,16 +21,16 @@ const renderEpisodeBox = (episode, isActive) => (
     }}>
         <div style={{ textAlign: 'center' }}>
             <h3 className="text-2xl text-white font-bold mb-2">
-                Episode {episode.number}
+                Character {character.number}
             </h3>
             <p className="text-xl text-yellow-400 italic mb-4">
-                "{episode.title}"
+                "{character.name}"
             </p>
             <div className="flex gap-4 justify-center">
-                {episode.available ? (
+                {character.available ? (
                     <>
                         <a 
-                            href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                            href={`/Main_Charcters/${character.filename}`}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -57,14 +50,14 @@ const renderEpisodeBox = (episode, isActive) => (
                             onMouseOut={e => {
                                 e.currentTarget.style.backgroundColor = '#22c55e';
                             }}
-                            download={episode.filename}
+                            download={character.filename}
                             type="application/pdf"
                         >
                             <Download size={18} />
                             Download
                         </a>
                         <a 
-                            href={`/living-with-the-ghost-of-sam/scripts/${episode.filename}`}
+                            href={`/Main_Charcters/${character.filename}`}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -135,28 +128,28 @@ const renderEpisodeBox = (episode, isActive) => (
 );
 
 // Main component
-const ScriptsWheel = () => {
+const CharacterWheel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const moveUp = () => {
         setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? episodes.length - 1 : prevIndex - 1
+            prevIndex === 0 ? characters.length - 1 : prevIndex - 1
         );
     };
 
     const moveDown = () => {
         setCurrentIndex((prevIndex) => 
-            prevIndex === episodes.length - 1 ? 0 : prevIndex + 1
+            prevIndex === characters.length - 1 ? 0 : prevIndex + 1
         );
     };
 
-    const getVisibleEpisodes = () => {
-        const previous = currentIndex === 0 ? episodes.length - 1 : currentIndex - 1;
-        const next = currentIndex === episodes.length - 1 ? 0 : currentIndex + 1;
+    const getVisibleCharacters = () => {
+        const previous = currentIndex === 0 ? characters.length - 1 : currentIndex - 1;
+        const next = currentIndex === characters.length - 1 ? 0 : currentIndex + 1;
         return {
-            previous: episodes[previous],
-            current: episodes[currentIndex],
-            next: episodes[next]
+            previous: characters[previous],
+            current: characters[currentIndex],
+            next: characters[next]
         };
     };
 
@@ -175,7 +168,7 @@ const ScriptsWheel = () => {
 
         const samImage = document.createElement('img');
         samImage.id = 'sam-image';
-        samImage.src = 'https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImagesmall.jpg';
+        samImage.src = '/images/SamImagesmall.jpg';
         samImage.alt = 'Sam';
         samImage.style.width = '100%';
         samImage.style.height = '100%';
@@ -221,7 +214,7 @@ const ScriptsWheel = () => {
         };
     }, []);
 
-    const visibleEpisodes = getVisibleEpisodes();
+    const visibleCharacters = getVisibleCharacters();
 
     return (
         <div className="w-full max-w-xl mx-auto px-8" style={{ 
@@ -230,7 +223,7 @@ const ScriptsWheel = () => {
             marginTop: '-13rem' // Pull everything up closer to the header
         }}>
             <h1 className="text-3xl text-center text-white mb-8 font-bold">
-                TV Show Script Selector
+                Character Profile Selector
             </h1>
             
             <div style={{ 
@@ -256,7 +249,7 @@ const ScriptsWheel = () => {
                     pointerEvents: 'none',
                     transition: 'all 0.3s ease'
                 }}>
-                    {renderEpisodeBox(visibleEpisodes.previous, false)}
+                    {renderCharacterBox(visibleCharacters.previous, false)}
                 </div>
 
                 <div style={{
@@ -270,7 +263,7 @@ const ScriptsWheel = () => {
                     zIndex: 2,
                     transition: 'all 0.3s ease'
                 }}>
-                    {renderEpisodeBox(visibleEpisodes.current, true)}
+                    {renderCharacterBox(visibleCharacters.current, true)}
                 </div>
 
                 <div style={{
@@ -285,7 +278,7 @@ const ScriptsWheel = () => {
                     pointerEvents: 'none',
                     transition: 'all 0.3s ease'
                 }}>
-                    {renderEpisodeBox(visibleEpisodes.next, false)}
+                    {renderCharacterBox(visibleCharacters.next, false)}
                 </div>
             </div>
 
@@ -313,7 +306,7 @@ const ScriptsWheel = () => {
                     onMouseOut={e => {
                         e.currentTarget.style.backgroundColor = '#dc2626';
                     }}
-                    aria-label="Previous episode"
+                    aria-label="Previous character"
                 >
                     <ChevronUp className="w-8 h-8 text-white" strokeWidth={3} />
                 </button>
@@ -333,7 +326,7 @@ const ScriptsWheel = () => {
                     onMouseOut={e => {
                         e.currentTarget.style.backgroundColor = '#dc2626';
                     }}
-                    aria-label="Next episode"
+                    aria-label="Next character"
                 >
                     <ChevronDown className="w-8 h-8 text-white" strokeWidth={3} />
                 </button>
@@ -342,5 +335,4 @@ const ScriptsWheel = () => {
     );
 };
 
-export default ScriptsWheel;
-
+export default CharacterWheel;
