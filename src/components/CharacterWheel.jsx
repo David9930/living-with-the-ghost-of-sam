@@ -154,6 +154,7 @@ const CharacterWheel = () => {
     };
 
     useEffect(() => {
+        // This code only runs in the browser
         const imageBox = document.createElement('div');
         imageBox.id = 'image-box';
         imageBox.style.position = 'fixed';
@@ -220,7 +221,7 @@ const CharacterWheel = () => {
         <div className="w-full max-w-xl mx-auto px-8" style={{ 
             position: 'relative', 
             zIndex: '1',
-            marginTop: '-13rem' // Pull everything up closer to the header
+            marginTop: '0' // Changed from -13rem to avoid layout issues
         }}>
             <h1 className="text-3xl text-center text-white mb-8 font-bold">
                 Character Profile Selector
