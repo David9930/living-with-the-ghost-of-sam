@@ -1,1 +1,23 @@
 
+---
+import Layout from '../layouts/Layout.astro';
+import ScriptsWheel from '../components/ScriptsWheel.jsx';  // Make sure this path is correct
+---
+//
+<Layout title="TV Scripts">
+    <main>
+        <ScriptsWheel client:load />
+    </main>
+</Layout>
+
+<style>
+    main {
+        margin: auto;
+        padding: 2rem;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
