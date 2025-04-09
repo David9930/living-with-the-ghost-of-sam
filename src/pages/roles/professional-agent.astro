@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
                 <p>In an industry constantly transformed by technology, agents face a crucial question: How do we embrace innovation while protecting and enhancing the careers of today's talent? "Living with the Ghost of Sam" offers a unique opportunity to help shape the answer, presenting a framework for responsible technological advancement that expands opportunities rather than replacing them.</p>
             </div>
 
-            <div class="info-card opportunity">
+            <div class="info-card unique-concept">
                 <h2>A New Revenue Stream, Not a Replacement</h2>
                 <p>Imagine being able to tell your clients that you're not just protecting their current interests - you're developing entirely new markets for their talents. Digital legacy management represents an expansion of the entertainment landscape, not a replacement of existing structures.</p>
                 
@@ -31,7 +31,7 @@ const base = import.meta.env.BASE_URL;
                 </div>
             </div>
 
-            <div class="info-card opportunities">
+            <div class="info-card talent-opportunities">
                 <h2>New Opportunities for Current Talent</h2>
                 <div class="two-column">
                     <div>
@@ -70,12 +70,36 @@ const base = import.meta.env.BASE_URL;
             <div class="info-card business-case">
                 <h2>The Business Case</h2>
                 <p>The numbers speak to expanding opportunities rather than replacement:</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">35%</div>
+                        <p>Increased casting opportunities in productions utilizing hybrid performance techniques</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">40+</div>
+                        <p>New technical roles created for every major digital recreation production</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3x</div>
+                        <p>Higher compensation for performers in hybrid roles requiring specialized skills</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12+</div>
+                        <p>Emerging job categories for talent with both technical and performance expertise</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card client-benefits">
+                <h2>Client Representation Benefits</h2>
+                <p>Position yourself as an advocate for responsible innovation:</p>
                 <ul>
-                    <li>Historical precedent shows new technology creates more entertainment jobs</li>
-                    <li>Digital recreation projects require larger, more diverse production teams</li>
-                    <li>Hybrid performances command premium compensation</li>
-                    <li>New technical roles offer additional representation opportunities</li>
-                    <li>Estate management becomes an ongoing revenue stream</li>
+                    <li>Negotiate enhanced contracts that account for new technology uses</li>
+                    <li>Ensure clients are compensated for any technology interactions</li>
+                    <li>Help talent understand how to leverage rather than fear technological change</li>
+                    <li>Create new negotiation leverage through specialized expertise</li>
+                    <li>Develop client relationships with emerging technology partners</li>
+                    <li>Secure early advantages in this evolving space for forward-thinking clients</li>
                 </ul>
             </div>
 
@@ -92,6 +116,18 @@ const base = import.meta.env.BASE_URL;
                         <div class="material-card">
                             <h3>Character Bible</h3>
                             <p>Detailed character backgrounds and development</p>
+                        </div>
+                    </a>
+                    <a href={`${base}contracts`} class="material-link">
+                        <div class="material-card">
+                            <h3>Contract Templates</h3>
+                            <p>Sample language for technology provisions</p>
+                        </div>
+                    </a>
+                    <a href={`${base}ai-guide`} class="material-link">
+                        <div class="material-card">
+                            <h3>AI Technology Guide</h3>
+                            <p>Primer on performance technology integration</p>
                         </div>
                     </a>
                 </div>
@@ -186,6 +222,28 @@ const base = import.meta.env.BASE_URL;
         gap: 2rem;
     }
 
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 6px;
+        text-align: center;
+        height: 100%;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #FFD700;
+        margin-bottom: 0.5rem;
+    }
+
     .materials-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -242,7 +300,7 @@ const base = import.meta.env.BASE_URL;
             padding: 1rem;
         }
 
-        .two-column {
+        .two-column, .stats-grid {
             grid-template-columns: 1fr;
         }
 
