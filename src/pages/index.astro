@@ -14,7 +14,7 @@ import Layout from '../layouts/Layout.astro';
             <p id="error-message" class="error" data-astro-cid-j7pv25f6></p>
         </div>
         <div id="image-box" data-astro-cid-j7pv25f6>
-            <img src="https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImagesmall.jpg" 
+            <img src="/images/SamImagesmall.jpg" 
                  id="sam-image" 
                  alt="Sam" 
                  data-astro-cid-j7pv25f6>
@@ -24,23 +24,23 @@ import Layout from '../layouts/Layout.astro';
     <main id="content" class="hidden" data-astro-cid-j7pv25f6>
         <h1>Living with the Ghost of Sam</h1>
         <div class="grid" data-astro-cid-j7pv25f6>
-            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/scripts" class="card" data-astro-cid-j7pv25f6>
+            <a href="/scripts" class="card" data-astro-cid-j7pv25f6>
                 <h2>Scripts</h2>
                 <p>Access all TV show scripts in PDF format</p>
             </a>
-            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/documents" class="card" data-astro-cid-j7pv25f6>
+            <a href="/documents" class="card" data-astro-cid-j7pv25f6>
                 <h2>Show Documents</h2>
                 <p>Review evaluation materials and show proposals</p>
             </a>
-            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/bible" class="card" data-astro-cid-j7pv25f6>
+            <a href="/bible" class="card" data-astro-cid-j7pv25f6>
                 <h2>Character Bible</h2>
                 <p>Detailed character profiles and relationships</p>
             </a>
-            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/sam" class="card ghost-card" data-astro-cid-j7pv25f6>
+            <a href="/sam" class="card ghost-card" data-astro-cid-j7pv25f6>
                 <h2>Sam's Corner</h2>
                 <p>Watch exclusive clips featuring Sam</p>
             </a>
-            <a href="https://david9930.github.io/living-with-the-ghost-of-sam/about" class="card" data-astro-cid-j7pv25f6>
+            <a href="/about" class="card" data-astro-cid-j7pv25f6>
                 <h2>About the Writer</h2>
                 <p>Writer biography and background</p>
             </a>
@@ -173,16 +173,19 @@ import Layout from '../layouts/Layout.astro';
             }
         }
 
-        // Password validation with GitHub Pages path
-       function checkPassword() {
-    const password = document.getElementById('password').value;
-    if (password === 'Terguson') {
-        sessionStorage.setItem('authenticated', 'true');
-        window.location.href = `${import.meta.env.BASE_URL}/selection`;
-    } else {
-        document.getElementById('error-message').textContent = 'Incorrect password';
-    }
-}
+        // Password validation
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === 'Terguson') {
+                sessionStorage.setItem('authenticated', 'true');
+                // Show content on same page instead of redirecting
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('content').classList.remove('hidden');
+            } else {
+                document.getElementById('error-message').textContent = 'Incorrect password';
+            }
+        }
+        
         // Event listeners for password submission
         document.getElementById('submit-btn').addEventListener('click', checkPassword);
         document.getElementById('password').addEventListener('keypress', function(e) {
@@ -195,27 +198,27 @@ import Layout from '../layouts/Layout.astro';
         const imageBox = document.getElementById('image-box');
         const samImage = document.getElementById('sam-image');
 
-       function randomPosition() {
-    const viewportWidth = Math.max(window.innerWidth, 320);
-    const viewportHeight = Math.max(window.innerHeight, 240);
-    
-    const boxWidth = imageBox.offsetWidth;
-    const boxHeight = imageBox.offsetHeight;
-    
-    const maxX = viewportWidth - boxWidth;
-    const maxY = viewportHeight - boxHeight;
-    
-    const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
-    const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-    
-    return { x, y };
-}
+        function randomPosition() {
+            const viewportWidth = Math.max(window.innerWidth, 320);
+            const viewportHeight = Math.max(window.innerHeight, 240);
+            
+            const boxWidth = imageBox.offsetWidth;
+            const boxHeight = imageBox.offsetHeight;
+            
+            const maxX = viewportWidth - boxWidth;
+            const maxY = viewportHeight - boxHeight;
+            
+            const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
+            const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
+            
+            return { x, y };
+        }
 
-function moveImageBox() {
-    const { x, y } = randomPosition();
-    imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
-}
+        function moveImageBox() {
+            const { x, y } = randomPosition();
+            imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
+        }
 
         // Initialize movement with requestAnimationFrame
         requestAnimationFrame(() => {
