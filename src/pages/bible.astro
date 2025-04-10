@@ -1,19 +1,17 @@
 ---
+// Look at the import in your investors.astro or another working page
+// and use the exact same pattern. It might be something like:
 import Layout from '../layouts/Layout.astro';
+// or
+import Layout from '../../layouts/Layout.astro';
+// or even
+import Layout from '@layouts/Layout.astro';
+
 const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Character Bible | Living with the Ghost of Sam">
-    <main>
-        <div class="hero">
-            <h1>Character Bible</h1>
-            <p class="subtitle">A comprehensive guide to the characters, locations, and supernatural elements of "Living with the Ghost of Sam"</p>
-        </div>
-
-        <section class="content">
-            <!-- Rest of the content remains the same -->
-        </section>
-    </main>
+    <!-- Content as before -->
 </Layout>
 
         <section class="content">
