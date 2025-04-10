@@ -1,8 +1,9 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
+// In astro.config.mjs
 export default defineConfig({
-  site: 'https://david9930.github.io',
-  base: '/living-with-the-ghost-of-sam',
-  integrations: [react()],
+  site: 'https://lwtgos.com',
+  // Remove the "base" property if it exists
+  // Or set it to "/"
 });
