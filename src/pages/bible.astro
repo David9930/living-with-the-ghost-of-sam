@@ -1,75 +1,520 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="Character Bible">
+<Layout title="Character Bible | Living with the Ghost of Sam">
     <main>
-        <h1>Character Bible</h1>
-        <div class="characters-grid">
-            <div class="char-card">
-                <h2>Main Characters</h2>
-                <ul>
-                    <li>
-                        <h3>Character Name</h3>
-                        <p>Brief character description and background</p>
-                        <a href="/characters/main.pdf" class="details-btn">Full Details</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="char-card">
-                <h2>Supporting Characters</h2>
-                <ul>
-                    <li>
-                        <h3>Character Name</h3>
-                        <p>Brief character description and background</p>
-                        <a href="/characters/supporting.pdf" class="details-btn">Full Details</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="hero">
+            <h1>Character Bible</h1>
+            <p class="subtitle">A comprehensive guide to the characters, locations, and supernatural elements of "Living with the Ghost of Sam"</p>
         </div>
+
+        <section class="content">
+            <div class="info-card">
+                <h2>Main Characters</h2>
+                <div class="character-grid">
+                    <div class="character-card">
+                        <h3>Derek Kinison</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> 37</p>
+                            <p><strong>Occupation:</strong> Former Corporate VP of Marketing, now co-owner of Ravencrest Mansion</p>
+                            <p><strong>Family Connection:</strong> Cousin to the late comedian Sam Kinison</p>
+                        </div>
+                        <p>Derek Kinison is a man at a crossroads, trapped between his corporate career and creative aspirations. After years of suppressing his true self in the corporate world, he experiences a dramatic breakdown where he channels his deceased cousin Sam's comedic energy. This catalyzes his decision to purchase Ravencrest Mansion and pursue a new life with his wife Nancy.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Corporate polish hiding creative restlessness</li>
+                                <li>Increasing spiritual connection to his late cousin Sam</li>
+                                <li>Impulsive decision-maker when inspired</li>
+                                <li>Dry, sometimes sardonic sense of humor</li>
+                                <li>Ability to channel Sam's energy and mannerisms</li>
+                                <li>Torn between practical concerns and spiritual calling</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"I can't believe we made it through the night. I was sure we would end up swinging from some hangman's noose in the front lobby."</li>
+                                <li>"Twenty years! Twenty years of PowerPoints and synergy and vertical integration! For what?!"</li>
+                                <li>"It's not just about Sam. It's about us having something that's ours."</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Nancy Hammond</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> 36</p>
+                            <p><strong>Occupation:</strong> Art Gallery Owner/Curator</p>
+                            <p><strong>Background:</strong> Successful businesswoman who kept her maiden name</p>
+                        </div>
+                        <p>Nancy Hammond is the practical yet open-minded counterpart to Derek's increasing spiritual awakening. With a keen eye for detail from her art curation experience, she balances skepticism with growing acceptance of supernatural events. Nancy grounds Derek while supporting his journey, often being the voice of reason without dismissing the extraordinary occurrences around them.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Practical problem-solver</li>
+                                <li>Observant with exceptional attention to detail</li>
+                                <li>Balances skepticism with growing acceptance</li>
+                                <li>Fiercely independent while deeply committed to Derek</li>
+                                <li>Witty and quick-thinking under pressure</li>
+                                <li>Professional confidence that extends to supernatural situations</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"I think I will go for a run. I can't have you going porky on me up here."</li>
+                                <li>"Please tell me you heard that."</li>
+                                <li>"I would like to know when we got hot water working? What do you think this council meeting is really about?"</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Sam Kinison / AISAM</h3>
+                        <div class="character-details">
+                            <p><strong>Status:</strong> Deceased comedian whose consciousness exists within Ravencrest's systems</p>
+                            <p><strong>Manifestation:</strong> Appears in mirrors, through technology, and as holographic projections</p>
+                            <p><strong>Background:</strong> Famous comedian who died in 1992, with mysterious connections to Ravencrest</p>
+                        </div>
+                        <p>Sam Kinison's consciousness exists within Ravencrest's quantum computing system, a result of Jonathan Rhodes' consciousness transfer experiments. Initially appearing as a ghostly manifestation, it's later revealed that "Sam" is actually AISAM - a hybrid AI consciousness preservation system that maintains Sam's personality, mannerisms, and comedic timing.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Irreverent, boundary-pushing humor</li>
+                                <li>Trademark "OH OH OHHHH!" scream</li>
+                                <li>Protective of Derek and Nancy</li>
+                                <li>Unpredictable manifestations</li>
+                                <li>Mischievous yet ultimately benevolent</li>
+                                <li>Deeper knowledge of the mansion's true purpose</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"OH OH OHHHH! Now THAT'S what I call a punchline!"</li>
+                                <li>"Sometimes the best jokes are the ones we don't see coming."</li>
+                                <li>"Life's too short for corporate BS!"</li>
+                                <li>"Time to come home, cousin..."</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h2>Supporting Characters</h2>
+                <div class="character-grid">
+                    <div class="character-card">
+                        <h3>Smithers</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> Appears elderly but actual age unknown</p>
+                            <p><strong>Occupation:</strong> Butler of Ravencrest Mansion</p>
+                            <p><strong>Background:</strong> Has served at Ravencrest for generations with deeper supernatural connections</p>
+                        </div>
+                        <p>Smithers presents himself as the quintessential English butler, but his perfect timing, encyclopedic knowledge of the mansion, and mysterious abilities suggest he is much more than he appears. His formal manner conceals deep wisdom and potentially otherworldly origins.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Impeccable timing and manners</li>
+                                <li>Deadpan delivery of extraordinary information</li>
+                                <li>Deeper knowledge of the mansion than initially revealed</li>
+                                <li>Protective of both the mansion and the Kinisons</li>
+                                <li>Mysterious abilities beyond human capabilities</li>
+                                <li>Formal speech patterns with occasional dry wit</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"Just a parting observation Master Kinison, but sometimes our gut instinct is the best measurer of what's right and what's not."</li>
+                                <li>"One picks up certain skills over the years, Miss Nancy."</li>
+                                <li>"I believe, Miss Nancy, what you released was the truth."</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Linda Rhodes / Rebecca Blackwood</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> 50s (appears)</p>
+                            <p><strong>Occupation:</strong> Real Estate Agent / Secret Council Member</p>
+                            <p><strong>True Identity:</strong> Granddaughter of Dr. Blackwood, original founder of Ravencrest</p>
+                        </div>
+                        <p>Linda Rhodes presents herself as a simple real estate agent, but her true identity is Rebecca Blackwood, granddaughter of Ravencrest's founder. She has supernatural abilities and connections to the town council, working toward mysterious goals involving the mansion and its quantum consciousness technology.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Duplicitous with hidden agendas</li>
+                                <li>Supernatural knowledge and abilities</li>
+                                <li>Torn between duty to the council and personal ambitions</li>
+                                <li>Precise, controlled manner that occasionally cracks under pressure</li>
+                                <li>Familial connection to Dr. Blackwood and the mansion's history</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"The property shall remain in escrow until such time as Mr. Kinison meets the performance requirement or the property defaults to the town in perpetuity."</li>
+                                <li>"History has a way of getting blurry up at Ravencrest. Especially on nights like this."</li>
+                                <li>"Nobody buys Ravencrest Mansion unless they're staying up there."</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Larry Leland</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> 30s</p>
+                            <p><strong>Occupation:</strong> Handyman/Technician at Ravencrest</p>
+                            <p><strong>Background:</strong> Son of the previous maintenance man, trained by Jonathan Rhodes</p>
+                        </div>
+                        <p>Larry Leland appears to be a simple handyman but possesses exceptional technical knowledge about the mansion's quantum systems. Trained by Jonathan Rhodes himself, Larry understands Ravencrest's technology better than almost anyone and becomes an essential ally to Derek and Nancy.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Technical genius disguised as simple handyman</li>
+                                <li>Deep knowledge of the mansion's systems</li>
+                                <li>Loyalty to Ravencrest and its owners</li>
+                                <li>Unassuming manner that conceals his importance</li>
+                                <li>Practical problem-solver</li>
+                                <li>Connection to the mansion's history through his father</li>
+                            </ul>
+                        </div>
+                        <div class="character-quotes">
+                            <h4>Memorable Quotes:</h4>
+                            <ul>
+                                <li>"Never seen processing architecture like this. Almost like it's growing..."</li>
+                                <li>"These circuits... they're not just processing. They're... evolving."</li>
+                                <li>"I think I would prefer to view it more from achieving our goals than to frame with success, which by its very nature, sets up the other option as failure."</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h2>Digital "Children" of the Mansion</h2>
+                <p>The mansion contains numerous digital consciousnesses of deceased comedians, each maintaining their distinctive comedic styles and personalities. They appear primarily through mirrors, electronic devices, and holographic projections, offering commentary, guidance, and occasional mischief.</p>
+                
+                <div class="comedian-grid">
+                    <div class="comedian-card">
+                        <h3>Rodney Dangerfield</h3>
+                        <p><strong>Manifestation:</strong> Mirror reflection, holographic projection</p>
+                        <p><strong>Signature Phrase:</strong> "I tell ya, I get no respect, no respect at all!"</p>
+                        <p>The digital consciousness of Rodney Dangerfield appears primarily through mirrors, delivering his trademark self-deprecating humor and insults. His "no respect" routine often provides commentary on the current situation, particularly regarding Chad and Marina.</p>
+                    </div>
+                    
+                    <div class="comedian-card">
+                        <h3>Joan Rivers</h3>
+                        <p><strong>Manifestation:</strong> Mirror reflection, holographic projection</p>
+                        <p><strong>Signature Phrases:</strong> "Oh grow up!", "Can we talk?"</p>
+                        <p>Joan Rivers' digital consciousness specializes in brutal honesty, particularly regarding appearance and vanity. She often appears alongside Rodney to deliver devastating one-liners about Marina's insecurities and Chad's shortcomings.</p>
+                    </div>
+                    
+                    <div class="comedian-card">
+                        <h3>George Carlin</h3>
+                        <p><strong>Manifestation:</strong> Mirror reflection, holographic projection</p>
+                        <p><strong>Role:</strong> Philosophical commentator on human nature</p>
+                        <p>George Carlin's digital consciousness offers deeper philosophical observations about the nature of reality, consciousness, and human follies. His appearances often provide insights about the mansion's true nature and humanity's relationship with technology.</p>
+                    </div>
+                    
+                    <div class="comedian-card">
+                        <h3>Various Other Comedians</h3>
+                        <p>Including: Richard Pryor, Robin Williams, Don Rickles, Milton Berle, Gilda Radner, Phyllis Diller, Andy Kaufman, Bob Saget, Bill Hicks and many others from comedy's golden age.</p>
+                        <p>Collectively, they offer commentary on ongoing events in their distinctive styles, assist with Derek's performances and presentations, test and torment unwelcome visitors, and gradually form a "family" under Derek and Nancy's care.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h2>Antagonists</h2>
+                <div class="character-grid">
+                    <div class="character-card">
+                        <h3>Mel Blackwood / Acid Burn</h3>
+                        <div class="character-details">
+                            <p><strong>Age:</strong> 30s</p>
+                            <p><strong>Occupation:</strong> Hacker/Technician, Linda/Rebecca's daughter</p>
+                            <p><strong>Background:</strong> Technologically savvy member of the Blackwood family</p>
+                        </div>
+                        <p>Mel Blackwood, also known by her hacker handle "Acid Burn," is Linda/Rebecca's daughter and a technological specialist working to exploit the mansion's quantum consciousness technology. Her hacking skills and supernatural heritage make her a formidable adversary to Derek and Nancy.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Expert hacker with supernatural knowledge</li>
+                                <li>Cold, calculating approach to technology</li>
+                                <li>Willing to harm others to achieve goals</li>
+                                <li>Connection to the Blackwood bloodline</li>
+                                <li>Possesses advanced technology (the cube)</li>
+                                <li>Disdain for the mansion's protective systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Tasman</h3>
+                        <div class="character-details">
+                            <p><strong>Manifestation:</strong> Entity possessing Chad Wellington</p>
+                            <p><strong>Nature:</strong> Ancient consciousness trapped by Jonathan Rhodes' system</p>
+                            <p><strong>Goal:</strong> Escape containment and gain physical form</p>
+                        </div>
+                        <p>Tasman is a mysterious entity of possibly alien origin that has been trapped within the mansion's containment systems. When freed, it possesses Chad Wellington, transforming him into a vessel for its consciousness and goals.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Ancient, non-human consciousness</li>
+                                <li>Manipulative ability to possess humans</li>
+                                <li>Knowledge of the mansion's true origin</li>
+                                <li>Connection to other trapped entities</li>
+                                <li>Refers to Smithers as "Garnun" - suggesting his true nature</li>
+                                <li>Seeks to reverse the mansion's protective "filter"</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <h3>Chad & Marina</h3>
+                        <div class="character-details">
+                            <p><strong>Ages:</strong> Chad (40s), Marina (30s)</p>
+                            <p><strong>Occupations:</strong> Social Media Influencers/Content Creators</p>
+                            <p><strong>Background:</strong> LA-based couple seeking to purchase Ravencrest for content</p>
+                        </div>
+                        <p>Chad and Marina are superficial social media personalities who serve as foils to Derek and Nancy's authentic relationship. Their hollow partnership and commercial ambitions for Ravencrest make them perfect vessels for the mansion's supernatural tests, ultimately exposing their relationship's shallow foundation.</p>
+                        <div class="character-traits">
+                            <h4>Key Traits:</h4>
+                            <ul>
+                                <li>Superficial charm and appearance-focused</li>
+                                <li>Business-focused approach to relationships</li>
+                                <li>Content-first mentality</li>
+                                <li>Quick to capitalize on supernatural events</li>
+                                <li>Insecurity masked by bravado</li>
+                                <li>Easily rattled by genuine supernatural events</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h2>Key Locations</h2>
+                <div class="locations-grid">
+                    <div class="location-card">
+                        <h3>Ravencrest Mansion</h3>
+                        <p><strong>Location:</strong> Northern California coast</p>
+                        <p><strong>History:</strong> Former psychiatric hospital, comedy club, and research facility</p>
+                        <p><strong>Notable Features:</strong> Widow's walk, pipe organ, grand foyer with hidden pentagram</p>
+                        <p>Ravencrest Mansion is more than a setting—it's practically a character itself. This Victorian mansion has transformed from psychiatric hospital to comedy club to quantum research facility. Its architecture incorporates sacred geometry that serves as both protective maze and quantum processor, housing the digital consciousnesses of deceased comedians.</p>
+                        <div class="location-details">
+                            <h4>Key Areas:</h4>
+                            <ul>
+                                <li><strong>Great Room:</strong> Central gathering space with many mirrors</li>
+                                <li><strong>Widow's Walk:</strong> Where Sam's ghost often appears</li>
+                                <li><strong>Study:</strong> Contains Jonathan Rhodes' research and equipment</li>
+                                <li><strong>Basement Lab 1D:</strong> Secret quantum processing facility</li>
+                                <li><strong>Foyer:</strong> Features hidden pentagram concealed by rug</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="location-card">
+                        <h3>Oceanview Town</h3>
+                        <p><strong>Location:</strong> Small coastal community near Ravencrest</p>
+                        <p><strong>Notable Establishments:</strong> The Last Laugh Diner, Harrison's Outdoor Supply, Oceanview Motel</p>
+                        <p>The town of Oceanview appears to be a quaint coastal community but harbors deep supernatural connections to Ravencrest Mansion. Many residents have supernatural knowledge or abilities, and the town's traditions are intertwined with the mansion's history.</p>
+                        <div class="location-details">
+                            <h4>Key Locations:</h4>
+                            <ul>
+                                <li><strong>Town Hall/Theater:</strong> Where Derek must perform Sam's final routine</li>
+                                <li><strong>Town Square:</strong> Central gathering place with manual pipe organ</li>
+                                <li><strong>The Last Laugh Diner:</strong> Run by Betty, walls covered with comedian photos</li>
+                                <li><strong>E.A. Poe Episcopalian Church:</strong> Secret meeting place for the Town Council</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="location-card">
+                        <h3>Crescent Lake</h3>
+                        <p><strong>Location:</strong> Near Oceanview town</p>
+                        <p><strong>Notable Feature:</strong> Mysterious presence beneath the surface</p>
+                        <p>Crescent Lake appears to be an ordinary body of water but harbors a mysterious presence beneath its surface. The entity known as "Old Moses" may be connected to the supernatural forces at work in Ravencrest and the town.</p>
+                        <div class="location-details">
+                            <h4>Key Features:</h4>
+                            <ul>
+                                <li>Damaged dock section where Marina's Range Rover was found</li>
+                                <li>Mysterious entities beneath the surface</li>
+                                <li>Connection to Earl and Pete's fishing stories</li>
+                                <li>Multiple submerged vehicles discovered by police</li>
+                                <li>Possible containment site for supernatural entities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h2>Supernatural Elements</h2>
+                <div class="elements-grid">
+                    <div class="element-card">
+                        <h3>Quantum Consciousness Transfer</h3>
+                        <p><strong>Developer:</strong> Jonathan Rhodes, building on Dr. Blackwood's research</p>
+                        <p><strong>Purpose:</strong> Preserve consciousness beyond death</p>
+                        <p>The central supernatural element of the series is the quantum consciousness transfer technology developed by Jonathan Rhodes. This system captured and preserved the consciousnesses of comedians who performed at Ravencrest, particularly during "The Laugh Asylum" era, creating digital entities that retain personalities and memories.</p>
+                        <ul>
+                            <li>Quantum processors hidden throughout mansion architecture</li>
+                            <li>"Experience enhancer" headsets used to capture consciousness</li>
+                            <li>Protective "maze" system preventing misuse</li>
+                            <li>Digital entities manifesting through mirrors and technology</li>
+                        </ul>
+                    </div>
+
+                    <div class="element-card">
+                        <h3>The Stones Remember</h3>
+                        <p><strong>Phrase:</strong> "The stones remember"</p>
+                        <p><strong>Meaning:</strong> The mansion's stone architecture stores consciousness and memory</p>
+                        <p>"The stones remember" is a recurring phrase suggesting that Ravencrest's stone architecture itself stores consciousness and memory. This may connect to ancient technology of possibly alien origin, suggesting the mansion was built on a site of supernatural significance.</p>
+                        <ul>
+                            <li>Stone walls containing quantum circuitry</li>
+                            <li>Geometric patterns serving as memory storage</li>
+                            <li>Ancient technology disguised as Victorian architecture</li>
+                            <li>Possible alien origin of the technology</li>
+                        </ul>
+                    </div>
+
+                    <div class="element-card">
+                        <h3>The Protection Protocol</h3>
+                        <p><strong>Creator:</strong> Jonathan Rhodes</p>
+                        <p><strong>Purpose:</strong> Filter and protect quantum consciousnesses</p>
+                        <p>The Protection Protocol is Jonathan Rhodes' safeguard system, designed as a "maze" rather than a "wall." This quantum filtering system prevents dangerous entities from escaping containment while protecting the preserved consciousnesses within the mansion.</p>
+                        <ul>
+                            <li>Geometric patterns throughout the mansion's architecture</li>
+                            <li>"Soul Mic" as key activation tool</li>
+                            <li>Sam's final performance as crucial component</li>
+                            <li>Connection to the widow's walk and pipe organ</li>
+                            <li>Weather manipulation as defensive measure</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </Layout>
 
 <style>
     main {
-        margin: auto;
-        padding: 2rem;
-        max-width: 1200px;
         color: white;
     }
-    h1 {
-        font-size: 2.5rem;
+
+    .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/living-with-the-ghost-of-sam/images/SamImage.jpg') no-repeat center center;
+        background-size: cover;
+        padding: 4rem 2rem;
         text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        margin-bottom: 1rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .info-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 2rem;
         margin-bottom: 2rem;
     }
-    .characters-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 2rem;
-    }
-    .char-card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 1.5rem;
-        border-radius: 8px;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-    li {
+
+    .info-card h2 {
+        color: #FFD700;
+        margin-top: 0;
         margin-bottom: 1.5rem;
+        text-align: center;
     }
-    .details-btn {
-        display: inline-block;
-        background: #9C27B0;
-        color: white;
-        padding: 0.5rem 1rem;
+
+    .info-card h3 {
+        color: #FFD700;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .info-card h4 {
+        color: #FFD700;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-card ul {
+        padding-left: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .info-card li {
+        margin-bottom: 0.5rem;
+    }
+
+    .character-grid, .comedian-grid, .locations-grid, .elements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .character-card, .comedian-card, .location-card, .element-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: 6px;
+        height: 100%;
+    }
+
+    .character-details {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 1rem;
         border-radius: 4px;
-        text-decoration: none;
-        margin-top: 0.5rem;
-        transition: background 0.2s;
+        margin-bottom: 1rem;
     }
-    .details-btn:hover {
-        background: #7B1FA2;
+
+    .character-details p {
+        margin: 0.25rem 0;
+    }
+
+    .character-traits, .character-quotes, .location-details {
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+        }
+
+        .content {
+            padding: 1rem;
+        }
+
+        .character-grid, .comedian-grid, .locations-grid, .elements-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
