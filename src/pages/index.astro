@@ -240,37 +240,58 @@ import Layout from '../layouts/Layout.astro';
             console.log('Attempted image path:', this.src);
         });
         
-        // Visitor notification function
+        // Visitor notification function with better error handling
         // Only notify for new sessions to avoid multiple notifications from the same visitor
         if (!sessionStorage.getItem('visit_notified')) {
-            async function notifyVisit() {
-                try {
-                    // Create a timestamp for the visit
-                    const visitTime = new Date().toISOString();
-                    
-                    // Use EmailJS service to send the notification
-                    emailjs.send(
-                        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-                        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-                        {
-                            to_email: 'dburnham9930@gmail.com',
-                            subject: 'New Visitor to Living with the Ghost of Sam',
-                            message: `Someone visited your website at ${visitTime}.`
-                        }
-                    ).then(function(response) {
-                        console.log('Notification sent successfully', response);
+            // Wait a moment to ensure EmailJS is fully loaded
+            setTimeout(function() {
+                notifyVisit();
+            }, 1000);
+        }
+        
+        // Separate function for notification with detailed error handling
+        function notifyVisit() {
+            console.log("Attempting to send visit notification...");
+            
+            // Verify EmailJS is loaded
+            if (typeof emailjs === 'undefined') {
+                console.error("EmailJS is not loaded properly");
+                return;
+            }
+            
+            try {
+                // Create a timestamp for the visit
+                const visitTime = new Date().toISOString();
+                const params = {
+                    to_email: 'dburnham9930@gmail.com',
+                    subject: 'New Visitor to Living with the Ghost of Sam',
+                    message: `Someone visited your website at ${visitTime}.`
+                };
+                
+                console.log("Sending notification with params:", params);
+                
+                // Use EmailJS service to send the notification
+                emailjs.send(
+                    'YOUR_SERVICE_ID', // Replace with your actual EmailJS service ID
+                    'YOUR_TEMPLATE_ID', // Replace with your actual EmailJS template ID
+                    params
+                ).then(
+                    function(response) {
+                        console.log('Notification sent successfully!', response);
                         // Mark this session as notified
                         sessionStorage.setItem('visit_notified', 'true');
-                    }, function(error) {
-                        console.error('Notification failed:', error);
-                    });
-                } catch (error) {
-                    console.error('Error sending notification:', error);
-                }
+                    }, 
+                    function(error) {
+                        console.error('Notification failed!', error);
+                        // Try to get more details about the failure
+                        if (error.text) {
+                            console.error('Error details:', error.text);
+                        }
+                    }
+                );
+            } catch (error) {
+                console.error('Error in notifyVisit function:', error);
             }
-
-            // Call the notification function
-            notifyVisit();
         }
     });
 </script>
