@@ -240,57 +240,88 @@ import Layout from '../layouts/Layout.astro';
             console.log('Attempted image path:', this.src);
         });
         
-        // Visitor notification function with better error handling
-        // Only notify for new sessions to avoid multiple notifications from the same visitor
-        if (!sessionStorage.getItem('visit_notified')) {
+        // Advanced visitor tracking with IP information
+        // Only track for new sessions to avoid multiple notifications
+        if (!sessionStorage.getItem('visit_tracked')) {
             // Wait a moment to ensure EmailJS is fully loaded
             setTimeout(function() {
-                notifyVisit();
+                trackVisitor();
             }, 1000);
         }
         
-        // Separate function for notification with detailed error handling
-        function notifyVisit() {
-            console.log("Attempting to send visit notification...");
-            
-            // Verify EmailJS is loaded
-            if (typeof emailjs === 'undefined') {
-                console.error("EmailJS is not loaded properly");
-                return;
-            }
+        // Function to get visitor IP and info
+        async function trackVisitor() {
+            console.log("Starting visitor tracking...");
             
             try {
-                // Create a timestamp for the visit
-                const visitTime = new Date().toISOString();
-                const params = {
-                    to_email: 'dburnham9930@gmail.com',
-                    subject: 'New Visitor to Living with the Ghost of Sam',
-                    message: `Someone visited your website at ${visitTime}.`
+                // Get IP information using ipinfo.io with your API key
+                const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+                const ipData = await ipResponse.json();
+                
+                console.log("IP data retrieved:", ipData);
+                
+                // Gather additional visitor information
+                const visitorInfo = {
+                    ip: ipData.ip || 'Unknown',
+                    city: ipData.city || 'Unknown',
+                    region: ipData.region || 'Unknown',
+                    country: ipData.country || 'Unknown',
+                    location: ipData.loc || 'Unknown',
+                    org: ipData.org || 'Unknown',
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    platform: navigator.platform,
+                    screenSize: `${window.screen.width}x${window.screen.height}`,
+                    referrer: document.referrer || 'direct',
+                    timestamp: new Date().toISOString(),
+                    page: window.location.pathname
                 };
                 
-                console.log("Sending notification with params:", params);
-                
-                // Use EmailJS service to send the notification
-                emailjs.send(
-                    'service_mglwuwe', // Replace with your actual EmailJS service ID
-                    'template_6cjvb36', // Replace with your actual EmailJS template ID
-                    params
-                ).then(
-                    function(response) {
-                        console.log('Notification sent successfully!', response);
-                        // Mark this session as notified
-                        sessionStorage.setItem('visit_notified', 'true');
-                    }, 
-                    function(error) {
-                        console.error('Notification failed!', error);
-                        // Try to get more details about the failure
-                        if (error.text) {
-                            console.error('Error details:', error.text);
+                // Use EmailJS to send the notification with enhanced details
+                if (typeof emailjs !== 'undefined') {
+                    console.log("Sending visitor notification with details:", visitorInfo);
+                    
+                    const params = {
+                        to_email: 'dburnham9930@gmail.com',
+                        subject: 'New Visitor to Living with the Ghost of Sam',
+                        message: `
+                            New visitor from ${visitorInfo.city}, ${visitorInfo.region}, ${visitorInfo.country}
+                            
+                            IP: ${visitorInfo.ip}
+                            ISP: ${visitorInfo.org}
+                            Location: ${visitorInfo.location}
+                            Time: ${visitorInfo.timestamp}
+                            Browser: ${visitorInfo.userAgent}
+                            Language: ${visitorInfo.language}
+                            Platform: ${visitorInfo.platform}
+                            Screen: ${visitorInfo.screenSize}
+                            Referrer: ${visitorInfo.referrer}
+                            Page: ${visitorInfo.page}
+                        `
+                    };
+                    
+                    emailjs.send(
+                        'service_mglwuwe',
+                        'template_6cjvb36',
+                        params
+                    ).then(
+                        function(response) {
+                            console.log('Visitor tracking notification sent successfully!', response);
+                            // Mark this session as tracked
+                            sessionStorage.setItem('visit_tracked', 'true');
+                        }, 
+                        function(error) {
+                            console.error('Visitor tracking notification failed!', error);
+                            if (error.text) {
+                                console.error('Error details:', error.text);
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    console.error("EmailJS is not properly loaded");
+                }
             } catch (error) {
-                console.error('Error in notifyVisit function:', error);
+                console.error('Error in visitor tracking:', error);
             }
         }
     });
