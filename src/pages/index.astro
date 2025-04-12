@@ -91,102 +91,11 @@
             console.log("Getting visitor location...");
             
             // Use ipinfo.io to get visitor's location information
-            fetch('https://ipinfo.io/json?token=898b193407ebcf'<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Enhanced authentication check
-        if (sessionStorage.getItem('authenticated')) {
-            const splash = document.getElementById('splash');
-            const content = document.getElementById('content');
-            if (splash && content) {
-                splash.classList.add('hidden');
-                content.classList.remove('hidden');
-            }
-        }
-
-        // Password validation
-        function checkPassword() {
-            const password = document.getElementById('password').value;
-            if (password === 'Terguson') {
-                sessionStorage.setItem('authenticated', 'true');
-                // Show content on same page instead of redirecting
-                document.getElementById('splash').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-            } else {
-                document.getElementById('error-message').textContent = 'Incorrect password';
-            }
-        }
-        
-        // Event listeners for password submission
-        document.getElementById('submit-btn').addEventListener('click', checkPassword);
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-
-        // Enhanced image movement functionality
-        const imageBox = document.getElementById('image-box');
-        const samImage = document.getElementById('sam-image');
-
-        function randomPosition() {
-            const viewportWidth = Math.max(window.innerWidth, 320);
-            const viewportHeight = Math.max(window.innerHeight, 240);
-            
-            const boxWidth = imageBox.offsetWidth;
-            const boxHeight = imageBox.offsetHeight;
-            
-            const maxX = viewportWidth - boxWidth;
-            const maxY = viewportHeight - boxHeight;
-            
-            const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
-            const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
-            
-            return { x, y };
-        }
-
-        function moveImageBox() {
-            const { x, y } = randomPosition();
-            imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-            imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
-        }
-
-        // Initialize movement with requestAnimationFrame
-        requestAnimationFrame(() => {
-            moveImageBox();
-            setInterval(moveImageBox, 3000);
-        });
-
-        // Handle window resizing
-        window.addEventListener('resize', moveImageBox);
-
-        // Image loading debug
-        samImage.addEventListener('load', function() {
-            console.log('Image loaded successfully');
-            console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
-        });
-
-        samImage.addEventListener('error', function() {
-            console.log('Failed to load image');
-            console.log('Attempted image path:', this.src);
-        });
-        
-        // Visitor notification function with location detection
-        // Only notify for new sessions to avoid multiple notifications from the same visitor
-        if (!sessionStorage.getItem('visit_notified')) {
-            // Wait a moment to ensure EmailJS is fully loaded
-            setTimeout(function() {
-                getLocationAndNotify();
-            }, 1000);
-        }
-        
-        // Function to get location and then notify
-        function getLocationAndNotify() {
-            console.log("Getting visitor location...");
-            
-            // Use ipinfo.io to get visitor's location information
-            fetch('https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN')  // Replace with your actual ipinfo.io token
-                .then(response => response.json())
-                .then(data => {
+            fetch('https://ipinfo.io/json?token=898b193407ebcf')  // Replace with your actual ipinfo.io token
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
                     console.log("Location data received:", data);
                     
                     // Extract location information
@@ -200,7 +109,7 @@
                     // Send notification with location data
                     notifyVisit(location);
                 })
-                .catch(error => {
+                .catch(function(error) {
                     console.error("Error fetching location:", error);
                     // If location fetch fails, still send notification without location
                     notifyVisit({
@@ -225,89 +134,12 @@
             try {
                 // Create a timestamp for the visit
                 const visitTime = new Date().toISOString();
-                const locationStr = `${location.city}, ${location.region}, ${location.country} (IP: ${location.ip})`;
+                const locationStr = location.city + ", " + location.region + ", " + location.country + " (IP: " + location.ip + ")";
                 
                 const params = {
                     to_email: 'dburnham9930@gmail.com',
                     subject: 'New Visitor to Living with the Ghost of Sam',
-                    message: `Someone visited your website at ${visitTime}.
-Location: ${locationStr}`
-                };
-                
-                console.log("Sending notification with params:", params);
-                
-                // Use EmailJS service to send the notification
-                emailjs.send(
-                    'service_mglwuwe', // Your EmailJS service ID
-                    'template_6cjvb36', // Your EmailJS template ID
-                    params
-                ).then(
-                    function(response) {
-                        console.log('Notification sent successfully!', response);
-                        // Mark this session as notified
-                        sessionStorage.setItem('visit_notified', 'true');
-                    }, 
-                    function(error) {
-                        console.error('Notification failed!', error);
-                        // Try to get more details about the failure
-                        if (error.text) {
-                            console.error('Error details:', error.text);
-                        }
-                    }
-                );
-            } catch (error) {
-                console.error('Error in notifyVisit function:', error);
-            }
-        }
-    });
-</script>')  // Replace with your actual ipinfo.io token
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Location data received:", data);
-                    
-                    // Extract location information
-                    const location = {
-                        ip: data.ip || 'Unknown',
-                        city: data.city || 'Unknown',
-                        region: data.region || 'Unknown',
-                        country: data.country || 'Unknown'
-                    };
-                    
-                    // Send notification with location data
-                    notifyVisit(location);
-                })
-                .catch(error => {
-                    console.error("Error fetching location:", error);
-                    // If location fetch fails, still send notification without location
-                    notifyVisit({
-                        ip: 'Unknown',
-                        city: 'Unknown',
-                        region: 'Unknown',
-                        country: 'Unknown'
-                    });
-                });
-        }
-        
-        // Separate function for notification with location data
-        function notifyVisit(location) {
-            console.log("Attempting to send visit notification with location...");
-            
-            // Verify EmailJS is loaded
-            if (typeof emailjs === 'undefined') {
-                console.error("EmailJS is not loaded properly");
-                return;
-            }
-            
-            try {
-                // Create a timestamp for the visit
-                const visitTime = new Date().toISOString();
-                const locationStr = `${location.city}, ${location.region}, ${location.country} (IP: ${location.ip})`;
-                
-                const params = {
-                    to_email: 'dburnham9930@gmail.com',
-                    subject: 'New Visitor to Living with the Ghost of Sam',
-                    message: `Someone visited your website at ${visitTime}.
-Location: ${locationStr}`
+                    message: "Someone visited your website at " + visitTime + ".\nLocation: " + locationStr
                 };
                 
                 console.log("Sending notification with params:", params);
