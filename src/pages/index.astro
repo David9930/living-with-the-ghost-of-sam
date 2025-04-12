@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Living with the Ghost of Sam">
@@ -14,7 +15,7 @@ import Layout from '../layouts/Layout.astro';
             <p id="error-message" class="error" data-astro-cid-j7pv25f6></p>
         </div>
         <div id="image-box" data-astro-cid-j7pv25f6>
-            <img src="/images/SamImagesmall.jpg" 
+            <img src={`${base}images/SamImagesmall.jpg`} 
                  id="sam-image" 
                  alt="Sam" 
                  data-astro-cid-j7pv25f6>
@@ -24,23 +25,23 @@ import Layout from '../layouts/Layout.astro';
     <main id="content" class="hidden" data-astro-cid-j7pv25f6>
         <h1>Living with the Ghost of Sam</h1>
         <div class="grid" data-astro-cid-j7pv25f6>
-            <a href="/scripts" class="card" data-astro-cid-j7pv25f6>
+            <a href={`${base}scripts`} class="card" data-astro-cid-j7pv25f6>
                 <h2>Scripts</h2>
                 <p>Access all TV show scripts in PDF format</p>
             </a>
-            <a href="/documents" class="card" data-astro-cid-j7pv25f6>
+            <a href={`${base}documents`} class="card" data-astro-cid-j7pv25f6>
                 <h2>Show Documents</h2>
                 <p>Review evaluation materials and show proposals</p>
             </a>
-            <a href="/bible" class="card" data-astro-cid-j7pv25f6>
+            <a href={`${base}bible`} class="card" data-astro-cid-j7pv25f6>
                 <h2>Character Bible</h2>
                 <p>Detailed character profiles and relationships</p>
             </a>
-            <a href="/sam" class="card ghost-card" data-astro-cid-j7pv25f6>
+            <a href={`${base}sam`} class="card ghost-card" data-astro-cid-j7pv25f6>
                 <h2>Sam's Corner</h2>
                 <p>Watch exclusive clips featuring Sam</p>
             </a>
-            <a href="/about" class="card" data-astro-cid-j7pv25f6>
+            <a href={`${base}about`} class="card" data-astro-cid-j7pv25f6>
                 <h2>About the Writer</h2>
                 <p>Writer biography and background</p>
             </a>
@@ -49,6 +50,16 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
+    /* Make password input text visible */
+    .password-input[data-astro-cid-j7pv25f6] input[data-astro-cid-j7pv25f6] {
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: none;
+        width: 100%;
+        color: white !important;
+        background-color: rgba(0, 0, 0, 0.5) !important; /* Darker background to make white text visible */
+    }
+
     .splash-container[data-astro-cid-j7pv25f6] {
         position: fixed;
         top: 0;
@@ -81,14 +92,6 @@ import Layout from '../layouts/Layout.astro';
         display: block;
         margin-bottom: 0.5rem;
     }
-
-    .password-input[data-astro-cid-j7pv25f6] input[data-astro-cid-j7pv25f6] {
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: none;
-    width: 100%;
-    color: white !important;
-}
 
     .btn[data-astro-cid-j7pv25f6] {
         display: inline-block;
@@ -239,90 +242,5 @@ import Layout from '../layouts/Layout.astro';
             console.log('Failed to load image');
             console.log('Attempted image path:', this.src);
         });
-        
-        // Advanced visitor tracking with IP information
-        // Only track for new sessions to avoid multiple notifications
-        if (!sessionStorage.getItem('visit_tracked')) {
-            // Wait a moment to ensure EmailJS is fully loaded
-            setTimeout(function() {
-                trackVisitor();
-            }, 1000);
-        }
-        
-        // Function to get visitor IP and info
-        async function trackVisitor() {
-            console.log("Starting visitor tracking...");
-            
-            try {
-                // Get IP information using ipinfo.io with your API key
-                const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
-                const ipData = await ipResponse.json();
-                
-                console.log("IP data retrieved:", ipData);
-                
-                // Gather additional visitor information
-                const visitorInfo = {
-                    ip: ipData.ip || 'Unknown',
-                    city: ipData.city || 'Unknown',
-                    region: ipData.region || 'Unknown',
-                    country: ipData.country || 'Unknown',
-                    location: ipData.loc || 'Unknown',
-                    org: ipData.org || 'Unknown',
-                    userAgent: navigator.userAgent,
-                    language: navigator.language,
-                    platform: navigator.platform,
-                    screenSize: `${window.screen.width}x${window.screen.height}`,
-                    referrer: document.referrer || 'direct',
-                    timestamp: new Date().toISOString(),
-                    page: window.location.pathname
-                };
-                
-                // Use EmailJS to send the notification with enhanced details
-                if (typeof emailjs !== 'undefined') {
-                    console.log("Sending visitor notification with details:", visitorInfo);
-                    
-                    const params = {
-                        to_email: 'dburnham9930@gmail.com',
-                        subject: 'New Visitor to Living with the Ghost of Sam',
-                        message: `
-                            New visitor from ${visitorInfo.city}, ${visitorInfo.region}, ${visitorInfo.country}
-                            
-                            IP: ${visitorInfo.ip}
-                            ISP: ${visitorInfo.org}
-                            Location: ${visitorInfo.location}
-                            Time: ${visitorInfo.timestamp}
-                            Browser: ${visitorInfo.userAgent}
-                            Language: ${visitorInfo.language}
-                            Platform: ${visitorInfo.platform}
-                            Screen: ${visitorInfo.screenSize}
-                            Referrer: ${visitorInfo.referrer}
-                            Page: ${visitorInfo.page}
-                        `
-                    };
-                    
-                    emailjs.send(
-                        'service_mglwuwe',
-                        'template_6cjvb36',
-                        params
-                    ).then(
-                        function(response) {
-                            console.log('Visitor tracking notification sent successfully!', response);
-                            // Mark this session as tracked
-                            sessionStorage.setItem('visit_tracked', 'true');
-                        }, 
-                        function(error) {
-                            console.error('Visitor tracking notification failed!', error);
-                            if (error.text) {
-                                console.error('Error details:', error.text);
-                            }
-                        }
-                    );
-                } else {
-                    console.error("EmailJS is not properly loaded");
-                }
-            } catch (error) {
-                console.error('Error in visitor tracking:', error);
-            }
-        }
     });
 </script>
