@@ -34,15 +34,16 @@ const base = import.meta.env.BASE_URL;
         </script>
     </head>
     <body>
-    {showNavigation && <Navigation />}
-    <main>
-        <slot />
-    </main>
+        {showNavigation && <Navigation />}
+        <main>
+            <slot />
+        </main>
         
-   <!-- Page tracking script -->
-<script is:inline src={`${base}js/tracking.js`}</script>
-</body>
+        <!-- Page tracking script -->
+        <script is:inline src={`${base}js/tracking.js`}></script>
+    </body>
 </html>
+
 <style is:global>
     :root {
         --accent: 136, 58, 234;
