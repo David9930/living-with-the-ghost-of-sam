@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Initialize session tracking
-   initializeSessionTracking();
+  initializeSessionTracking();
   
-  // Track current page view
-  trackPageView();
+  // Fetch IP information and track the page view
+  fetchIPInfoAndTrackView();
   
   // Add listeners for downloads and PDF views
   setupDownloadTracking();
@@ -21,6 +21,74 @@ document.addEventListener('DOMContentLoaded', function() {
   // Setup tracking for when user leaves the page
   setupExitTracking();
 });
+
+// Fetch IP info and then track the page view
+async function fetchIPInfoAndTrackView() {
+  try {
+    console.log("Fetching IP information...");
+    const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+    
+    if (!ipResponse.ok) {
+      throw new Error(`IP info fetch failed with status: ${ipResponse.status}`);
+    }
+    
+    const ipData = await ipResponse.json();
+    console.log("IP data retrieved:", ipData);
+    
+    // Now track the page view with the IP data
+    trackPageView(ipData);
+    
+    // Send separate IP notification for debugging
+    sendIPNotification(ipData);
+    
+  } catch (error) {
+    console.error("Error fetching IP information:", error);
+    // Still track the page view without IP data
+    trackPageView({});
+  }
+}
+
+// Send a dedicated IP notification for debugging
+function sendIPNotification(ipData) {
+  if (typeof emailjs === 'undefined') {
+    console.error("EmailJS not available for IP notification");
+    return;
+  }
+  
+  const params = {
+    to_email: 'dburnham9930@gmail.com',
+    subject: 'IP Information - Living with the Ghost of Sam',
+    message: `
+      IP Information:
+      -----------------------------
+      IP: ${ipData.ip || 'Unknown'}
+      City: ${ipData.city || 'Unknown'}
+      Region: ${ipData.region || 'Unknown'}
+      Country: ${ipData.country || 'Unknown'}
+      Location: ${ipData.loc || 'Unknown'}
+      ISP/Org: ${ipData.org || 'Unknown'}
+      Postal Code: ${ipData.postal || 'Unknown'}
+      Timezone: ${ipData.timezone || 'Unknown'}
+      
+      Page: ${window.location.pathname}
+      Time: ${new Date().toISOString()}
+      User Agent: ${navigator.userAgent}
+    `
+  };
+  
+  emailjs.send(
+    'service_mglwuwe',
+    'template_6cjvb36',
+    params
+  ).then(
+    function(response) {
+      console.log('IP notification sent successfully:', response);
+    },
+    function(error) {
+      console.error('IP notification failed:', error);
+    }
+  );
+}
 
 // Initialize or retrieve tracking data
 function initializeSessionTracking() {
@@ -48,7 +116,7 @@ function generateSessionId() {
 }
 
 // Track a page view including entry time
-function trackPageView() {
+function trackPageView(ipData = {}) {
   const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking'));
   const now = new Date();
   
@@ -57,22 +125,29 @@ function trackPageView() {
     finalizePageView(sessionData.currentPage, now);
   }
   
-  // Set current page
+  // Set current page with IP data
   sessionData.currentPage = {
     url: window.location.pathname,
     title: document.title,
-    entryTime: now.toISOString()
+    entryTime: now.toISOString(),
+    ipInfo: ipData
   };
   
   // Save updated session data
   sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
   
-  // Send notification for new page view
+  // Format location string
+  const location = `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '');
+  
+  // Send notification for new page view with IP info
   sendTrackingEvent('Page View', {
     sessionId: sessionData.sessionId,
     url: sessionData.currentPage.url,
     title: sessionData.currentPage.title,
-    time: sessionData.currentPage.entryTime
+    time: sessionData.currentPage.entryTime,
+    ip: ipData.ip || 'Unknown',
+    location: location || 'Unknown',
+    isp: ipData.org || 'Unknown'
   });
 }
 
@@ -89,7 +164,8 @@ function finalizePageView(pageData, exitTime) {
     title: pageData.title,
     entryTime: pageData.entryTime,
     exitTime: exitTime.toISOString(),
-    durationSeconds: durationSeconds
+    durationSeconds: durationSeconds,
+    ipInfo: pageData.ipInfo || {}
   };
   
   sessionData.pageVisits.push(completedVisit);
@@ -100,12 +176,60 @@ function finalizePageView(pageData, exitTime) {
     sessionId: sessionData.sessionId,
     url: completedVisit.url,
     title: completedVisit.title,
-    duration: durationSeconds + ' seconds'
+    duration: durationSeconds + ' seconds',
+    ip: (completedVisit.ipInfo && completedVisit.ipInfo.ip) || 'Unknown'
   });
 }
 
 // Track downloads and PDF views
 function setupDownloadTracking() {
+  // Make the download function available globally
+  window.trackDownload = function(url, filename) {
+    try {
+      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+      if (!sessionData.downloads) {
+        sessionData.downloads = [];
+      }
+      
+      const downloadInfo = {
+        url: url,
+        filename: filename,
+        time: new Date().toISOString()
+      };
+      
+      sessionData.downloads.push(downloadInfo);
+      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+      
+      // Send notification for download
+      sendTrackingEvent('Download', {
+        sessionId: sessionData.sessionId || 'Unknown',
+        url: downloadInfo.url,
+        filename: downloadInfo.filename
+      });
+    } catch (error) {
+      console.error('Error tracking download:', error);
+    }
+  };
+  
+  // Add force download function
+  window.forceDownload = function(url, filename) {
+    try {
+      // Create a temporary link element to force download
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Track the download
+      window.trackDownload(url, filename);
+    } catch (error) {
+      console.error('Error forcing download:', error);
+    }
+  };
+  
   // Find all download links and PDF links
   document.querySelectorAll('a').forEach(link => {
     // Check if the link is a download or points to a PDF
@@ -118,24 +242,20 @@ function setupDownloadTracking() {
                        href.includes('/documents/');
     
     if (isDownload) {
-      link.addEventListener('click', function(e) {
-        const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking'));
-        const downloadInfo = {
-          url: this.href,
-          filename: this.getAttribute('download') || this.href.split('/').pop(),
-          time: new Date().toISOString()
-        };
-        
-        sessionData.downloads.push(downloadInfo);
-        sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
-        
-        // Send notification for download
-        sendTrackingEvent('Download', {
-          sessionId: sessionData.sessionId,
-          url: downloadInfo.url,
-          filename: downloadInfo.filename
+      // For links with download attribute, modify to use forceDownload
+      if (link.hasAttribute('download')) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const filename = this.getAttribute('download') || this.href.split('/').pop();
+          window.forceDownload(this.href, filename);
         });
-      });
+      } else {
+        // For other "viewable" links, just track them
+        link.addEventListener('click', function(e) {
+          const filename = this.href.split('/').pop();
+          window.trackDownload(this.href, filename);
+        });
+      }
     }
   });
 }
@@ -228,14 +348,19 @@ function generateSessionSummary() {
   
   // Add page visits to summary
   sessionData.pageVisits.forEach((visit, index) => {
+    const ipInfo = visit.ipInfo || {};
+    const location = `${ipInfo.city || ''}, ${ipInfo.region || ''}, ${ipInfo.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '');
+    
     summaryMessage += `
     ${index + 1}. ${visit.title} (${visit.url})
        Duration: ${visit.durationSeconds} seconds
+       IP: ${ipInfo.ip || 'Unknown'}
+       Location: ${location || 'Unknown'}
     `;
   });
   
   // Add downloads to summary if any
-  if (sessionData.downloads.length > 0) {
+  if (sessionData.downloads && sessionData.downloads.length > 0) {
     summaryMessage += `
     Downloads:
     ------------------------------
