@@ -2,13 +2,15 @@
 // Add this to your main script or create a separate tracking.js file to include on all pages
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Skip tracking if not authenticated
-  if (!sessionStorage.getItem('authenticated')) {
+  // Only skip if authentication is required but not present
+  // If we're on the login page or a page that doesn't require auth, still track
+  if (document.getElementById('splash') && !sessionStorage.getItem('authenticated')) {
+    console.log("Tracking disabled: authentication required but not present");
     return;
   }
   
   // Initialize session tracking
-  initializeSessionTracking();
+   initializeSessionTracking();
   
   // Track current page view
   trackPageView();
