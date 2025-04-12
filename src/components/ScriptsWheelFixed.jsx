@@ -149,6 +149,20 @@ const ScriptsWheelFixed = () => {
                                 }}
                                 download={episode.filename}
                                 type="application/pdf"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (window.forceDownload) {
+                                        window.forceDownload(getScriptUrl(episode.filename), episode.filename);
+                                    } else {
+                                        // Fallback if tracking.js not loaded
+                                        const link = document.createElement('a');
+                                        link.href = getScriptUrl(episode.filename);
+                                        link.setAttribute('download', episode.filename);
+                                        document.body.appendChild(link);
+                                        link.click();
+                                        document.body.removeChild(link);
+                                    }
+                                }}
                             >
                                 <Download size={18} />
                                 Download
@@ -176,6 +190,12 @@ const ScriptsWheelFixed = () => {
                                 }}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => {
+                                    // Track PDF view if tracking.js is loaded
+                                    if (window.trackDownload) {
+                                        window.trackDownload(getScriptUrl(episode.filename), episode.filename);
+                                    }
+                                }}
                             >
                                 <Eye size={18} />
                                 View PDF
