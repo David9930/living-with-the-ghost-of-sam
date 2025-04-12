@@ -39,8 +39,8 @@ const base = import.meta.env.BASE_URL;
         <slot />
     </main>
         
-    <!-- Page tracking script -->
-    <script is:inline src="/js/tracking.js"></script>
+   <!-- Page tracking script -->
+<script is:inline src={`${base}js/tracking.js`}</script>
 </body>
 </html>
 <style is:global>
