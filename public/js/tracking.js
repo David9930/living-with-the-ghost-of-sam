@@ -50,15 +50,13 @@ async function fetchIPInfoAndTrackView() {
 
 // Send a dedicated IP notification for debugging
 function sendIPNotification(ipData) {
-  if (typeof emailjs === 'undefined') {
-    console.error("EmailJS not available for IP notification");
-    return;
-  }
+  const location = `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '');
   
-  const params = {
-    to_email: 'dburnham9930@gmail.com',
-    subject: 'IP Information - Living with the Ghost of Sam',
-    message: `
+  // Send using Pipedream
+  sendPipedreamEmail(
+    'dburnham9930@gmail.com',
+    'IP Information - Living with the Ghost of Sam',
+    `
       IP Information:
       -----------------------------
       IP: ${ipData.ip || 'Unknown'}
@@ -74,19 +72,6 @@ function sendIPNotification(ipData) {
       Time: ${new Date().toISOString()}
       User Agent: ${navigator.userAgent}
     `
-  };
-  
-  emailjs.send(
-    'service_mglwuwe',
-    'template_6cjvb36',
-    params
-  ).then(
-    function(response) {
-      console.log('IP notification sent successfully:', response);
-    },
-    function(error) {
-      console.error('IP notification failed:', error);
-    }
   );
 }
 
@@ -281,46 +266,62 @@ function setupExitTracking() {
   });
 }
 
-// Send tracking event via EmailJS
-function sendTrackingEvent(eventType, eventData) {
-  // Only proceed if EmailJS is available
-  if (typeof emailjs === 'undefined') {
-    console.error("EmailJS not available for tracking");
-    return;
-  }
+// Function to send emails via Pipedream
+function sendPipedreamEmail(to, subject, content) {
+  // Prepare data for the Pipedream endpoint
+  const data = {
+    to: to,
+    subject: subject,
+    content: content
+  };
   
+  // Send the request to our Pipedream workflow
+  fetch('https://eo3al2t00kpaday.m.pipedream.net', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) {
+      return response.json().then(data => {
+        throw new Error(`Email API error: ${JSON.stringify(data)}`);
+      });
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(`Email sent successfully: ${subject}`, data);
+  })
+  .catch(error => {
+    console.error('Error sending email:', error);
+  });
+}
+
+// Send tracking event via Pipedream
+function sendTrackingEvent(eventType, eventData) {
   // Verify we have the needed information
   if (!eventType || !eventData) {
     console.error("Missing tracking event data");
     return;
   }
   
-  // Prepare email content
-  const params = {
-    to_email: 'dburnham9930@gmail.com',
-    subject: `Visitor ${eventType} - Living with the Ghost of Sam`,
-    message: `
-      Event: ${eventType}
-      Time: ${new Date().toISOString()}
-      Session ID: ${eventData.sessionId || 'Unknown'}
-      
-      ${Object.entries(eventData).filter(([key]) => key !== 'sessionId')
-        .map(([key, value]) => `${key}: ${value}`).join('\n')}
-    `
-  };
+  // Prepare message content
+  const messageContent = `
+    Event: ${eventType}
+    Time: ${new Date().toISOString()}
+    Session ID: ${eventData.sessionId || 'Unknown'}
+    
+    ${Object.entries(eventData).filter(([key]) => key !== 'sessionId')
+      .map(([key, value]) => `${key}: ${value}`).join('\n')}
+  `;
   
-  // Send the email asynchronously
-  emailjs.send(
-    'service_mglwuwe',
-    'template_6cjvb36',
-    params
-  ).then(
-    function(response) {
-      console.log(`Tracking event '${eventType}' sent successfully:`, response);
-    },
-    function(error) {
-      console.error(`Failed to send tracking event '${eventType}':`, error);
-    }
+  // Send email via Pipedream
+  sendPipedreamEmail(
+    'dburnham9930@gmail.com',
+    `Visitor ${eventType} - Living with the Ghost of Sam`, 
+    messageContent
   );
 }
 
