@@ -4,1345 +4,243 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Living with the Ghost of Sam">
-    <main>
-        <div class="hero-section">
-            <div class="hero-overlay"></div>
-            <video autoplay muted loop class="hero-video">
-                <source src="/living-with-the-ghost-of-sam/videos/background-loop.mp4" type="video/mp4">
-            </video>
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="glitch" data-text="LIVING WITH THE GHOST OF SAM">LIVING WITH THE GHOST OF SAM</h1>
-                    <p class="subtitle">Where quantum consciousness meets comedy's legends</p>
-                    <div class="cta-container">
-                        <a href={`${base}series`} class="cta-button primary">Explore the Series</a>
-                        <a href={`${base}technology`} class="cta-button secondary">Discover the Technology</a>
-                    </div>
-                </div>
+    <div id="splash" class="splash-container" data-astro-cid-j7pv25f6>
+        <div class="login-box" data-astro-cid-j7pv25f6>
+            <h1>Welcome</h1>
+            <div class="password-input" data-astro-cid-j7pv25f6>
+                <label for="password" data-astro-cid-j7pv25f6>Professor Who ?</label>
+                <input type="password" id="password" data-astro-cid-j7pv25f6>
             </div>
-            <div class="scroll-indicator">
-                <div class="mouse">
-                    <div class="wheel"></div>
-                </div>
-                <div class="arrow">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
+            <button id="submit-btn" class="btn" data-astro-cid-j7pv25f6>Enter</button>
+            <p id="error-message" class="error" data-astro-cid-j7pv25f6></p>
         </div>
+        <div id="image-box" data-astro-cid-j7pv25f6>
+            <img src={`${base}images/SamImagesmall.jpg`} 
+                 id="sam-image" 
+                 alt="Sam" 
+                 data-astro-cid-j7pv25f6>
+        </div>
+    </div>
 
-        <section class="concept-highlights">
-            <div class="section-header">
-                <h2>A Revolutionary Entertainment Concept</h2>
-                <p>Blending supernatural elements with cutting-edge technology to resurrect comedy's greatest legends</p>
-            </div>
-            
-            <div class="highlight-cards">
-                <div class="highlight-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
-                    <div class="card-icon">
-                        <i class="fas fa-microphone-alt"></i>
-                    </div>
-                    <h3>The Final Performance</h3>
-                    <p>When corporate executive Derek Kinison channels his famous deceased cousin during a meltdown, he discovers a legacy that transcends death itself.</p>
-                </div>
-                
-                <div class="highlight-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
-                    <div class="card-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>Quantum Consciousness</h3>
-                    <p>Inside Ravencrest Mansion, revolutionary technology preserves the essence of legendary comedians through an advanced AI system called AISAM.</p>
-                </div>
-                
-                <div class="highlight-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
-                    <div class="card-icon">
-                        <i class="fas fa-skull"></i>
-                    </div>
-                    <h3>Supernatural Stakes</h3>
-                    <p>A mysterious town council with sinister intentions forces Derek to perform his cousin's never-recorded final set—the same routine that may have led to his death.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="interactive-preview">
-            <div class="series-trailer">
-                <div class="trailer-container">
-                    <div class="trailer-placeholder">
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <img src="/living-with-the-ghost-of-sam/images/trailer-thumbnail.jpg" alt="Series Trailer Thumbnail">
-                    </div>
-                </div>
-                <div class="trailer-text">
-                    <h2>Enter the World of <span class="highlight">Living with the Ghost of Sam</span></h2>
-                    <p>A boundary-pushing series that explores the intersection of technology, supernatural elements, and the timeless power of comedy. Experience a story where the digital afterlife offers second chances and new beginnings.</p>
-                    <div class="trailer-stats">
-                        <div class="stat">
-                            <span class="stat-number">10</span>
-                            <span class="stat-label">Episodes</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">30+</span>
-                            <span class="stat-label">Comedy Legends</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">2025</span>
-                            <span class="stat-label">Premiere Target</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="parallax-showcase">
-            <div class="parallax-content">
-                <div class="parallax-image" data-depth="0.2">
-                    <img src="/living-with-the-ghost-of-sam/images/parallax/mansion.png" alt="Ravencrest Mansion">
-                </div>
-                <div class="parallax-image" data-depth="0.4">
-                    <img src="/living-with-the-ghost-of-sam/images/parallax/ghost.png" alt="Sam's Ghost">
-                </div>
-                <div class="parallax-image" data-depth="0.6">
-                    <img src="/living-with-the-ghost-of-sam/images/parallax/technology.png" alt="Quantum Technology">
-                </div>
-                <div class="parallax-text" data-depth="0.1">
-                    <h2>Step Into Ravencrest Mansion</h2>
-                    <p>Where the past and future collide in a symphony of laughter and technological wonder</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="character-carousel">
-            <div class="section-header">
-                <h2>Meet the Characters</h2>
-                <p>The living, the digital, and those who exist somewhere in between</p>
-            </div>
-            
-            <div class="carousel-container">
-                <div class="carousel-track">
-                    <div class="carousel-slide">
-                        <div class="character-card">
-                            <div class="character-image">
-                                <img src="/living-with-the-ghost-of-sam/images/characters/derek.jpg" alt="Derek Kinison">
-                            </div>
-                            <div class="character-info">
-                                <h3>Derek Kinison</h3>
-                                <p class="character-role">Former Corporate Executive</p>
-                                <p class="character-desc">After channeling his famous cousin during a corporate meltdown, Derek finds himself drawn to a mysterious mansion with uncanny connections to his family legacy.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="character-card">
-                            <div class="character-image">
-                                <img src="/living-with-the-ghost-of-sam/images/characters/nancy.jpg" alt="Nancy Hammond">
-                            </div>
-                            <div class="character-info">
-                                <h3>Nancy Hammond</h3>
-                                <p class="character-role">Art Gallery Owner</p>
-                                <p class="character-desc">Practical but adventurous, Nancy balances skepticism with growing acceptance of the supernatural forces at play in their new home.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="character-card">
-                            <div class="character-image">
-                                <img src="/living-with-the-ghost-of-sam/images/characters/sam.jpg" alt="Sam Kinison/AISAM">
-                            </div>
-                            <div class="character-info">
-                                <h3>Sam Kinison/AISAM</h3>
-                                <p class="character-role">Digital Consciousness</p>
-                                <p class="character-desc">The digital manifestation of comedy legend Sam Kinison, preserved through advanced quantum technology that allows him to interact through the mansion's systems.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="character-card">
-                            <div class="character-image">
-                                <img src="/living-with-the-ghost-of-sam/images/characters/linda.jpg" alt="Linda Rhodes/Rebecca">
-                            </div>
-                            <div class="character-info">
-                                <h3>Linda Rhodes/Rebecca</h3>
-                                <p class="character-role">Mysterious Realtor</p>
-                                <p class="character-desc">Enigmatic woman with hidden supernatural connections and knowledge of the mansion's true purpose.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-nav">
-                    <button class="prev-btn"><i class="fas fa-chevron-left"></i></button>
-                    <div class="carousel-dots"></div>
-                    <button class="next-btn"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </section>
-
-        <section class="tech-innovation">
-            <div class="tech-content">
-                <div class="tech-text">
-                    <h2>Innovation Beyond Fiction</h2>
-                    <p>While "Living with the Ghost of Sam" is a fictional narrative, it explores very real possibilities for the future of entertainment technology. The series presents a visionary framework for how AI-generated performances could ethically preserve and extend the legacies of beloved performers.</p>
-                    <a href={`${base}investors`} class="tech-link">Learn About Real-World Applications</a>
-                </div>
-                <div class="tech-visual">
-                    <div class="hologram-effect">
-                        <div class="hologram-container">
-                            <div class="hologram-base"></div>
-                            <div class="hologram-projection">
-                                <img src="/living-with-the-ghost-of-sam/images/ai-performer.png" alt="AI Performer Hologram">
-                            </div>
-                            <div class="hologram-rays"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="creator-spotlight">
-            <div class="spotlight-content">
-                <div class="creator-image">
-                    <img src="/living-with-the-ghost-of-sam/images/creator.jpg" alt="D.A. Burnham">
-                </div>
-                <div class="creator-info">
-                    <h2>From the Mind of <span class="creator-name">D.A. Burnham</span></h2>
-                    <p>"Living with the Ghost of Sam represents the convergence of my lifelong fascination with entertainment technology and the philosophical questions surrounding consciousness, legacy, and the future of performance."</p>
-                    <a href={`${base}about`} class="creator-link">Meet the Creator</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="newsletter-cta">
-            <div class="newsletter-container">
-                <div class="newsletter-text">
-                    <h2>Stay Connected</h2>
-                    <p>Join our community to receive updates on series development, technology innovations, and exclusive behind-the-scenes content.</p>
-                </div>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit">Subscribe</button>
-                </form>
-            </div>
-        </section>
+    <main id="content" class="hidden" data-astro-cid-j7pv25f6>
+        <h1>Living with the Ghost of Sam</h1>
+        <div class="grid" data-astro-cid-j7pv25f6>
+            <a href={`${base}scripts`} class="card" data-astro-cid-j7pv25f6>
+                <h2>Scripts</h2>
+                <p>Access all TV show scripts in PDF format</p>
+            </a>
+            <a href={`${base}documents`} class="card" data-astro-cid-j7pv25f6>
+                <h2>Show Documents</h2>
+                <p>Review evaluation materials and show proposals</p>
+            </a>
+            <a href={`${base}bible`} class="card" data-astro-cid-j7pv25f6>
+                <h2>Character Bible</h2>
+                <p>Detailed character profiles and relationships</p>
+            </a>
+            <a href={`${base}sam`} class="card ghost-card" data-astro-cid-j7pv25f6>
+                <h2>Sam's Corner</h2>
+                <p>Watch exclusive clips featuring Sam</p>
+            </a>
+            <a href={`${base}about`} class="card" data-astro-cid-j7pv25f6>
+                <h2>About the Writer</h2>
+                <p>Writer biography and background</p>
+            </a>
+        </div>
     </main>
 </Layout>
 
-<script>
-    // Add Font Awesome for icons
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-    document.head.appendChild(link);
-    
-    // Add vanilla-tilt.js for card effects
-    const tiltScript = document.createElement('script');
-    tiltScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js';
-    document.body.appendChild(tiltScript);
-    
-    // Add parallax.js for parallax effects
-    const parallaxScript = document.createElement('script');
-    parallaxScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/parallax-js/3.1.0/parallax.min.js';
-    document.body.appendChild(parallaxScript);
-    
-    // Initialize everything after load
-    window.addEventListener('load', () => {
-        // Initialize tilt effect on cards
-        if (typeof VanillaTilt !== 'undefined') {
-            VanillaTilt.init(document.querySelectorAll(".highlight-card"), {
-                max: 15,
-                speed: 300,
-                glare: true,
-                "max-glare": 0.3,
-            });
-        }
-        
-        // Initialize parallax effect
-        if (typeof Parallax !== 'undefined') {
-            const parallaxScene = document.querySelector('.parallax-content');
-            if (parallaxScene) {
-                new Parallax(parallaxScene);
-            }
-        }
-        
-        // Character carousel functionality
-        const track = document.querySelector('.carousel-track');
-        const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-        const dotsContainer = document.querySelector('.carousel-dots');
-        const nextButton = document.querySelector('.next-btn');
-        const prevButton = document.querySelector('.prev-btn');
-        
-        if (track && slides.length && dotsContainer && nextButton && prevButton) {
-            // Create dots based on number of slides
-            slides.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.classList.add('carousel-dot');
-                if (index === 0) dot.classList.add('active');
-                dot.setAttribute('data-index', index);
-                dotsContainer.appendChild(dot);
-            });
-            
-            const dots = Array.from(document.querySelectorAll('.carousel-dot'));
-            
-            // Set up slide width
-            const slideWidth = slides[0].getBoundingClientRect().width;
-            
-            // Arrange slides horizontally
-            slides.forEach((slide, index) => {
-                slide.style.left = slideWidth * index + 'px';
-            });
-            
-            // Move to slide
-            const moveToSlide = (currentIndex, targetIndex) => {
-                if (targetIndex < 0) targetIndex = 0;
-                if (targetIndex >= slides.length) targetIndex = slides.length - 1;
-                
-                track.style.transform = `translateX(-${slides[targetIndex].style.left})`;
-                
-                // Update active dot
-                dots.forEach(dot => dot.classList.remove('active'));
-                dots[targetIndex].classList.add('active');
-            };
-            
-            // Next/Prev buttons
-            nextButton.addEventListener('click', () => {
-                const currentSlide = track.querySelector('.carousel-slide.active');
-                const currentIndex = slides.findIndex(slide => slide === currentSlide);
-                const nextIndex = currentIndex + 1 >= slides.length ? 0 : currentIndex + 1;
-                
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[nextIndex].classList.add('active');
-                
-                moveToSlide(currentIndex, nextIndex);
-            });
-            
-            prevButton.addEventListener('click', () => {
-                const currentSlide = track.querySelector('.carousel-slide.active');
-                const currentIndex = slides.findIndex(slide => slide === currentSlide);
-                const prevIndex = currentIndex - 1 < 0 ? slides.length - 1 : currentIndex - 1;
-                
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[prevIndex].classList.add('active');
-                
-                moveToSlide(currentIndex, prevIndex);
-            });
-            
-            // Dot navigation
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    const currentSlide = track.querySelector('.carousel-slide.active');
-                    const currentIndex = slides.findIndex(slide => slide === currentSlide);
-                    const targetIndex = parseInt(dot.getAttribute('data-index'));
-                    
-                    slides.forEach(slide => slide.classList.remove('active'));
-                    slides[targetIndex].classList.add('active');
-                    
-                    moveToSlide(currentIndex, targetIndex);
-                });
-            });
-            
-            // Initialize first slide as active
-            slides[0].classList.add('active');
-            
-            // Auto-advance carousel
-            let carouselInterval = setInterval(() => {
-                nextButton.click();
-            }, 5000);
-            
-            // Pause auto-advance on hover
-            track.addEventListener('mouseenter', () => {
-                clearInterval(carouselInterval);
-            });
-            
-            track.addEventListener('mouseleave', () => {
-                carouselInterval = setInterval(() => {
-                    nextButton.click();
-                }, 5000);
-            });
-        }
-        
-        // Play button functionality
-        const playButton = document.querySelector('.play-button');
-        if (playButton) {
-            playButton.addEventListener('click', () => {
-                // Here you would typically open a modal with the video
-                alert('Video player would open here in the final implementation.');
-            });
-        }
-    });
-</script>
-
 <style>
-    /* Base Styles */
-    main {
-        color: white;
-        overflow-x: hidden;
+    /* Make password input text visible */
+    .password-input[data-astro-cid-j7pv25f6] input[data-astro-cid-j7pv25f6] {
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: none;
+        width: 100%;
+        color: white !important;
+        background-color: rgba(0, 0, 0, 0.5) !important; /* Darker background to make white text visible */
     }
 
-    .section-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-
-    .section-header h2 {
-        color: #FFD700;
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        position: relative;
-        display: inline-block;
-    }
-
-    .section-header h2::after {
-        content: '';
-        position: absolute;
-        width: 60%;
-        height: 3px;
-        bottom: -10px;
-        left: 20%;
-        background: #FFD700;
-    }
-
-    .section-header p {
-        font-size: 1.2rem;
-        max-width: 600px;
-        margin: 0 auto;
-        opacity: 0.8;
-    }
-
-    /* Hero Section */
-    .hero-section {
-        position: relative;
-        height: 100vh;
-        min-height: 700px;
-        overflow: hidden;
+    .splash-container[data-astro-cid-j7pv25f6] {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #13151a;
         display: flex;
+        justify-content: center;
         align-items: center;
-        justify-content: center;
+        z-index: 1000;
+        overflow: hidden;
     }
 
-    .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1;
-    }
-
-    .hero-video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 0;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2;
+    .login-box[data-astro-cid-j7pv25f6] {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 8px;
         text-align: center;
-        max-width: 900px;
-        padding: 0 2rem;
-    }
-
-    .hero-text h1 {
-        font-size: 5rem;
-        font-weight: 800;
-        margin-bottom: 1.5rem;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        position: relative;
-    }
-
-    /* Glitch Effect */
-    .glitch {
-        position: relative;
         color: white;
-        text-shadow: 
-            0.05em 0 0 rgba(255,0,0,.75),
-            -0.05em -0.025em 0 rgba(0,255,0,.75),
-            0.025em 0.05em 0 rgba(0,0,255,.75);
-        animation: glitch 2s infinite;
+        z-index: 1001;
+        position: relative;
     }
 
-    .glitch::before, 
-    .glitch::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+    .password-input[data-astro-cid-j7pv25f6] {
+        margin: 1rem 0;
     }
 
-    .glitch::before {
-        animation: glitch-effect 3s infinite;
-        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75);
+    .password-input[data-astro-cid-j7pv25f6] label[data-astro-cid-j7pv25f6] {
+        display: block;
+        margin-bottom: 0.5rem;
     }
 
-    .glitch::after {
-        animation: glitch-effect 2s infinite;
-        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        text-shadow: 0.05em 0.05em 0 rgba(0,255,0,.75);
-    }
-
-    @keyframes glitch {
-        0% {
-            text-shadow: 
-                0.05em 0 0 rgba(255,0,0,.75),
-                -0.05em -0.025em 0 rgba(0,255,0,.75),
-                0.025em 0.05em 0 rgba(0,0,255,.75);
-        }
-        14% {
-            text-shadow: 
-                0.05em 0 0 rgba(255,0,0,.75),
-                -0.05em -0.025em 0 rgba(0,255,0,.75),
-                0.025em 0.05em 0 rgba(0,0,255,.75);
-        }
-        15% {
-            text-shadow: 
-                -0.05em -0.025em 0 rgba(255,0,0,.75),
-                0.025em 0.025em 0 rgba(0,255,0,.75),
-                -0.05em -0.05em 0 rgba(0,0,255,.75);
-        }
-        49% {
-            text-shadow: 
-                -0.05em -0.025em 0 rgba(255,0,0,.75),
-                0.025em 0.025em 0 rgba(0,255,0,.75),
-                -0.05em -0.05em 0 rgba(0,0,255,.75);
-        }
-        50% {
-            text-shadow: 
-                0.025em 0.05em 0 rgba(255,0,0,.75),
-                0.05em 0 0 rgba(0,255,0,.75),
-                0 -0.05em 0 rgba(0,0,255,.75);
-        }
-        99% {
-            text-shadow: 
-                0.025em 0.05em 0 rgba(255,0,0,.75),
-                0.05em 0 0 rgba(0,255,0,.75),
-                0 -0.05em 0 rgba(0,0,255,.75);
-        }
-        100% {
-            text-shadow: 
-                -0.025em 0 0 rgba(255,0,0,.75),
-                -0.025em -0.025em 0 rgba(0,255,0,.75),
-                -0.025em -0.05em 0 rgba(0,0,255,.75);
-        }
-    }
-
-    @keyframes glitch-effect {
-        0% {
-            left: -0.05em;
-        }
-        20% {
-            left: 0.05em;
-        }
-        40% {
-            left: -0.05em;
-        }
-        60% {
-            left: 0.05em;
-        }
-        80% {
-            left: -0.05em;
-        }
-        100% {
-            left: 0.05em;
-        }
-    }
-
-    .subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 2.5rem;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .cta-container {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .cta-button {
+    .btn[data-astro-cid-j7pv25f6] {
         display: inline-block;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
         text-decoration: none;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-    }
-
-    .cta-button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        transition: all 0.5s ease;
-    }
-
-    .cta-button.primary {
-        color: #121212;
-        background: #FFD700;
-    }
-
-    .cta-button.primary::before {
-        background: white;
-        transform: scaleX(0);
-        transform-origin: left;
-    }
-
-    .cta-button.primary:hover::before {
-        transform: scaleX(1);
-    }
-
-    .cta-button.secondary {
-        color: white;
-        background: transparent;
-        border: 2px solid #FFD700;
-    }
-
-    .cta-button.secondary::before {
-        background: #FFD700;
-        transform: scaleX(0);
-        transform-origin: right;
-    }
-
-    .cta-button.secondary:hover {
-        color: #121212;
-    }
-
-    .cta-button.secondary:hover::before {
-        transform: scaleX(1);
-    }
-
-    /* Scroll Indicator */
-    .scroll-indicator {
-        position: absolute;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: opacity 0.3s;
+        border: none;
         cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+        background: #2196F3;
     }
 
-    .mouse {
-        width: 30px;
-        height: 50px;
-        border: 2px solid white;
-        border-radius: 20px;
-        position: relative;
+    .btn[data-astro-cid-j7pv25f6]:hover {
+        background: #1976D2;
     }
 
-    .wheel {
-        background: white;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        animation: mouseWheel 1.5s infinite;
-    }
-
-    @keyframes mouseWheel {
-        0% {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        100% {
-            opacity: 0;
-            transform: translateX(-50%) translateY(20px);
-        }
-    }
-
-    .arrow {
+    .error[data-astro-cid-j7pv25f6] {
+        color: red;
         margin-top: 1rem;
     }
 
-    .arrow span {
-        display: block;
-        width: 10px;
-        height: 10px;
-        border-bottom: 2px solid white;
-        border-right: 2px solid white;
-        transform: rotate(45deg);
-        margin: -6px 0;
-        animation: arrowAnim 2s infinite;
+    .hidden[data-astro-cid-j7pv25f6] {
+        display: none;
     }
 
-    .arrow span:nth-child(2) {
-        animation-delay: -0.15s;
-    }
-
-    .arrow span:nth-child(3) {
-        animation-delay: -0.3s;
-    }
-
-    @keyframes arrowAnim {
-        0% {
-            opacity: 0;
-            transform: rotate(45deg) translate(-10px, -10px);
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-            transform: rotate(45deg) translate(10px, 10px);
-        }
-    }
-
-    /* Concept Highlights */
-    .concept-highlights {
-        padding: 6rem 2rem;
-        background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), url('/living-with-the-ghost-of-sam/images/concept-bg.jpg') no-repeat center center;
-        background-size: cover;
-        background-attachment: fixed;
-    }
-
-    .highlight-cards {
+    .grid[data-astro-cid-j7pv25f6] {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .highlight-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
-        border-radius: 10px;
-        padding: 2.5rem 2rem;
-        text-align: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        position: relative;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        overflow: hidden;
-    }
-
-    .highlight-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
-        background: linear-gradient(90deg, #FFD700, #FFA500);
-    }
-
-    .card-icon {
-        font-size: 3rem;
-        color: #FFD700;
-        margin-bottom: 1.5rem;
-    }
-
-    .highlight-card h3 {
-        color: #FFD700;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Interactive Preview */
-    .interactive-preview {
-        padding: 6rem 2rem;
-        background: #121212;
-    }
-
-    .series-trailer {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        align-items: center;
-    }
-
-    .trailer-container {
-        position: relative;
-    }
-
-    .trailer-placeholder {
-        position: relative;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        border-radius: 10px;
-        overflow: hidden;
-        cursor: pointer;
-    }
-
-    .trailer-placeholder img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s;
-    }
-
-    .trailer-placeholder:hover img {
-        transform: scale(1.05);
-    }
-
-    .play-button {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80px;
-        height: 80px;
-        background: rgba(255, 215, 0, 0.8);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.3s;
-    }
-
-    .play-button:hover {
-        background: rgba(255, 215, 0, 1);
-        transform: translate(-50%, -50%) scale(1.1);
-    }
-
-    .play-button i {
-        font-size: 2rem;
-        color: #121212;
-    }
-
-    .trailer-text h2 {
-        color: #FFD700;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .highlight {
-        position: relative;
-        display: inline-block;
-    }
-
-    .highlight::after {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: #FFD700;
-    }
-
-    .trailer-stats {
-        display: flex;
-        margin-top: 2rem;
-        gap: 2.5rem;
-    }
-
-    .stat {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #FFD700;
-    }
-
-    .stat-label {
-        margin-top: 0.5rem;
-        font-size: 0.9rem;
-        opacity: 0.8;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    /* Parallax Showcase */
-    .parallax-showcase {
-        height: 600px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        background: #0c0c0c;
-    }
-
-    .parallax-content {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-
-    .parallax-image {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        will-change: transform;
-    }
-
-    .parallax-image img {
-        max-width: 100%;
-        max-height: 80%;
-        object-fit: contain;
-    }
-
-    .parallax-text {
-        position: absolute;
-        width: 100%;
-        bottom: 10%;
-        text-align: center;
-        will-change: transform;
-    }
-
-    .parallax-text h2 {
-        color: #FFD700;
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-    }
-
-    .parallax-text p {
-        font-size: 1.2rem;
-        max-width: 600px;
-        margin: 0 auto;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Character Carousel */
-    .character-carousel {
-        padding: 6rem 2rem;
-        background: linear-gradient(rgba(18, 18, 18, 0.9), rgba(18, 18, 18, 0.9)), url('/living-with-the-ghost-of-sam/images/carousel-bg.jpg') no-repeat center center;
-        background-size: cover;
-    }
-
-    .carousel-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        position: relative;
-    }
-
-    .carousel-track {
-        position: relative;
-        height: 500px;
-        overflow: hidden;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .carousel-slide {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        transition: opacity 0.5s;
-        opacity: 0.5;
-    }
-
-    .carousel-slide.active {
-        opacity: 1;
-    }
-
-    .character-card {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .character-image {
-        height: 60%;
-        overflow: hidden;
-    }
-
-    .character-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s;
-    }
-
-    .character-card:hover .character-image img {
-        transform: scale(1.05);
-    }
-
-    .character-info {
-        padding: 1.5rem;
-        height: 40%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .character-info h3 {
-        color: #FFD700;
-        font-size: 1.5rem;
-        margin: 0 0 0.5rem;
-    }
-
-    .character-role {
-        color: rgba(255, 215, 0, 0.8);
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        font-style: italic;
-    }
-
-    .carousel-nav {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
         margin-top: 2rem;
     }
 
-    .prev-btn, .next-btn {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-        padding: 0.5rem;
-        transition: color 0.3s;
-    }
-
-    .prev-btn:hover, .next-btn:hover {
-        color: #FFD700;
-    }
-
-    .carousel-dots {
-        display: flex;
-        gap: 0.5rem;
-        margin: 0 1rem;
-    }
-
-    .carousel-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        transition: background 0.3s;
-    }
-
-    .carousel-dot.active {
-        background: #FFD700;
-    }
-
-    /* Tech Innovation */
-    .tech-innovation {
-        padding: 6rem 2rem;
-        background: #0c0c0c;
-    }
-
-    .tech-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        align-items: center;
-    }
-
-    .tech-text h2 {
-        color: #FFD700;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .tech-link {
-        display: inline-block;
-        margin-top: 1.5rem;
-        padding: 1rem 2rem;
-        background: rgba(255, 215, 0, 0.1);
-        color: #FFD700;
-        border: 1px solid #FFD700;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s, transform 0.3s;
-    }
-
-    .tech-link:hover {
-        background: rgba(255, 215, 0, 0.2);
-        transform: translateY(-3px);
-    }
-
-    .hologram-effect {
-        position: relative;
-        width: 100%;
-        height: 400px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .hologram-container {
-        position: relative;
-        width: 300px;
-        height: 400px;
-    }
-
-    .hologram-base {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 20px;
-        background: #FFD700;
-        border-radius: 50%;
-        box-shadow: 0 0 50px #FFD700;
-    }
-
-    .hologram-projection {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 20px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        animation: hologramFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes hologramFloat {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-15px);
-        }
-    }
-
-    .hologram-projection img {
-        max-height: 100%;
-        max-width: 100%;
-        opacity: 0.9;
-        filter: brightness(1.5) drop-shadow(0 0 5px rgba(255, 215, 0, 0.7));
-    }
-
-    .hologram-rays {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 380px;
-        background: linear-gradient(to top, rgba(255, 215, 0, 0.3), transparent);
-        clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
-        opacity: 0.5;
-        animation: hologramRays 2s ease-in-out infinite;
-    }
-
-    @keyframes hologramRays {
-        0%, 100% {
-            opacity: 0.5;
-        }
-        50% {
-            opacity: 0.7;
-        }
-    }
-
-    /* Creator Spotlight */
-    .creator-spotlight {
-        padding: 6rem 2rem;
-        background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)), url('/living-with-the-ghost-of-sam/images/creator-bg.jpg') no-repeat center center;
-        background-size: cover;
-    }
-
-    .spotlight-content {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 3rem;
-        max-width: 1000px;
-        margin: 0 auto;
-        align-items: center;
-    }
-
-    .creator-image {
-        position: relative;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        height: 400px;
-    }
-
-    .creator-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s;
-    }
-
-    .creator-image:hover img {
-        transform: scale(1.05);
-    }
-
-    .creator-info h2 {
-        color: white;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .creator-name {
-        color: #FFD700;
-    }
-
-    .creator-link {
-        display: inline-block;
-        margin-top: 1.5rem;
-        padding: 1rem 2rem;
+    .card[data-astro-cid-j7pv25f6] {
         background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        transition: background 0.3s, transform 0.3s;
-    }
-
-    .creator-link:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateY(-3px);
-    }
-
-    /* Newsletter CTA */
-    .newsletter-cta {
-        padding: 4rem 2rem;
-        background: #0c0c0c;
-    }
-
-    .newsletter-container {
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .newsletter-text h2 {
-        color: #FFD700;
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .newsletter-form {
-        display: flex;
-        margin-top: 2rem;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .newsletter-form input {
-        flex: 1;
         padding: 1rem;
-        border: none;
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        text-align: center;
         color: white;
+        text-decoration: none;
+        transition: transform 0.2s;
     }
 
-    .newsletter-form button {
-        padding: 1rem 2rem;
-        border: none;
-        background: #FFD700;
-        color: #121212;
-        font-weight: 600;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        cursor: pointer;
-        transition: background 0.3s;
+    .card[data-astro-cid-j7pv25f6]:hover {
+        transform: translateY(-5px);
     }
 
-    .newsletter-form button:hover {
-        background: #e6c200;
+    .ghost-card[data-astro-cid-j7pv25f6] {
+        border: 2px dashed #FFD700;
     }
 
-    /* Media Queries */
-    @media (max-width: 1024px) {
-        .hero-text h1 {
-            font-size: 4rem;
-        }
-
-        .series-trailer {
-            grid-template-columns: 1fr;
-        }
-
-        .tech-content {
-            grid-template-columns: 1fr;
-        }
-
-        .spotlight-content {
-            grid-template-columns: 1fr;
-        }
-
-        .creator-image {
-            max-width: 300px;
-            margin: 0 auto;
-        }
+    #image-box[data-astro-cid-j7pv25f6] {
+        position: absolute;
+        width: 300px;
+        height: 200px;
+        transition: transform 0.5s ease-in-out;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        z-index: 1000;
     }
 
-    @media (max-width: 768px) {
-        .hero-text h1 {
-            font-size: 3rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-        }
-
-        .cta-container {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .trailer-stats {
-            flex-direction: column;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .newsletter-form {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .newsletter-form input,
-        .newsletter-form button {
-            border-radius: 4px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .hero-text h1 {
-            font-size: 2.5rem;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-        }
+    #sam-image[data-astro-cid-j7pv25f6] {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        opacity: 1;
+        visibility: visible;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhanced authentication check
+        if (sessionStorage.getItem('authenticated')) {
+            const splash = document.getElementById('splash');
+            const content = document.getElementById('content');
+            if (splash && content) {
+                splash.classList.add('hidden');
+                content.classList.remove('hidden');
+            }
+        }
+
+        // Password validation
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === 'Terguson') {
+                sessionStorage.setItem('authenticated', 'true');
+                // Show content on same page instead of redirecting
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('content').classList.remove('hidden');
+            } else {
+                document.getElementById('error-message').textContent = 'Incorrect password';
+            }
+        }
+        
+        // Event listeners for password submission
+        document.getElementById('submit-btn').addEventListener('click', checkPassword);
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Enhanced image movement functionality
+        const imageBox = document.getElementById('image-box');
+        const samImage = document.getElementById('sam-image');
+
+        function randomPosition() {
+            const viewportWidth = Math.max(window.innerWidth, 320);
+            const viewportHeight = Math.max(window.innerHeight, 240);
+            
+            const boxWidth = imageBox.offsetWidth;
+            const boxHeight = imageBox.offsetHeight;
+            
+            const maxX = viewportWidth - boxWidth;
+            const maxY = viewportHeight - boxHeight;
+            
+            const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
+            const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
+            
+            return { x, y };
+        }
+
+        function moveImageBox() {
+            const { x, y } = randomPosition();
+            imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
+        }
+
+        // Initialize movement with requestAnimationFrame
+        requestAnimationFrame(() => {
+            moveImageBox();
+            setInterval(moveImageBox, 3000);
+        });
+
+        // Handle window resizing
+        window.addEventListener('resize', moveImageBox);
+
+        // Image loading debug
+        samImage.addEventListener('load', function() {
+            console.log('Image loaded successfully');
+            console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+        });
+
+        samImage.addEventListener('error', function() {
+            console.log('Failed to load image');
+            console.log('Attempted image path:', this.src);
+        });
+    });
+</script>
