@@ -4,6 +4,27 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <Layout title="Living with the Ghost of Sam">
+    <div class="password-container">
+        <div class="password-form">
+            <div class="form-header">
+                <div class="logo-container">
+                    <div class="ghost-icon">
+                        <i class="fas fa-ghost"></i>
+                    </div>
+                    <h1>Living with the Ghost of Sam</h1>
+                </div>
+                <p class="password-instruction">Enter password to access content</p>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Password">
+                <button id="submit-password">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="feedback-message" id="password-feedback"></div>
+        </div>
+    </div>
+
     <main id="content" class="hidden">
         <div class="glitch-container">
             <h1 class="glitch-text" data-text="Living with the Ghost of Sam">Living with the Ghost of Sam</h1>
@@ -89,8 +110,79 @@ const base = import.meta.env.BASE_URL;
     tiltScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js';
     document.body.appendChild(tiltScript);
     
-    // Initialize tilt effect after script loads
-    tiltScript.onload = function() {
+    // Password authentication
+    document.addEventListener('DOMContentLoaded', () => {
+        const correctPassword = "SamLives";  // You can change this to whatever password you want
+        const contentElement = document.getElementById('content');
+        const passwordContainer = document.querySelector('.password-container');
+        const passwordInput = document.getElementById('password-input');
+        const submitButton = document.getElementById('submit-password');
+        const feedbackElement = document.getElementById('password-feedback');
+        
+        // Check if user has already entered correct password
+        const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+        
+        if (isAuthenticated) {
+            // User already authenticated
+            passwordContainer.style.display = 'none';
+            contentElement.classList.remove('hidden');
+            initializeTiltEffect();
+        } else {
+            // Show password form
+            passwordContainer.style.display = 'flex';
+            contentElement.classList.add('hidden');
+            
+            // Listen for submit button click
+            submitButton.addEventListener('click', checkPassword);
+            
+            // Allow enter key to submit
+            passwordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        }
+        
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === correctPassword) {
+                // Correct password
+                feedbackElement.textContent = 'Access granted!';
+                feedbackElement.classList.add('success');
+                feedbackElement.classList.remove('error');
+                
+                // Save authentication state
+                sessionStorage.setItem('authenticated', 'true');
+                
+                // Animate transition
+                setTimeout(() => {
+                    passwordContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordContainer.style.display = 'none';
+                        contentElement.classList.remove('hidden');
+                        initializeTiltEffect();
+                    }, 500);
+                }, 1000);
+            } else {
+                // Wrong password
+                feedbackElement.textContent = 'Incorrect password. Try again.';
+                feedbackElement.classList.add('error');
+                feedbackElement.classList.remove('success');
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Shake effect
+                passwordInput.classList.add('shake');
+                setTimeout(() => {
+                    passwordInput.classList.remove('shake');
+                }, 500);
+            }
+        }
+    });
+    
+    // Initialize tilt effect
+    function initializeTiltEffect() {
         if (typeof VanillaTilt !== 'undefined') {
             VanillaTilt.init(document.querySelectorAll(".card"), {
                 max: 15,
@@ -99,11 +191,136 @@ const base = import.meta.env.BASE_URL;
                 "max-glare": 0.3,
             });
         }
-    };
+    }
 </script>
 
 <style>
-    /* Base Styles */
+    /* Password Screen Styles */
+    .password-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: opacity 0.5s;
+    }
+    
+    .password-form {
+        background: rgba(30, 30, 30, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 3rem;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        width: 90%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .logo-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    .ghost-icon {
+        font-size: 3rem;
+        color: #FFD700;
+        margin-bottom: 1rem;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .password-form h1 {
+        color: white;
+        font-size: 2rem;
+        margin: 0;
+    }
+    
+    .password-instruction {
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+    }
+    
+    .input-group {
+        display: flex;
+        margin-bottom: 1rem;
+    }
+    
+    #password-input {
+        flex: 1;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-right: none;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+    
+    #password-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+    }
+    
+    #submit-password {
+        padding: 1rem 1.5rem;
+        background: #FFD700;
+        border: none;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        color: #121212;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    #submit-password:hover {
+        background: #e6c200;
+    }
+    
+    .feedback-message {
+        height: 20px;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+    
+    .feedback-message.error {
+        color: #ff6b6b;
+    }
+    
+    .feedback-message.success {
+        color: #51cf66;
+    }
+    
+    .shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    
+    .hidden {
+        display: none;
+    }
+
+    /* Main Content Styles */
     main {
         max-width: 1200px;
         margin: 0 auto;
@@ -407,6 +624,10 @@ const base = import.meta.env.BASE_URL;
         .tagline p {
             font-size: 1.2rem;
         }
+        
+        .password-form {
+            padding: 2rem;
+        }
     }
     
     @media (max-width: 600px) {
@@ -420,6 +641,15 @@ const base = import.meta.env.BASE_URL;
         
         .footer-note p {
             font-size: 1rem;
+        }
+        
+        .password-form {
+            padding: 1.5rem;
+            width: 95%;
+        }
+        
+        .password-form h1 {
+            font-size: 1.5rem;
         }
     }
 </style>
