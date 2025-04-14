@@ -11,8 +11,8 @@ const base = import.meta.env.BASE_URL;
                     <div class="ghost-icon">
                         <i class="fas fa-ghost"></i>
                     </div>
-                    <div class="flying-sam">
-                        <img src="/living-with-the-ghost-of-sam/images/SamImagesmall.jpg" alt="Flying Sam">
+                    <div class="flying-sam" id="image-box">
+                        <img src={`${base}images/SamImagesmall.jpg`} id="sam-image" alt="Flying Sam">
                     </div>
                     <h1>Living with the Ghost of Sam</h1>
                 </div>
@@ -114,42 +114,29 @@ const base = import.meta.env.BASE_URL;
     document.body.appendChild(tiltScript);
     
     // Password authentication
-    document.addEventListener('DOMContentLoaded', () => {
-        const correctPassword = "Terguson";  // Changed password to Terguson
-        const contentElement = document.getElementById('content');
-        const passwordContainer = document.querySelector('.password-container');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhanced authentication check
+        if (sessionStorage.getItem('authenticated')) {
+            const passwordContainer = document.querySelector('.password-container');
+            const contentElement = document.getElementById('content');
+            if (passwordContainer && contentElement) {
+                passwordContainer.style.display = 'none';
+                contentElement.classList.remove('hidden');
+                initializeTiltEffect();
+            }
+        }
+
         const passwordInput = document.getElementById('password-input');
         const submitButton = document.getElementById('submit-password');
         const feedbackElement = document.getElementById('password-feedback');
+        const contentElement = document.getElementById('content');
+        const passwordContainer = document.querySelector('.password-container');
         
-        // Check if user has already entered correct password
-        const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
-        
-        if (isAuthenticated) {
-            // User already authenticated
-            passwordContainer.style.display = 'none';
-            contentElement.classList.remove('hidden');
-            initializeTiltEffect();
-        } else {
-            // Show password form
-            passwordContainer.style.display = 'flex';
-            contentElement.classList.add('hidden');
-            
-            // Listen for submit button click
-            submitButton.addEventListener('click', checkPassword);
-            
-            // Allow enter key to submit
-            passwordInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-        }
-        
+        // Password validation
         function checkPassword() {
             const enteredPassword = passwordInput.value;
             
-            if (enteredPassword === correctPassword) {
+            if (enteredPassword === 'Terguson') {
                 // Correct password
                 feedbackElement.textContent = 'Access granted!';
                 feedbackElement.classList.add('success');
@@ -181,6 +168,67 @@ const base = import.meta.env.BASE_URL;
                     passwordInput.classList.remove('shake');
                 }, 500);
             }
+        }
+        
+        // Event listeners for password submission
+        if (submitButton) {
+            submitButton.addEventListener('click', checkPassword);
+        }
+        
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        }
+        
+        // Sam image movement functionality
+        const imageBox = document.getElementById('image-box');
+        const samImage = document.getElementById('sam-image');
+        
+        if (imageBox && samImage) {
+            function randomPosition() {
+                const viewportWidth = Math.max(window.innerWidth, 320);
+                const viewportHeight = Math.max(window.innerHeight, 240);
+                
+                const boxWidth = imageBox.offsetWidth;
+                const boxHeight = imageBox.offsetHeight;
+                
+                const maxX = viewportWidth - boxWidth;
+                const maxY = viewportHeight - boxHeight;
+                
+                const x = Math.max(0, Math.min(Math.floor(Math.random() * maxX), maxX));
+                const y = Math.max(0, Math.min(Math.floor(Math.random() * maxY), maxY));
+                
+                return { x, y };
+            }
+            
+            function moveImageBox() {
+                const { x, y } = randomPosition();
+                imageBox.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+                imageBox.style.webkitTransform = `translate3d(${x}px, ${y}px, 0)`;
+            }
+            
+            // Initialize movement with requestAnimationFrame
+            requestAnimationFrame(() => {
+                moveImageBox();
+                setInterval(moveImageBox, 3000);
+            });
+            
+            // Handle window resizing
+            window.addEventListener('resize', moveImageBox);
+            
+            // Image loading debug
+            samImage.addEventListener('load', function() {
+                console.log('Image loaded successfully');
+                console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+            });
+            
+            samImage.addEventListener('error', function() {
+                console.log('Failed to load image');
+                console.log('Attempted image path:', this.src);
+            });
         }
     });
     
@@ -243,36 +291,23 @@ const base = import.meta.env.BASE_URL;
     }
     
     /* Flying Sam image styling */
-    .flying-sam {
+    #image-box {
         position: absolute;
-        top: -120px;
-        left: -80px;
-        animation: fly 15s linear infinite;
-        z-index: 1001;
+        width: 300px;
+        height: 200px;
+        transition: transform 0.5s ease-in-out;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        z-index: 1000;
     }
     
-    .flying-sam img {
-        width: 100px;
-        height: auto;
-        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
-    }
-    
-    @keyframes fly {
-        0% {
-            transform: translate(0, 0) rotate(10deg);
-        }
-        25% {
-            transform: translate(300px, 50px) rotate(-5deg);
-        }
-        50% {
-            transform: translate(100px, 150px) rotate(15deg);
-        }
-        75% {
-            transform: translate(400px, 20px) rotate(-10deg);
-        }
-        100% {
-            transform: translate(0, 0) rotate(10deg);
-        }
+    #sam-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        opacity: 1;
+        visibility: visible;
     }
     
     @keyframes float {
