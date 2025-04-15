@@ -1,4 +1,141 @@
----
+</style>
+
+<script>
+  // Intersection Observer for reveal animations
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Synopsis page script loaded");
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: '0px'
+    });
+
+    const sections = document.querySelectorAll('.synopsis-card, .key-themes, .character-glimpse, .season-arc, .final-pitch');
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Enhanced ghost animation
+    const ghostText = document.querySelector('.ghost-text');
+    if (ghostText) {
+      // Add 3D transform effect on mouseover
+      ghostText.addEventListener('mouseover', () => {
+        ghostText.style.animation = 'none';
+        setTimeout(() => {
+          ghostText.style.animation = 'ghostSpin 1.5s ease-in-out';
+        }, 10);
+      });
+      
+      // Create the ghostSpin animation dynamically
+      const styleSheet = document.createElement('style');
+      styleSheet.innerHTML = `
+        @keyframes ghostSpin {
+          0% { transform: rotate(0deg) scale(1); }
+          20% { transform: rotate(90deg) scale(1.1); filter: blur(2px); }
+          40% { transform: rotate(180deg) scale(1.2); filter: blur(4px); }
+          60% { transform: rotate(270deg) scale(1.1); filter: blur(2px); }
+          80% { transform: rotate(360deg) scale(1); filter: blur(0); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+    }
+
+    // Add Sam pulsing effect with mouse interactivity
+    const enhanceSamEffect = () => {
+      const samLayer = document.querySelector('.layer-1');
+      if (!samLayer) return;
+      
+      // Add a parallax effect specific to Sam that's more pronounced
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.pageYOffset;
+        const moveRate = scrollPosition * 0.05; // Slower movement rate
+        
+        // Apply a slight rotation and scale along with the movement
+        samLayer.style.transform = `translateZ(-10px) scale(${2 + (scrollPosition * 0.0005)}) 
+                                   rotate(${scrollPosition * 0.005}deg)`;
+      });
+      
+      // Add subtle mouse movement effect
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        // Calculate offset based on mouse position (center of screen is neutral)
+        const offsetX = (mouseX - 0.5) * 10;
+        const offsetY = (mouseY - 0.5) * 10;
+        
+        // Apply subtle transform based on mouse position
+        samLayer.style.backgroundPosition = `calc(50% + ${offsetX}px) calc(50% + ${offsetY}px)`;
+      });
+    };
+
+    // Call the function to enable Sam background effects
+    enhanceSamEffect();
+
+    // Parallax effect for hero background
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.pageYOffset;
+      const parallaxLayers = document.querySelectorAll('.layer');
+      
+      parallaxLayers.forEach((layer, index) => {
+        // Skip layer-1 (Sam) as it has its own handling
+        if (layer.classList.contains('layer-1')) return;
+        
+        const speed = index * 0.2;
+        layer.style.transform = `translateY(${scrollPosition * speed}px)`;
+      });
+    });
+    
+    // Enhanced ghost floating effect
+    const ghosts = document.querySelectorAll('.ghost');
+    
+    // Make ghosts react to mouse movement
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      
+      ghosts.forEach((ghost, index) => {
+        const ghostRect = ghost.getBoundingClientRect();
+        const ghostX = ghostRect.left + (ghostRect.width / 2);
+        const ghostY = ghostRect.top + (ghostRect.height / 2);
+        
+        const deltaX = mouseX - ghostX;
+        const deltaY = mouseY - ghostY;
+        
+        // Calculate distance between mouse and ghost
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        // Only react if mouse is within certain range
+        if (distance < 300) {
+          // Move away from mouse
+          const moveX = deltaX > 0 ? -15 : 15;
+          const moveY = deltaY > 0 ? -15 : 15;
+          
+          // Apply movement but don't override the animation
+          const currentTransform = ghost.style.transform || '';
+          ghost.style.transform = `${currentTransform} translate(${moveX}px, ${moveY}px)`;
+          
+          // Slightly change opacity
+          ghost.style.opacity = '0.2';
+          
+          // Reset after small delay
+          setTimeout(() => {
+            ghost.style.transform = currentTransform;
+            ghost.style.opacity = '';
+          }, 500);
+        }
+      });
+    });
+  });
+</script>---
 import Layout from '../../layouts/Layout.astro';
 ---
 
@@ -252,17 +389,31 @@ import Layout from '../../layouts/Layout.astro';
     100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); opacity: 0.08; }
   }
 
+  /* Pulsing Sam Animation */
+  @keyframes samPulse {
+    0%, 100% {
+      opacity: 0.15;
+      filter: blur(0px) contrast(1.2);
+    }
+    50% {
+      opacity: 0.6; /* Peak clarity - adjust between 0.5-0.75 as desired */
+      filter: blur(0px) contrast(1.4); /* Increase contrast slightly for more presence */
+    }
+  }
+
   /* Keep the working image paths for these as well */
   .sam {
     background-image: url('https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImagesmall.jpg');
     background-color: #444; /* Fallback */
   }
 
+  /* Updated layer-1 with pulsing effect */
   .layer-1 {
     background-image: url('https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImage.jpg');
-    opacity: 0.15;
+    opacity: 0.15; /* Starting opacity */
     filter: blur(0px) contrast(1.2);
     transform: translateZ(-10px) scale(2);
+    animation: samPulse 15s ease-in-out infinite; /* Add pulsing animation */
   }
 
   /* Now add back all the missing styles */
@@ -862,105 +1013,3 @@ import Layout from '../../layouts/Layout.astro';
   ::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
   }
-</style>
-
-<script>
-  // Intersection Observer for reveal animations
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log("Synopsis page script loaded");
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {
-      root: null,
-      threshold: 0.1,
-      rootMargin: '0px'
-    });
-
-    const sections = document.querySelectorAll('.synopsis-card, .key-themes, .character-glimpse, .season-arc, .final-pitch');
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-
-    // Enhanced ghost animation
-    const ghostText = document.querySelector('.ghost-text');
-    if (ghostText) {
-      // Add 3D transform effect on mouseover
-      ghostText.addEventListener('mouseover', () => {
-        ghostText.style.animation = 'none';
-        setTimeout(() => {
-          ghostText.style.animation = 'ghostSpin 1.5s ease-in-out';
-        }, 10);
-      });
-      
-      // Create the ghostSpin animation dynamically
-      const styleSheet = document.createElement('style');
-      styleSheet.innerHTML = `
-        @keyframes ghostSpin {
-          0% { transform: rotate(0deg) scale(1); }
-          20% { transform: rotate(90deg) scale(1.1); filter: blur(2px); }
-          40% { transform: rotate(180deg) scale(1.2); filter: blur(4px); }
-          60% { transform: rotate(270deg) scale(1.1); filter: blur(2px); }
-          80% { transform: rotate(360deg) scale(1); filter: blur(0); }
-          100% { transform: rotate(360deg) scale(1); }
-        }
-      `;
-      document.head.appendChild(styleSheet);
-    }
-
-    // Parallax effect for hero background
-    window.addEventListener('scroll', () => {
-      const scrollPosition = window.pageYOffset;
-      const parallaxLayers = document.querySelectorAll('.layer');
-      
-      parallaxLayers.forEach((layer, index) => {
-        const speed = index * 0.2;
-        layer.style.transform = `translateY(${scrollPosition * speed}px)`;
-      });
-    });
-    
-    // Enhanced ghost floating effect
-    const ghosts = document.querySelectorAll('.ghost');
-    
-    // Make ghosts react to mouse movement
-    document.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      
-      ghosts.forEach((ghost, index) => {
-        const ghostRect = ghost.getBoundingClientRect();
-        const ghostX = ghostRect.left + (ghostRect.width / 2);
-        const ghostY = ghostRect.top + (ghostRect.height / 2);
-        
-        const deltaX = mouseX - ghostX;
-        const deltaY = mouseY - ghostY;
-        
-        // Calculate distance between mouse and ghost
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        
-        // Only react if mouse is within certain range
-        if (distance < 300) {
-          // Move away from mouse
-          const moveX = deltaX > 0 ? -15 : 15;
-          const moveY = deltaY > 0 ? -15 : 15;
-          
-          // Apply movement but don't override the animation
-          const currentTransform = ghost.style.transform || '';
-          ghost.style.transform = `${currentTransform} translate(${moveX}px, ${moveY}px)`;
-          
-          // Slightly change opacity
-          ghost.style.opacity = '0.2';
-          
-          // Reset after small delay
-          setTimeout(() => {
-            ghost.style.transform = currentTransform;
-            ghost.style.opacity = '';
-          }, 500);
-        }
-      });
-    });
-  });
