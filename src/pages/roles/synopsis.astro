@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="Living with the Ghost of Sam - Show Synopsis">
@@ -220,7 +220,8 @@ import Layout from '../layouts/Layout.astro';
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/mansion.jpg');
+    background-color: #1A1A1A; /* Fallback color */
+    background-image: linear-gradient(135deg, #1A1A1A 0%, #303030 100%);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -406,23 +407,20 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .derek {
-    background-image: url('/images/derek.jpg');
-    background-color: #333; /* Fallback */
+    background-color: #444; /* Fallback */
   }
 
   .nancy {
-    background-image: url('/images/nancy.jpg');
-    background-color: #333; /* Fallback */
+    background-color: #444; /* Fallback */
   }
 
   .sam {
-    background-image: url('/images/sam.jpg');
-    background-color: #333; /* Fallback */
+    background-image: url('/images/SamImagesmall.jpg');
+    background-color: #444; /* Fallback */
   }
 
   .linda {
-    background-image: url('/images/linda.jpg');
-    background-color: #333; /* Fallback */
+    background-color: #444; /* Fallback */
   }
 
   .character h3 {
