@@ -4,6 +4,13 @@ import Layout from '../../layouts/Layout.astro';
 
 <Layout title="Living with the Ghost of Sam - Show Synopsis">
   <div class="synopsis-container">
+    <!-- Floating Ghost Effect -->
+    <div class="floating-ghost-container">
+      <div class="ghost ghost-1"></div>
+      <div class="ghost ghost-2"></div>
+      <div class="ghost ghost-3"></div>
+    </div>
+
     <header class="nav-header">
       <nav>
         <a href="/">Home</a>
@@ -159,6 +166,121 @@ import Layout from '../../layouts/Layout.astro';
   .synopsis-container {
     color: var(--light);
     font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Floating Ghost Effect */
+  .floating-ghost-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .ghost {
+    position: absolute;
+    background-image: url('/living-with-the-ghost-of-sam/images/GhostSpirit.png'); /* Placeholder - will be replaced */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15;
+    filter: blur(1px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .ghost-1 {
+    width: 200px;
+    height: 250px;
+    top: 15%;
+    left: -100px;
+    animation: floatGhost1 90s linear infinite;
+  }
+
+  .ghost-2 {
+    width: 150px;
+    height: 180px;
+    top: 45%;
+    right: -150px;
+    opacity: 0.12;
+    animation: floatGhost2 120s linear infinite;
+  }
+
+  .ghost-3 {
+    width: 180px;
+    height: 220px;
+    bottom: 10%;
+    left: 50%;
+    opacity: 0.08;
+    filter: blur(2px);
+    animation: floatGhost3 150s linear infinite;
+  }
+
+  @keyframes floatGhost1 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translateX(calc(100vw + 200px)) translateY(100px) rotate(15deg) scale(1.2);
+    }
+    50% {
+      transform: translateX(calc(100vw - 100px)) translateY(300px) rotate(-10deg) scale(0.8);
+    }
+    75% {
+      transform: translateX(200px) translateY(150px) rotate(5deg) scale(1.1);
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes floatGhost2 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translateX(calc(-100vw - 150px)) translateY(-120px) rotate(-15deg) scale(0.9);
+    }
+    50% {
+      transform: translateX(calc(-100vw + 300px)) translateY(-200px) rotate(10deg) scale(1.2);
+    }
+    75% {
+      transform: translateX(-400px) translateY(-50px) rotate(-5deg) scale(0.8);
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes floatGhost3 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    20% {
+      transform: translateX(300px) translateY(-150px) rotate(10deg) scale(1.1);
+      opacity: 0.1;
+    }
+    40% {
+      transform: translateX(100px) translateY(-300px) rotate(-5deg) scale(0.9);
+      opacity: 0.05;
+    }
+    60% {
+      transform: translateX(-200px) translateY(-200px) rotate(8deg) scale(1.3);
+      opacity: 0.09;
+    }
+    80% {
+      transform: translateX(-400px) translateY(-100px) rotate(-15deg) scale(0.8);
+      opacity: 0.07;
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+      opacity: 0.08;
+    }
   }
 
   .nav-header {
@@ -209,6 +331,8 @@ import Layout from '../../layouts/Layout.astro';
 
   main {
     padding-top: 60px;
+    position: relative;
+    z-index: 2;
   }
 
   /* Enhanced Hero Section */
@@ -333,6 +457,8 @@ import Layout from '../../layouts/Layout.astro';
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    position: relative;
+    z-index: 5;
   }
 
   .synopsis-card {
@@ -344,6 +470,9 @@ import Layout from '../../layouts/Layout.astro';
     transform: translateY(50px);
     opacity: 0;
     animation: fadeInUp 1s ease-out forwards;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(5px);
   }
 
   .show-concept {
@@ -383,6 +512,8 @@ import Layout from '../../layouts/Layout.astro';
     opacity: 0;
     animation: fadeInUp 1s ease-out forwards;
     animation-delay: 0.9s;
+    position: relative;
+    z-index: 10;
   }
 
   .key-themes h2 {
@@ -409,10 +540,11 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .theme {
-    background: rgba(30, 30, 30, 0.5);
+    background: rgba(30, 30, 30, 0.8);
     border-radius: 12px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px);
   }
 
   .theme:hover {
@@ -438,6 +570,8 @@ import Layout from '../../layouts/Layout.astro';
     opacity: 0;
     animation: fadeInUp 1s ease-out forwards;
     animation-delay: 1.2s;
+    position: relative;
+    z-index: 10;
   }
 
   .character-glimpse h2 {
@@ -464,10 +598,11 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .character {
-    background: rgba(30, 30, 30, 0.5);
+    background: rgba(30, 30, 30, 0.8);
     border-radius: 12px;
     padding: 1.5rem;
     transition: transform 0.3s ease;
+    backdrop-filter: blur(5px);
   }
 
   .character:hover {
@@ -519,6 +654,8 @@ import Layout from '../../layouts/Layout.astro';
     opacity: 0;
     animation: fadeInUp 1s ease-out forwards;
     animation-delay: 1.5s;
+    position: relative;
+    z-index: 10;
   }
 
   .season-arc h2 {
@@ -572,9 +709,10 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .node-content {
-    background: rgba(30, 30, 30, 0.5);
+    background: rgba(30, 30, 30, 0.8);
     border-radius: 12px;
     padding: 1.5rem;
+    backdrop-filter: blur(5px);
   }
 
   .node-content h3 {
@@ -592,6 +730,9 @@ import Layout from '../../layouts/Layout.astro';
     opacity: 0;
     animation: fadeInUp 1s ease-out forwards;
     animation-delay: 1.8s;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(5px);
   }
 
   .final-pitch h2 {
@@ -731,14 +872,31 @@ import Layout from '../../layouts/Layout.astro';
     .character-slider {
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
+    
+    .ghost-1, .ghost-2, .ghost-3 {
+      opacity: 0.1;
+    }
+    
+    @keyframes floatGhost1 {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(calc(100vw + 100px)) translateY(50px); }
+    }
+    
+    @keyframes floatGhost2 {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(calc(-100vw - 100px)) translateY(-50px); }
+    }
+    
+    @keyframes floatGhost3 {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(calc(50vw)) translateY(calc(-100vh)); }
+    }
   }
 
   /* For browsers that support it - cool scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
-  }
-
-  ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: var(--dark);
   }
 
@@ -822,6 +980,61 @@ import Layout from '../../layouts/Layout.astro';
       parallaxLayers.forEach((layer, index) => {
         const speed = index * 0.2;
         layer.style.transform = `translateY(${scrollPosition * speed}px)`;
+      });
+    });
+    
+    // Enhanced ghost floating effect
+    const ghosts = document.querySelectorAll('.ghost');
+    
+    // Randomly adjust ghost position slightly for more organic movement
+    setInterval(() => {
+      ghosts.forEach(ghost => {
+        const randomX = (Math.random() - 0.5) * 20;
+        const randomY = (Math.random() - 0.5) * 20;
+        const randomRotate = (Math.random() - 0.5) * 10;
+        const randomScale = 1 + (Math.random() - 0.5) * 0.2;
+        const randomOpacity = 0.08 + (Math.random() * 0.08);
+        
+        ghost.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg) scale(${randomScale})`;
+        ghost.style.opacity = randomOpacity;
+      });
+    }, 5000);
+    
+    // Make ghosts react to mouse movement
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      
+      ghosts.forEach((ghost, index) => {
+        const ghostRect = ghost.getBoundingClientRect();
+        const ghostX = ghostRect.left + (ghostRect.width / 2);
+        const ghostY = ghostRect.top + (ghostRect.height / 2);
+        
+        const deltaX = mouseX - ghostX;
+        const deltaY = mouseY - ghostY;
+        
+        // Calculate distance between mouse and ghost
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        // Only react if mouse is within certain range
+        if (distance < 300) {
+          // Move away from mouse
+          const moveX = deltaX > 0 ? -15 : 15;
+          const moveY = deltaY > 0 ? -15 : 15;
+          
+          // Apply movement but don't override the animation
+          const currentTransform = ghost.style.transform || '';
+          ghost.style.transform = `${currentTransform} translate(${moveX}px, ${moveY}px)`;
+          
+          // Slightly change opacity
+          ghost.style.opacity = '0.2';
+          
+          // Reset after small delay
+          setTimeout(() => {
+            ghost.style.transform = currentTransform;
+            ghost.style.opacity = '';
+          }, 500);
+        }
       });
     });
   });
