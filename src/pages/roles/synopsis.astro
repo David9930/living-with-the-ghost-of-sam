@@ -288,6 +288,7 @@ import Layout from '../../layouts/Layout.astro';
     background-clip: text;
     position: relative;
     display: inline-block;
+    animation: ghostAnimation 8s infinite;
   }
 
   .ghost-text::after {
@@ -637,6 +638,64 @@ import Layout from '../../layouts/Layout.astro';
     }
   }
 
+  /* Ghost animation */
+  @keyframes ghostAnimation {
+    0%, 100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+      filter: blur(0);
+    }
+    10% {
+      opacity: 0.7;
+      transform: translateY(-5px) rotate(-2deg) scale(1.05);
+      filter: blur(2px);
+    }
+    20% {
+      opacity: 0.9;
+      transform: translateY(3px) rotate(1deg) scale(0.98);
+      filter: blur(0);
+    }
+    30% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    40% {
+      transform: translateY(2px) rotate(1deg) scale(1.02);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(-3px) rotate(-1deg) scale(0.95);
+      filter: blur(1px);
+    }
+    60% {
+      transform: translateY(0) rotate(0deg) scale(1);
+      filter: blur(0);
+    }
+    70% {
+      transform: rotate(3deg) scale(1.04);
+    }
+    75% {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+    80% {
+      transform: rotate(-2deg) translateX(4px) scale(0.98);
+    }
+    85% {
+      opacity: 0.9;
+      transform: rotate(0deg) translateX(0) scale(1);
+      filter: blur(2px);
+    }
+    90% {
+      transform: rotate(1deg) translateY(-2px) scale(1.02);
+      filter: blur(0);
+    }
+    95% {
+      opacity: 0.7;
+      transform: rotate(0deg) translateY(0) scale(0.98);
+    }
+  }
+
   /* Media Queries */
   @media (max-width: 768px) {
     .title {
@@ -728,6 +787,32 @@ import Layout from '../../layouts/Layout.astro';
     sections.forEach(section => {
       observer.observe(section);
     });
+
+    // Enhanced ghost animation
+    const ghostText = document.querySelector('.ghost-text');
+    if (ghostText) {
+      // Add 3D transform effect on mouseover
+      ghostText.addEventListener('mouseover', () => {
+        ghostText.style.animation = 'none';
+        setTimeout(() => {
+          ghostText.style.animation = 'ghostSpin 1.5s ease-in-out';
+        }, 10);
+      });
+      
+      // Create the ghostSpin animation dynamically
+      const styleSheet = document.createElement('style');
+      styleSheet.innerHTML = `
+        @keyframes ghostSpin {
+          0% { transform: rotate(0deg) scale(1); }
+          20% { transform: rotate(90deg) scale(1.1); filter: blur(2px); }
+          40% { transform: rotate(180deg) scale(1.2); filter: blur(4px); }
+          60% { transform: rotate(270deg) scale(1.1); filter: blur(2px); }
+          80% { transform: rotate(360deg) scale(1); filter: blur(0); }
+          100% { transform: rotate(360deg) scale(1); }
+        }
+      `;
+      document.head.appendChild(styleSheet);
+    }
 
     // Parallax effect for hero background
     window.addEventListener('scroll', () => {
