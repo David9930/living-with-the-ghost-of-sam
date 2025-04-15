@@ -38,8 +38,7 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <section class="synopsis-content">
-        <!-- Rest of your content remains the same -->
-        <!-- ... -->
+        <!-- Your existing content -->
       </section>
     </main>
   </div>
@@ -77,8 +76,8 @@ import Layout from '../../layouts/Layout.astro';
 
   .ghost {
     position: absolute;
-    /* Fix 1: Updated image path with correct base URL */
-    background-image: url('/living-with-the-ghost-of-sam/images/GhostSpirit.jpg');
+    /* FIXED: Changed url path to include full GitHub Pages path */
+    background-image: url('https://david9930.github.io/living-with-the-ghost-of-sam/images/GhostSpirit.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -88,7 +87,7 @@ import Layout from '../../layouts/Layout.astro';
     pointer-events: none;
   }
 
-  /* Fix 2: Add background color as fallback in case image doesn't load */
+  /* Add a fallback color just in case */
   .ghost-1, .ghost-2, .ghost-3 {
     background-color: rgba(255, 255, 255, 0.2);
   }
@@ -120,61 +119,102 @@ import Layout from '../../layouts/Layout.astro';
     animation: floatGhost3 150s linear infinite;
   }
 
-  /* Rest of the styles remain the same */
-  /* ... */
-
-  /* Fix 3: Updated Sam's image path */
+  /* Fix for Sam's image too */
   .sam {
-    background-image: url('/living-with-the-ghost-of-sam/images/SamImagesmall.jpg');
+    background-image: url('https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImagesmall.jpg');
     background-color: #444; /* Fallback */
   }
 
-  /* Fix 4: Set debug borders to check if elements are rendering */
-  .ghost {
-    border: 1px dashed rgba(255, 255, 255, 0.1); /* Very subtle debug border */
-  }
-
-  /* Additional fix: ensure layer-1 has correct image path */
+  /* Also fix the layer background image */
   .layer-1 {
-    background-image: url('/living-with-the-ghost-of-sam/images/SamImage.jpg');
+    background-image: url('https://david9930.github.io/living-with-the-ghost-of-sam/images/SamImage.jpg');
     opacity: 0.15;
     filter: blur(0px) contrast(1.2);
     transform: translateZ(-10px) scale(2);
   }
+
+  /* Animation keyframes */
+  @keyframes floatGhost1 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translateX(calc(100vw + 200px)) translateY(100px) rotate(15deg) scale(1.2);
+    }
+    50% {
+      transform: translateX(calc(100vw - 100px)) translateY(300px) rotate(-10deg) scale(0.8);
+    }
+    75% {
+      transform: translateX(200px) translateY(150px) rotate(5deg) scale(1.1);
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes floatGhost2 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+      transform: translateX(calc(-100vw - 150px)) translateY(-120px) rotate(-15deg) scale(0.9);
+    }
+    50% {
+      transform: translateX(calc(-100vw + 300px)) translateY(-200px) rotate(10deg) scale(1.2);
+    }
+    75% {
+      transform: translateX(-400px) translateY(-50px) rotate(-5deg) scale(0.8);
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes floatGhost3 {
+    0% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    }
+    20% {
+      transform: translateX(300px) translateY(-150px) rotate(10deg) scale(1.1);
+      opacity: 0.1;
+    }
+    40% {
+      transform: translateX(100px) translateY(-300px) rotate(-5deg) scale(0.9);
+      opacity: 0.05;
+    }
+    60% {
+      transform: translateX(-200px) translateY(-200px) rotate(8deg) scale(1.3);
+      opacity: 0.09;
+    }
+    80% {
+      transform: translateX(-400px) translateY(-100px) rotate(-15deg) scale(0.8);
+      opacity: 0.07;
+    }
+    100% {
+      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+      opacity: 0.08;
+    }
+  }
+
+  /* Add the rest of your styles here */
 </style>
 
 <script>
-  // Script to check if images are loading correctly
+  // Simple debug script to help diagnose image loading issues
   document.addEventListener('DOMContentLoaded', () => {
-    // Debug function to check if images are loading
-    function checkImageLoading() {
-      console.log("Checking ghost images...");
-      
-      // List of background images to check
-      const imageElements = [
-        { selector: '.ghost', url: '/living-with-the-ghost-of-sam/images/GhostSpirit.jpg' },
-        { selector: '.sam', url: '/living-with-the-ghost-of-sam/images/SamImagesmall.jpg' },
-        { selector: '.layer-1', url: '/living-with-the-ghost-of-sam/images/SamImage.jpg' }
-      ];
-      
-      imageElements.forEach(item => {
-        const testImg = new Image();
-        testImg.onload = () => console.log(`Image loaded successfully: ${item.url}`);
-        testImg.onerror = () => {
-          console.error(`Image failed to load: ${item.url}`);
-          // Add visible fallback styling when image fails
-          document.querySelectorAll(item.selector).forEach(el => {
-            el.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-            el.style.border = '2px solid rgba(0, 229, 255, 0.5)'; // Use accent color
-          });
-        };
-        testImg.src = item.url;
+    console.log("Checking if ghost images are loading...");
+    
+    // Test loading the ghost image
+    const testImage = new Image();
+    testImage.onload = () => console.log("Ghost image loaded successfully!");
+    testImage.onerror = () => {
+      console.error("Failed to load ghost image");
+      // Make ghosts more visible if image fails
+      document.querySelectorAll('.ghost').forEach(ghost => {
+        ghost.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+        ghost.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.3)';
       });
-    }
-    
-    // Run the check after a brief delay to ensure page is fully loaded
-    setTimeout(checkImageLoading, 1000);
-    
-    // Rest of your existing script...
+    };
+    testImage.src = 'https://david9930.github.io/living-with-the-ghost-of-sam/images/GhostSpirit.jpg';
   });
 </script>
