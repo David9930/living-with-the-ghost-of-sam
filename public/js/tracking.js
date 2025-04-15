@@ -1,22 +1,24 @@
-// Simplified Page Tracking System with Admin Mode Toggle
+// Simplified Page Tracking System with Admin Mode Toggle (Fixed Version)
 // Includes password-based tracking disable/enable
 
+// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("Tracking script with admin mode loaded");
+  console.log("Admin mode tracking script loaded");
   
   // Check if tracking is explicitly disabled via admin mode
   const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
   
   if (isTrackingDisabled) {
     console.log("Tracking disabled via admin mode");
-    // Still track password attempts in case admin wants to re-enable tracking
-    const isPasswordScreen = document.querySelector('.password-container') && 
-                             !document.querySelector('.password-container.hidden') && 
-                             !sessionStorage.getItem('authenticated');
-                             
-    if (isPasswordScreen) {
-      trackAdminPasswordAttempts();
-    }
+    document.getElementById('password-feedback').textContent = 'Admin mode active - tracking disabled';
+    document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
+  }
+  
+  // Set up password listeners regardless of tracking state
+  setupPasswordListeners();
+  
+  // Skip further tracking if disabled
+  if (isTrackingDisabled) {
     return;
   }
   
@@ -31,9 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("On password screen, setting up password tracking");
     // Initialize session tracking
     initializeSessionTracking();
-    
-    // Track password attempts with admin mode toggle
-    trackAdminPasswordAttempts();
     return;
   }
   
@@ -53,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
   setupInactivityTracking();
 });
 
-// Track password attempts with admin mode toggle
-function trackAdminPasswordAttempts() {
+// Set up password listeners for both normal and admin modes
+function setupPasswordListeners() {
   // Find password elements
   const passwordInput = document.getElementById('password-input');
   const submitButton = document.getElementById('submit-password');
@@ -70,22 +69,63 @@ function trackAdminPasswordAttempts() {
         localStorage.setItem('trackingDisabled', 'true');
         console.log("Admin mode activated - tracking disabled");
         
-        // Optionally, provide visual feedback that admin mode is activated
+        // Provide visual feedback that admin mode is activated
         if (document.getElementById('password-feedback')) {
           document.getElementById('password-feedback').textContent = 'Admin mode activated - tracking disabled';
-          document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color for admin mode
+          document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
         }
+        
+        // Still allow access to the site
+        sessionStorage.setItem('authenticated', 'true');
+        
+        // Animate transition
+        const passwordContainer = document.querySelector('.password-container');
+        const contentElement = document.getElementById('content');
+        
+        setTimeout(() => {
+          passwordContainer.style.opacity = '0';
+          setTimeout(() => {
+            passwordContainer.style.display = 'none';
+            contentElement.classList.remove('hidden');
+            if (typeof initializeTiltEffect === 'function') {
+              initializeTiltEffect();
+            }
+          }, 500);
+        }, 1000);
         
         return;
       }
       
-      // Check for re-enabling tracking with regular password
-      if (enteredPassword === "Terguson" && localStorage.getItem('trackingDisabled') === 'true') {
+      // Check for re-enabling tracking with special command
+      if (enteredPassword === "TergusonON" && localStorage.getItem('trackingDisabled') === 'true') {
         // Re-enable tracking
         localStorage.removeItem('trackingDisabled');
         console.log("Admin mode deactivated - tracking re-enabled");
         
-        // Continue with regular password handling
+        if (document.getElementById('password-feedback')) {
+          document.getElementById('password-feedback').textContent = 'Tracking re-enabled';
+          document.getElementById('password-feedback').style.color = '#51cf66'; // Green success color
+        }
+        
+        // Still allow access with regular password handling
+        sessionStorage.setItem('authenticated', 'true');
+        
+        // Animate transition
+        const passwordContainer = document.querySelector('.password-container');
+        const contentElement = document.getElementById('content');
+        
+        setTimeout(() => {
+          passwordContainer.style.opacity = '0';
+          setTimeout(() => {
+            passwordContainer.style.display = 'none';
+            contentElement.classList.remove('hidden');
+            if (typeof initializeTiltEffect === 'function') {
+              initializeTiltEffect();
+            }
+          }, 500);
+        }, 1000);
+        
+        return;
       }
       
       // Only track if password is correct and tracking is not disabled
