@@ -253,16 +253,16 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   /* Pulsing Sam Animation */
-  @keyframes samPulse {
-    0%, 100% {
-      opacity: 0.15;
-      filter: blur(0px) contrast(1.2);
-    }
-    50% {
-      opacity: 0.6; /* Peak clarity - adjust between 0.5-0.75 as desired */
-      filter: blur(0px) contrast(1.4); /* Increase contrast slightly for more presence */
-    }
+ @keyframes samPulse {
+  0%, 100% {
+    opacity: 0.15; /* Starting and ending opacity */
+    filter: blur(0px) contrast(1.2);
   }
+  50% {
+    opacity: 0.9; /* Peak clarity - adjust this value to make it more visible */
+    filter: blur(0px) contrast(1.5); /* Optionally tweak contrast for more emphasis */
+  }
+}
 
   /* Keep the working image paths for these as well */
   .sam {
