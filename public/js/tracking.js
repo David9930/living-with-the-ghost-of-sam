@@ -1,9 +1,26 @@
-// Simplified Page Tracking System
-// Only tracks password success, page views, and handles inactivity timeout
+// Simplified Page Tracking System with Admin Mode Toggle
+// Includes password-based tracking disable/enable
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("Simplified tracking script loaded");
+  console.log("Tracking script with admin mode loaded");
   
+  // Check if tracking is explicitly disabled via admin mode
+  const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
+  
+  if (isTrackingDisabled) {
+    console.log("Tracking disabled via admin mode");
+    // Still track password attempts in case admin wants to re-enable tracking
+    const isPasswordScreen = document.querySelector('.password-container') && 
+                             !document.querySelector('.password-container.hidden') && 
+                             !sessionStorage.getItem('authenticated');
+                             
+    if (isPasswordScreen) {
+      trackAdminPasswordAttempts();
+    }
+    return;
+  }
+  
+  // Normal tracking code begins here
   // Check if we're on the password screen or authenticated
   const isPasswordScreen = document.querySelector('.password-container') && 
                            !document.querySelector('.password-container.hidden') && 
@@ -11,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // If we're on the password screen, only set up password tracking
   if (isPasswordScreen) {
-    console.log("On password screen, setting up password success tracking");
+    console.log("On password screen, setting up password tracking");
     // Initialize session tracking
     initializeSessionTracking();
     
-    // Only track password attempts
-    trackPasswordAttempts();
+    // Track password attempts with admin mode toggle
+    trackAdminPasswordAttempts();
     return;
   }
   
@@ -36,17 +53,43 @@ document.addEventListener('DOMContentLoaded', function() {
   setupInactivityTracking();
 });
 
-// Track password success
-function trackPasswordAttempts() {
+// Track password attempts with admin mode toggle
+function trackAdminPasswordAttempts() {
   // Find password elements
   const passwordInput = document.getElementById('password-input');
   const submitButton = document.getElementById('submit-password');
   
   if (submitButton && passwordInput) {
-    // Function to handle successful password
-    const handleSuccessfulPassword = async function() {
-      // Only track if password is correct
-      if (passwordInput.value === 'Terguson') {
+    // Function to handle password input
+    const handlePasswordInput = async function() {
+      const enteredPassword = passwordInput.value;
+      
+      // Check for admin mode toggle password
+      if (enteredPassword === "TergusonOFF") {
+        // Disable tracking
+        localStorage.setItem('trackingDisabled', 'true');
+        console.log("Admin mode activated - tracking disabled");
+        
+        // Optionally, provide visual feedback that admin mode is activated
+        if (document.getElementById('password-feedback')) {
+          document.getElementById('password-feedback').textContent = 'Admin mode activated - tracking disabled';
+          document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color for admin mode
+        }
+        
+        return;
+      }
+      
+      // Check for re-enabling tracking with regular password
+      if (enteredPassword === "Terguson" && localStorage.getItem('trackingDisabled') === 'true') {
+        // Re-enable tracking
+        localStorage.removeItem('trackingDisabled');
+        console.log("Admin mode deactivated - tracking re-enabled");
+        
+        // Continue with regular password handling
+      }
+      
+      // Only track if password is correct and tracking is not disabled
+      if (enteredPassword === 'Terguson' && localStorage.getItem('trackingDisabled') !== 'true') {
         try {
           // Get IP info for successful login
           const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
@@ -76,12 +119,12 @@ function trackPasswordAttempts() {
     };
     
     // Track on button click
-    submitButton.addEventListener('click', handleSuccessfulPassword);
+    submitButton.addEventListener('click', handlePasswordInput);
     
     // Track on Enter key
     passwordInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
-        handleSuccessfulPassword();
+        handlePasswordInput();
       }
     });
   }
@@ -121,6 +164,12 @@ function formatLocation(ipData) {
 
 // Track a page view
 async function trackPageView() {
+  // Exit if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Page view tracking skipped (admin mode)");
+    return;
+  }
+  
   try {
     // Get the current session data
     const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking'));
@@ -209,6 +258,12 @@ async function trackPageView() {
 function setupDownloadTracking() {
   // Make the download function available globally
   window.trackDownload = function(url, filename) {
+    // Skip if tracking is disabled
+    if (localStorage.getItem('trackingDisabled') === 'true') {
+      console.log("Download tracking skipped (admin mode)");
+      return;
+    }
+    
     try {
       const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
       if (!sessionData.downloads) {
@@ -247,8 +302,10 @@ function setupDownloadTracking() {
       link.click();
       document.body.removeChild(link);
       
-      // Track the download
-      window.trackDownload(url, filename);
+      // Track the download (if not in admin mode)
+      if (localStorage.getItem('trackingDisabled') !== 'true') {
+        window.trackDownload(url, filename);
+      }
     } catch (error) {
       console.error('Error forcing download:', error);
     }
@@ -277,7 +334,10 @@ function setupDownloadTracking() {
         // For other "viewable" links, just track them
         link.addEventListener('click', function(e) {
           const filename = this.href.split('/').pop();
-          window.trackDownload(this.href, filename);
+          // Only track if not in admin mode
+          if (localStorage.getItem('trackingDisabled') !== 'true') {
+            window.trackDownload(this.href, filename);
+          }
         });
       }
     }
@@ -286,11 +346,22 @@ function setupDownloadTracking() {
 
 // Setup inactivity tracking (15 minutes = 900000 ms)
 function setupInactivityTracking() {
+  // Skip if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Inactivity tracking skipped (admin mode)");
+    return;
+  }
+  
   const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
   let inactivityTimer;
   
   // Function to reset the timer
   function resetInactivityTimer() {
+    // Skip if tracking is disabled
+    if (localStorage.getItem('trackingDisabled') === 'true') {
+      return;
+    }
+    
     // Clear existing timer
     if (inactivityTimer) {
       clearTimeout(inactivityTimer);
@@ -307,6 +378,11 @@ function setupInactivityTracking() {
   
   // Function to end the session due to inactivity
   function endSessionDueToInactivity() {
+    // Skip if tracking is disabled
+    if (localStorage.getItem('trackingDisabled') === 'true') {
+      return;
+    }
+    
     const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
     
     // Send session ended notification
@@ -338,6 +414,12 @@ function setupInactivityTracking() {
 
 // Send tracking event via EmailJS
 function sendTrackingEvent(eventType, eventData) {
+  // Skip if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log(`Tracking event '${eventType}' skipped (admin mode)`);
+    return;
+  }
+  
   // Only proceed if EmailJS is available
   if (typeof emailjs === 'undefined') {
     console.error("EmailJS not available for tracking");
