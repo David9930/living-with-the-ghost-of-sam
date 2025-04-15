@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-// Assuming Layout.astro sets up basic HTML structure, head, etc.
 ---
 
 <Layout title="Living with the Ghost of Sam - Show Synopsis">
@@ -18,8 +17,6 @@ import Layout from '../../layouts/Layout.astro';
     <main>
       <div class="hero-section">
         <div class="parallax-layers">
-          {/* Added a subtle grain/noise layer for texture */}
-          <div class="layer layer-grain"></div>
           <div class="layer layer-1"></div>
           <div class="layer layer-2"></div>
           <div class="layer layer-3"></div>
@@ -34,8 +31,7 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <section class="synopsis-content">
-        {/* Added data-reveal attributes for Intersection Observer animation */}
-        <div class="synopsis-card show-concept" data-reveal="up">
+        <div class="synopsis-card show-concept">
           <h2>Show Concept</h2>
           <div class="card-content">
             <p>"Living with the Ghost of Sam" is a darkly comedic supernatural drama that follows Derek Kinison and his wife Nancy Hammond as they inherit a mysterious Victorian mansion with connections to Derek's late cousin, legendary comedian Sam Kinison. After a dramatic corporate meltdown where Derek channels Sam's infamous comedic style, the couple discovers Ravencrest Mansion—a former psychiatric hospital turned comedy club with a hidden supernatural history.</p>
@@ -44,7 +40,7 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="synopsis-card tone-style" data-reveal="up">
+        <div class="synopsis-card tone-style">
           <h2>Tone & Style</h2>
           <div class="card-content">
             <p>The series blends supernatural mystery with dark comedy, creating a unique tonal blend that echoes shows like "Dead to Me," "Russian Doll," and "What We Do in the Shadows" while incorporating elements of "The Haunting of Hill House" and "Locke & Key."</p>
@@ -53,26 +49,25 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="key-themes" data-reveal="up-stagger"> {/* Changed reveal type */}
+        <div class="key-themes">
           <h2>Key Themes</h2>
           <div class="theme-grid">
-            {/* Added data-reveal-item for staggered animation */}
-            <div class="theme" data-reveal-item>
+            <div class="theme">
               <div class="theme-icon">🏠</div>
               <h3>Finding Home</h3>
               <p>Derek and Nancy's journey to create a meaningful life outside the corporate rat race.</p>
             </div>
-            <div class="theme" data-reveal-item>
+            <div class="theme">
               <div class="theme-icon">🎭</div>
               <h3>Legacy & Identity</h3>
               <p>Derek's complex relationship with Sam's comedic legacy and his own identity.</p>
             </div>
-            <div class="theme" data-reveal-item>
+            <div class="theme">
               <div class="theme-icon">💫</div>
               <h3>Supernatural vs. Technology</h3>
               <p>The blurring line between advanced technology and supernatural phenomena.</p>
             </div>
-            <div class="theme" data-reveal-item>
+            <div class="theme">
               <div class="theme-icon">🌀</div>
               <h3>Past & Present</h3>
               <p>How the past continues to influence the present through memory and connection.</p>
@@ -80,26 +75,25 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="character-glimpse" data-reveal="up-stagger"> {/* Changed reveal type */}
+        <div class="character-glimpse">
           <h2>Main Characters</h2>
           <div class="character-slider">
-            <div class="character" data-reveal-item>
-              {/* Used placeholder background gradients */}
+            <div class="character">
               <div class="character-image derek"></div>
               <h3>Derek Kinison</h3>
               <p>Former corporate executive who channels his cousin Sam's comedic energy during a breakdown, leading to a complete life change.</p>
             </div>
-            <div class="character" data-reveal-item>
+            <div class="character">
               <div class="character-image nancy"></div>
               <h3>Nancy Hammond</h3>
               <p>Art gallery owner balancing skepticism with growing acceptance of supernatural events while supporting Derek's transformation.</p>
             </div>
-            <div class="character" data-reveal-item>
+            <div class="character">
               <div class="character-image sam"></div>
               <h3>Sam Kinison's Ghost</h3>
               <p>The legendary comedian's spirit manifests through reflections, technological glitches, and architectural anomalies, guiding and challenging Derek.</p>
             </div>
-            <div class="character" data-reveal-item>
+            <div class="character">
               <div class="character-image linda"></div>
               <h3>Linda Rhodes</h3>
               <p>Mysterious realtor with supernatural connections who serves as gatekeeper between the town's secretive council and newcomers.</p>
@@ -107,49 +101,44 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </div>
 
-        <div class="season-arc" data-reveal="timeline"> {/* Specific reveal type for timeline */}
+        <div class="season-arc">
           <h2>Season One Arc</h2>
-          <div class="timeline-container">
-            <div class="timeline-line"></div> {/* Line for animation */}
-            <div class="timeline">
-              <div class="timeline-node" data-reveal-item>
-                <div class="node"></div>
-                <div class="node-content">
-                  <h3>Setup (Episodes 1-3)</h3>
-                  <p>Derek and Nancy win the mansion in a supernatural contest and discover its connection to Sam's final days.</p>
-                </div>
+          <div class="timeline">
+            <div class="timeline-node">
+              <div class="node"></div>
+              <div class="node-content">
+                <h3>Setup (Episodes 1-3)</h3>
+                <p>Derek and Nancy win the mansion in a supernatural contest and discover its connection to Sam's final days.</p>
               </div>
-              <div class="timeline-node" data-reveal-item>
-                <div class="node"></div>
-                <div class="node-content">
-                  <h3>Discovery (Episodes 4-6)</h3>
-                  <p>The couple learns about the mansion's technological/supernatural hybrid nature and the mysterious disappearance of visitors.</p>
-                </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node"></div>
+              <div class="node-content">
+                <h3>Discovery (Episodes 4-6)</h3>
+                <p>The couple learns about the mansion's technological/supernatural hybrid nature and the mysterious disappearance of visitors.</p>
               </div>
-              <div class="timeline-node" data-reveal-item>
-                <div class="node"></div>
-                <div class="node-content">
-                  <h3>Crisis (Episodes 7-9)</h3>
-                  <p>Corporate and supernatural worlds collide as the town council's true intentions are revealed.</p>
-                </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node"></div>
+              <div class="node-content">
+                <h3>Crisis (Episodes 7-9)</h3>
+                <p>Corporate and supernatural worlds collide as the town council's true intentions are revealed.</p>
               </div>
-              <div class="timeline-node" data-reveal-item>
-                <div class="node"></div>
-                <div class="node-content">
-                  <h3>Resolution (Episode 10)</h3>
-                  <p>Derek must perform Sam's final routine exactly to prevent an ancient alien technology from awakening.</p>
-                </div>
+            </div>
+            <div class="timeline-node">
+              <div class="node"></div>
+              <div class="node-content">
+                <h3>Resolution (Episode 10)</h3>
+                <p>Derek must perform Sam's final routine exactly to prevent an ancient alien technology from awakening.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="final-pitch" data-reveal="up">
+        <div class="final-pitch">
           <h2>The Laugh Asylum Awaits...</h2>
-           {/* Enhanced text presentation */}
-          <p class="pitch-intro">"Living with the Ghost of Sam" intertwines <span class="highlight">supernatural mystery</span>, character-driven drama, and <span class="highlight">dark comedy</span> into a unique tapestry exploring loss, legacy, and the chaotic beauty of life changes.</p>
-          <p>As Derek and Nancy renovate Ravencrest, they're unwittingly rebuilding their lives and relationship—with some <span class="highlight highlight-ghostly">unexpected spectral assistance</span>.</p>
-          <p class="pitch-outro">Each episode promises a blend of humor, horror, and heart, carving its own niche in the supernatural comedy landscape.</p>
+          <p>"Living with the Ghost of Sam" combines supernatural mystery, character-driven drama, and dark comedy in a unique package that explores how we cope with loss, legacy, and life changes. As Derek and Nancy renovate Ravencrest, they're also rebuilding their lives and relationship—with some unexpected supernatural assistance.</p>
+          <p>With each episode blending humor, horror, and heart, the series offers something for fans of multiple genres while creating its own distinctive voice in the supernatural comedy landscape.</p>
         </div>
       </section>
     </main>
@@ -157,39 +146,30 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <style>
-  /* Base Styles - Kept mostly the same */
+  /* Base Styles */
   :root {
-    --primary: #6E01EF; /* Vivid Purple */
-    --secondary: #FF5722; /* Energetic Orange */
-    --dark: #101012; /* Slightly darker base */
-    --light: #f0f0f5; /* Slightly softer light */
-    --accent: #00E5FF; /* Bright Cyan */
-    --card-bg: linear-gradient(145deg, rgba(25, 25, 30, 0.8), rgba(35, 35, 45, 0.7)); /* Darker, subtle gradient */
-    --card-border: rgba(0, 229, 255, 0.2); /* Accent border */
-    --glow-color: rgba(0, 229, 255, 0.5); /* Accent glow */
-    --text-secondary: rgba(240, 240, 245, 0.7); /* Softer secondary text */
-    --transition-speed: 0.4s; /* Consistent transition speed */
+    --primary: #6E01EF;
+    --secondary: #FF5722;
+    --dark: #151515;
+    --light: #f5f5f5;
+    --accent: #00E5FF;
+    --gradient-bg: linear-gradient(135deg, #1A1A1A 0%, #303030 100%);
   }
 
   .synopsis-container {
     color: var(--light);
     font-family: 'Poppins', sans-serif;
-    background-color: var(--dark); /* Set base background */
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
   }
 
-  /* Nav Header - Kept the same */
-   .nav-header {
+  .nav-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(16, 16, 18, 0.8); /* Match base dark */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(21, 21, 21, 0.8);
+    backdrop-filter: blur(10px);
     z-index: 100;
     padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .nav-header nav {
@@ -204,9 +184,8 @@ import Layout from '../../layouts/Layout.astro';
     color: var(--light);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease; /* Added transform */
+    transition: color 0.3s ease;
     position: relative;
-    padding-bottom: 8px; /* Space for underline */
   }
 
   .nav-header a:after {
@@ -214,31 +193,28 @@ import Layout from '../../layouts/Layout.astro';
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: 0px; /* Positioned at the bottom */
-    left: 50%;
-    transform: translateX(-50%); /* Center the underline */
+    bottom: -5px;
+    left: 0;
     background-color: var(--accent);
-    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+    transition: width 0.3s ease;
   }
 
   .nav-header a:hover {
     color: var(--accent);
-    transform: translateY(-2px); /* Subtle lift */
   }
 
   .nav-header a:hover:after {
     width: 100%;
   }
 
-
   main {
-    padding-top: 80px; /* Adjusted for nav height */
+    padding-top: 60px;
   }
 
-  /* Enhanced Hero Section - Added Grain Layer */
+  /* Enhanced Hero Section */
   .hero-section {
     position: relative;
-    height: 85vh; /* Slightly taller */
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -265,34 +241,24 @@ import Layout from '../../layouts/Layout.astro';
     height: 100%;
     background-size: cover;
     background-position: center;
-    will-change: transform; /* Performance hint */
   }
-
-  /* Subtle noise/grain effect */
-  .layer-grain {
-     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.03' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
-     z-index: 0;
-     opacity: 0.5;
-     position: fixed; /* Fixed so it doesn't parallax */
-  }
-
 
   .layer-1 {
     background-image: url('/living-with-the-ghost-of-sam/images/SamImage.jpg');
-    opacity: 0.12; /* Slightly more subtle */
-    filter: blur(1px) contrast(1.1) brightness(0.9); /* Adjusted filter */
-    transform: translateZ(-20px) scale(2.5); /* Increased depth */
+    opacity: 0.15;
+    filter: blur(0px) contrast(1.2);
+    transform: translateZ(-10px) scale(2);
   }
 
   .layer-2 {
-    background-image: linear-gradient(135deg, #000000 0%, #252525 100%); /* Darker base */
-    opacity: 0.75;
-    transform: translateZ(-10px) scale(1.8); /* Adjusted depth */
+    background-image: linear-gradient(135deg, #000000 0%, #333333 100%);
+    opacity: 0.7;
+    transform: translateZ(-5px) scale(1.5);
   }
 
   .layer-3 {
-    background: radial-gradient(circle at center, transparent 0%, var(--dark) 75%); /* Use dark variable */
-    opacity: 0.9;
+    background: radial-gradient(circle at center, transparent 0%, #000000 70%);
+    opacity: 0.85;
   }
 
   .hero-content {
@@ -303,27 +269,26 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .title {
-    font-size: clamp(3rem, 8vw, 6rem); /* Responsive font size */
+    font-size: 6rem;
     margin-bottom: 1.5rem;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: white;
-    text-shadow: 0 5px 25px rgba(0, 0, 0, 0.7); /* Stronger shadow */
-    animation: floatIn 1.2s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    animation: floatIn 1.2s ease-out;
     position: relative;
   }
 
   .ghost-text {
     color: transparent;
-    background-image: linear-gradient(135deg, var(--accent) 20%, var(--primary) 80%);
+    background-image: linear-gradient(135deg, #00E5FF 20%, #6E01EF 80%);
     -webkit-background-clip: text;
     background-clip: text;
     position: relative;
     display: inline-block;
-    animation: ghostAnimation 8s infinite ease-in-out; /* Added ease-in-out */
-    will-change: transform, opacity, filter;
+    animation: ghostAnimation 8s infinite;
   }
 
   .ghost-text::after {
@@ -331,9 +296,8 @@ import Layout from '../../layouts/Layout.astro';
     position: absolute;
     top: 0.05em;
     left: 0.05em;
-    color: rgba(255, 255, 255, 0.08); /* Subtler echo */
+    color: rgba(255, 255, 255, 0.1);
     z-index: -1;
-    filter: blur(1px);
   }
 
   .subtitle-container {
@@ -347,543 +311,518 @@ import Layout from '../../layouts/Layout.astro';
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    height: 4px; /* Thicker */
+    height: 3px;
     width: 100px;
     background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    border-radius: 2px; /* Rounded ends */
-    opacity: 0;
-    animation: fadeInWidth 1s ease-out 0.8s forwards; /* Animate width */
   }
 
   .tagline {
-    font-size: clamp(1.2rem, 3vw, 1.8rem); /* Responsive font size */
+    font-size: 1.8rem;
     max-width: 800px;
     margin: 0 auto;
     opacity: 0;
     font-weight: 300;
-    line-height: 1.6; /* Improved readability */
-    color: var(--text-secondary); /* Softer color */
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     animation: fadeIn 1s ease-out forwards 0.5s;
   }
 
-  /* Enhanced Synopsis Content & Cards */
+  /* Synopsis Content */
   .synopsis-content {
-    max-width: 1100px; /* Slightly narrower for focus */
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 2rem; /* More vertical padding */
+    padding: 2rem;
   }
 
-  .synopsis-card, .key-themes, .character-glimpse, .season-arc, .final-pitch {
-    margin-bottom: 4rem; /* Increased spacing */
-    opacity: 0; /* Start hidden for JS animation */
-    will-change: transform, opacity; /* Performance hint */
+  .synopsis-card {
+    background: var(--gradient-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
   }
 
-  /* General Card Styling */
-  .synopsis-card, .final-pitch, .theme, .character, .node-content {
-    background: var(--card-bg);
-    border-radius: 12px; /* Slightly smaller radius */
-    padding: clamp(1.5rem, 5vw, 2.5rem); /* Responsive padding */
-    border: 1px solid var(--card-border);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 0, 0, 0.2) inset; /* Deeper shadow + inner */
-    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  .show-concept {
+    animation-delay: 0.3s;
   }
 
-  .synopsis-card:hover, .final-pitch:hover {
-      transform: translateY(-8px) scale(1.01); /* More lift */
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 25px var(--glow-color); /* Enhanced glow on hover */
+  .tone-style {
+    animation-delay: 0.6s;
   }
 
-  h2 { /* Common style for section headers */
-    font-size: clamp(1.8rem, 4vw, 2.2rem); /* Responsive */
-    margin-bottom: 2rem;
+  .synopsis-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
-    color: var(--light);
-    font-weight: 600;
-    letter-spacing: 0.5px;
   }
 
-  h2:after {
+  .synopsis-card h2:after {
     content: '';
     position: absolute;
     left: 0;
     bottom: -10px;
-    width: 60px; /* Shorter line */
-    height: 3px; /* Thinner line */
-    background: linear-gradient(90deg, var(--accent), var(--primary)); /* Gradient underline */
-    border-radius: 2px;
-    transform: scaleX(0); /* Start hidden */
-    transform-origin: left;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0.3s; /* Delayed animation */
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
   }
 
-  /* Animate H2 underline when parent is revealed */
-  [data-reveal].is-visible h2:after {
-    transform: scaleX(1);
+  .synopsis-card p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
   }
 
-  .synopsis-card p, .final-pitch p, .theme p, .character p, .node-content p {
-    line-height: 1.75; /* Increased line height */
-    margin-bottom: 1.2rem;
-    color: var(--text-secondary); /* Softer text */
-    font-size: clamp(0.95rem, 2vw, 1.05rem); /* Responsive */
+  /* Key Themes */
+  .key-themes {
+    margin-bottom: 3rem;
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 0.9s;
   }
-   .synopsis-card p:last-child, .final-pitch p:last-child, .theme p:last-child, .character p:last-child, .node-content p:last-child {
-       margin-bottom: 0;
-   }
 
-  /* Key Themes Enhanced */
-  .key-themes h2 { margin-bottom: 2.5rem; }
+  .key-themes h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .key-themes h2:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
+  }
 
   .theme-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); /* Responsive columns */
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
   }
 
   .theme {
-    text-align: center;
-    border-color: rgba(255, 255, 255, 0.08); /* Subtler border */
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .theme:hover {
-    transform: translateY(-10px); /* Lift */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
-    border-color: var(--card-border); /* Highlight border */
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
 
   .theme-icon {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
-    display: inline-block;
-    transition: transform 0.4s ease;
-  }
-
-  .theme:hover .theme-icon {
-      transform: scale(1.2) rotate(5deg); /* Icon bounce */
   }
 
   .theme h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
     color: var(--accent);
-    font-weight: 600;
   }
 
-  /* Character Glimpse Enhanced */
-   .character-glimpse h2 { margin-bottom: 2.5rem; }
+  /* Character Glimpse */
+  .character-glimpse {
+    margin-bottom: 3rem;
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 1.2s;
+  }
+
+  .character-glimpse h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .character-glimpse h2:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
+  }
 
   .character-slider {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); /* Responsive columns */
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
   }
 
   .character {
-     border-color: rgba(255, 255, 255, 0.08);
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     text-align: center;
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
   }
 
-   .character:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
-    border-color: var(--card-border);
+  .character:hover {
+    transform: translateY(-5px);
   }
 
   .character-image {
-    height: 140px; /* Slightly smaller */
-    width: 140px;
+    height: 150px;
+    width: 150px;
     border-radius: 50%;
     margin: 0 auto 1.5rem;
     background-size: cover;
     background-position: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
-    border: 3px solid transparent; /* Prepare for hover effect */
-    transition: transform 0.4s ease, border-color 0.4s ease;
-    background-color: #333; /* Base fallback */
-    overflow: hidden; /* Ensure gradient stays within bounds */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
-  .character:hover .character-image {
-      transform: scale(1.08); /* Image zoom */
-      border-color: var(--accent); /* Accent border */
+  .derek {
+    background-color: #444; /* Fallback */
   }
 
-  /* Placeholder gradients */
-  .derek { background-image: linear-gradient(45deg, #444, #666); }
-  .nancy { background-image: linear-gradient(45deg, #52527a, #7a7ab3); }
+  .nancy {
+    background-color: #444; /* Fallback */
+  }
+
   .sam {
-    background-image: url('/living-with-the-ghost-of-sam/images/SamImagesmall.jpg'), linear-gradient(45deg, var(--secondary), var(--primary)); /* Image + gradient */
-    background-blend-mode: overlay; /* Blend image with gradient */
+    background-image: url('/living-with-the-ghost-of-sam/images/SamImagesmall.jpg');
+    background-color: #444; /* Fallback */
   }
-  .linda { background-image: linear-gradient(45deg, #800080, #b300b3); }
 
+  .linda {
+    background-color: #444; /* Fallback */
+  }
 
   .character h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
     color: var(--accent);
-     font-weight: 600;
   }
 
   .character p {
-      font-size: 0.95rem; /* Slightly smaller description text */
+    line-height: 1.6;
   }
 
-  /* Season Arc Timeline Enhanced */
-  .season-arc h2 { margin-bottom: 2.5rem; }
+  /* Season Arc Timeline */
+  .season-arc {
+    margin-bottom: 3rem;
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 1.5s;
+  }
 
-  /* Use a container to position the line correctly */
-  .timeline-container {
-      position: relative;
-      max-width: 900px; /* Control width */
-      margin: 0 auto;
-      padding: 1rem 0; /* Add padding */
+  .season-arc h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .season-arc h2:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
   }
 
   .timeline {
     position: relative;
-    padding-left: 50px; /* Space for nodes + line */
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
-  /* The animated vertical line */
-  .timeline-line {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 15px; /* Position left of nodes */
-      bottom: 0; /* Initially full height, will be masked */
-      width: 4px;
-      background: linear-gradient(to bottom, var(--accent), var(--primary)); /* Gradient line */
-      border-radius: 2px;
-      transform-origin: top;
-      transform: scaleY(0); /* Start scaled to 0 */
-      transition: transform 1.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* Animation for reveal */
+  .timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    height: 100%;
+    width: 4px;
+    background: var(--accent);
   }
-
-  /* Animate line when parent section is visible */
-  [data-reveal="timeline"].is-visible .timeline-line {
-      transform: scaleY(1);
-  }
-
 
   .timeline-node {
+    padding-left: 60px;
     position: relative;
-    margin-bottom: 2.5rem;
-    padding-left: 40px; /* Space from node to content */
-    opacity: 0; /* Items start hidden for JS */
-    transform: translateX(20px); /* Start slightly offset */
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin-bottom: 2rem;
   }
-
-  /* Stagger animation handled by JS */
-  [data-reveal="timeline"].is-visible .timeline-node {
-      opacity: 1;
-      transform: translateX(0);
-  }
-
 
   .node {
     position: absolute;
-    left: -12px; /* Position node over the line */
-    width: 30px; /* Larger nodes */
-    height: 30px;
+    left: 8px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: var(--dark); /* Match page background */
+    background: var(--dark);
     border: 4px solid var(--accent);
-    top: 5px; /* Align vertically */
-    z-index: 1;
-    box-shadow: 0 0 15px var(--glow-color); /* Node glow */
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    top: 0;
   }
-
-   .timeline-node:hover .node {
-      transform: scale(1.2); /* Pulse on hover */
-      box-shadow: 0 0 25px var(--glow-color);
-   }
 
   .node-content {
-     border-color: rgba(255, 255, 255, 0.08);
-     margin-left: 10px; /* Ensure spacing */
-     transition: transform 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  .timeline-node:hover .node-content {
-      transform: translateX(5px);
-      border-color: var(--card-border);
-       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
   }
 
   .node-content h3 {
     color: var(--accent);
-    margin-bottom: 0.8rem;
-    font-size: 1.3rem;
-    font-weight: 600;
+    margin-bottom: 0.5rem;
   }
 
-  /* Final Pitch Enhanced */
+  /* Final Pitch */
   .final-pitch {
+    background: var(--gradient-bg);
+    border-radius: 16px;
+    padding: 2rem;
     text-align: center;
-    border: 1px solid var(--primary); /* Use primary color border */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 30px rgba(110, 1, 239, 0.3); /* Primary glow */
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 1.8s;
   }
 
   .final-pitch h2 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--accent);
-    text-shadow: 0 0 10px var(--glow-color); /* Subtle text glow */
   }
 
   .final-pitch p {
     max-width: 800px;
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 1rem;
     line-height: 1.8;
-    font-size: clamp(1rem, 2.2vw, 1.15rem); /* Slightly larger pitch text */
   }
 
-  .pitch-intro {
-      font-weight: 400;
-      color: var(--light); /* Make intro stand out more */
-  }
-  .pitch-outro {
-      font-style: italic;
-      color: var(--accent); /* Accentuate the final sentence */
-      margin-top: 2rem;
-  }
-
-  .highlight {
-      color: var(--accent);
-      font-weight: 600;
-  }
-  .highlight-ghostly {
-      color: var(--primary);
-      font-weight: 600;
-      text-shadow: 0 0 8px rgba(110, 1, 239, 0.5);
-  }
-
-  /* Enhanced Animations */
-  @keyframes floatIn { /* Kept same */
-    0% { opacity: 0; transform: translateY(40px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn { /* Kept same */
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes fadeInWidth { /* For accent line */
-      0% { opacity: 0; width: 0; }
-      100% { opacity: 1; width: 100px; }
-  }
-
-  /* Generic reveal up animation */
-  @keyframes revealUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  /* Add class for triggering animation */
-  [data-reveal].is-visible {
-      opacity: 1; /* Let JS handle the opacity/transform trigger */
-  }
-
-  /* Ghost animation - Kept Mostly the Same, added easing */
-  @keyframes ghostAnimation {
-    0%, 100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); filter: blur(0); }
-    10% { opacity: 0.7; transform: translateY(-5px) rotate(-2deg) scale(1.05); filter: blur(1px); }
-    20% { opacity: 0.9; transform: translateY(3px) rotate(1deg) scale(0.98); filter: blur(0); }
-    30% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
-    40% { transform: translateY(2px) rotate(1deg) scale(1.02); }
-    50% { opacity: 0.8; transform: translateY(-3px) rotate(-1deg) scale(0.95); filter: blur(0.5px); }
-    60% { transform: translateY(0) rotate(0deg) scale(1); filter: blur(0); }
-    70% { transform: rotate(3deg) scale(1.04); }
-    75% { opacity: 1; transform: rotate(0deg) scale(1); }
-    80% { transform: rotate(-2deg) translateX(4px) scale(0.98); }
-    85% { opacity: 0.9; transform: rotate(0deg) translateX(0) scale(1); filter: blur(1px); }
-    90% { transform: rotate(1deg) translateY(-2px) scale(1.02); filter: blur(0); }
-    95% { opacity: 0.7; transform: rotate(0deg) translateY(0) scale(0.98); }
-  }
-
-  /* Media Queries - Adjusted breakpoints and styles */
-  @media (max-width: 900px) {
-      .timeline-container { max-width: 95%; }
-  }
-
-  @media (max-width: 768px) {
-    .title { /* Already responsive */ }
-    .tagline { /* Already responsive */ }
-    .hero-section { height: 80vh; } /* Adjust height */
-    .nav-header nav { gap: 1.5rem; flex-wrap: wrap; justify-content: center;} /* Allow wrap */
-    .timeline { padding-left: 35px; }
-    .timeline-line { left: 10px; }
-    .timeline-node { padding-left: 30px; }
-    .node { left: -10px; width: 26px; height: 26px; border-width: 3px; }
-    .character-slider, .theme-grid { grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 1.5rem; }
-    h2 { margin-bottom: 1.5rem; }
-    .synopsis-content { padding: 3rem 1rem; } /* Less horizontal padding */
-  }
-
-  @media (max-width: 480px) {
-      .nav-header nav { gap: 0.8rem; }
-      .nav-header a { font-size: 0.9rem; padding-bottom: 6px; }
-      .character-image { width: 100px; height: 100px;}
-  }
-
-
-  /* Scrollbar Styling */
-  ::-webkit-scrollbar { width: 10px; }
-  ::-webkit-scrollbar-track { background: var(--dark); }
-  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; border: 2px solid var(--dark); }
-  ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-  /* Reduced Motion Preference */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
+  /* Animations */
+  @keyframes floatIn {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
     }
-    .ghost-text { animation: none; } /* Disable complex ghost anim */
-    .parallax-layers .layer { transform: none !important; } /* Disable parallax */
-    .timeline-line { transform: scaleY(1) !important; transition: none !important;} /* Show timeline line immediately */
-     [data-reveal], [data-reveal-item] { opacity: 1 !important; transform: none !important; transition: none !important; } /* Show elements immediately */
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Ghost animation */
+  @keyframes ghostAnimation {
+    0%, 100% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+      filter: blur(0);
+    }
+    10% {
+      opacity: 0.7;
+      transform: translateY(-5px) rotate(-2deg) scale(1.05);
+      filter: blur(2px);
+    }
+    20% {
+      opacity: 0.9;
+      transform: translateY(3px) rotate(1deg) scale(0.98);
+      filter: blur(0);
+    }
+    30% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    40% {
+      transform: translateY(2px) rotate(1deg) scale(1.02);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(-3px) rotate(-1deg) scale(0.95);
+      filter: blur(1px);
+    }
+    60% {
+      transform: translateY(0) rotate(0deg) scale(1);
+      filter: blur(0);
+    }
+    70% {
+      transform: rotate(3deg) scale(1.04);
+    }
+    75% {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+    80% {
+      transform: rotate(-2deg) translateX(4px) scale(0.98);
+    }
+    85% {
+      opacity: 0.9;
+      transform: rotate(0deg) translateX(0) scale(1);
+      filter: blur(2px);
+    }
+    90% {
+      transform: rotate(1deg) translateY(-2px) scale(1.02);
+      filter: blur(0);
+    }
+    95% {
+      opacity: 0.7;
+      transform: rotate(0deg) translateY(0) scale(0.98);
+    }
+  }
+
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .title {
+      font-size: 3.5rem;
+    }
+    
+    .tagline {
+      font-size: 1.3rem;
+    }
+    
+    .hero-section {
+      height: 70vh;
+    }
+
+    .nav-header nav {
+      gap: 1rem;
+    }
+
+    .timeline:before {
+      left: 15px;
+    }
+
+    .timeline-node {
+      padding-left: 45px;
+    }
+
+    .node {
+      left: 3px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .character-slider {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  /* For browsers that support it - cool scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--dark);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+
+  /* Dark mode optimization */
+  @media (prefers-color-scheme: dark) {
+    .synopsis-container {
+      color: var(--light);
+    }
+  }
+
+  /* Animation for page elements when they come into view */
+  @media (prefers-reduced-motion: no-preference) {
+    .synopsis-card, .key-themes, .character-glimpse, .season-arc, .final-pitch {
+      animation: fadeInUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+  }
 </style>
 
 <script>
   // Intersection Observer for reveal animations
   document.addEventListener('DOMContentLoaded', () => {
-    const revealElements = document.querySelectorAll('[data-reveal], [data-reveal-stagger], [data-reveal-timeline]');
-
-    // Configuration for different reveal types
-    const revealConfigs = {
-      up: { threshold: 0.1, delay: 0, duration: '0.8s', timing: 'cubic-bezier(0.165, 0.84, 0.44, 1)', y: '40px' },
-      'up-stagger': { threshold: 0.1, delay: 150, duration: '0.7s', timing: 'ease-out', y: '30px' }, // Stagger delay in ms
-      timeline: { threshold: 0.1, delay: 250, duration: '0.6s', timing: 'ease', x: '20px' } // Timeline item stagger
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const element = entry.target;
-          const revealType = element.dataset.reveal || element.dataset.revealStagger || element.dataset.revealTimeline || 'up';
-          const config = revealConfigs[revealType] || revealConfigs.up;
-
-          element.classList.add('is-visible');
-
-          // Apply initial styles for animation start
-          element.style.transition = `opacity ${config.duration} ${config.timing}, transform ${config.duration} ${config.timing}`;
-
-          // If staggering is needed
-          if (element.dataset.revealStagger || element.dataset.revealTimeline) {
-            const items = element.querySelectorAll('[data-reveal-item]');
-            items.forEach((item, index) => {
-              item.style.transition = `opacity ${config.duration} ${config.timing} ${index * config.delay}ms, transform ${config.duration} ${config.timing} ${index * config.delay}ms`;
-               // Trigger reflow/styles for transition
-               void item.offsetWidth;
-               item.style.opacity = '1';
-               item.style.transform = 'translate(0, 0)'; // Reset transform
-            });
-          } else {
-             // Trigger reflow/styles for transition
-             void element.offsetWidth;
-             element.style.opacity = '1';
-             element.style.transform = 'translate(0, 0)'; // Reset transform
-          }
-
-          obs.unobserve(element); // Stop observing once revealed
+          entry.target.classList.add('visible');
         }
       });
     }, {
       root: null,
-      rootMargin: '0px 0px -50px 0px', // Trigger slightly before element is fully in view
-      // threshold: 0.1 // Default threshold, overridden by configs if needed
+      threshold: 0.1,
+      rootMargin: '0px'
     });
 
-    // Set initial animation states and observe
-    revealElements.forEach(el => {
-        const revealType = el.dataset.reveal || el.dataset.revealStagger || el.dataset.revealTimeline || 'up';
-        const config = revealConfigs[revealType] || revealConfigs.up;
-        el.style.opacity = '0'; // Start hidden
-
-        if (el.dataset.revealStagger || el.dataset.revealTimeline) {
-             const items = el.querySelectorAll('[data-reveal-item]');
-             items.forEach(item => {
-                 item.style.opacity = '0';
-                 item.style.transform = config.x ? `translateX(${config.x})` : `translateY(${config.y || '30px'})`;
-             });
-        } else {
-             el.style.transform = config.x ? `translateX(${config.x})` : `translateY(${config.y || '40px'})`;
-        }
-       observer.observe(el);
+    const sections = document.querySelectorAll('.synopsis-card, .key-themes, .character-glimpse, .season-arc, .final-pitch');
+    sections.forEach(section => {
+      observer.observe(section);
     });
 
-
-    // --- Hero Parallax (Kept from original, ensure layer selectors match) ---
-    const parallaxLayers = document.querySelectorAll('.layer:not(.layer-grain)'); // Exclude fixed grain layer
-
-    function handleScroll() {
-        const scrollPosition = window.pageYOffset;
-        parallaxLayers.forEach((layer, index) => {
-          // Adjust speeds for more noticeable effect, ensure layer-1 moves least
-          const speed = (index + 1) * 0.15; // Example: layer-1 (index 0) speed 0.15, layer-2 (index 1) speed 0.3, etc.
-          // Get original Z translation if needed, or just apply Y
-          layer.style.transform = `translateY(${scrollPosition * speed}px) ${getComputedStyle(layer).transform.replace(/translateY\([^\)]+\)/, '')}`;
-        });
-    }
-
-     // Limit scroll event listener frequency
-     let scrollTimeout;
-     window.addEventListener('scroll', () => {
-         if (scrollTimeout) {
-             window.cancelAnimationFrame(scrollTimeout);
-         }
-         scrollTimeout = window.requestAnimationFrame(handleScroll);
-     }, { passive: true });
-
-
-    // --- Ghost Text Hover Spin (Kept from original, ensure selector matches) ---
+    // Enhanced ghost animation
     const ghostText = document.querySelector('.ghost-text');
     if (ghostText) {
+      // Add 3D transform effect on mouseover
+      ghostText.addEventListener('mouseover', () => {
+        ghostText.style.animation = 'none';
+        setTimeout(() => {
+          ghostText.style.animation = 'ghostSpin 1.5s ease-in-out';
+        }, 10);
+      });
+      
+      // Create the ghostSpin animation dynamically
       const styleSheet = document.createElement('style');
       styleSheet.innerHTML = `
         @keyframes ghostSpin {
-          0% { transform: rotateY(0deg) scale(1); filter: blur(0); opacity: 1;}
-          25% { transform: rotateY(90deg) scale(1.1); filter: blur(1px); opacity: 0.7;}
-          50% { transform: rotateY(180deg) scale(1.2); filter: blur(2px); opacity: 0.5;}
-          75% { transform: rotateY(270deg) scale(1.1); filter: blur(1px); opacity: 0.7;}
-          100% { transform: rotateY(360deg) scale(1); filter: blur(0); opacity: 1;}
+          0% { transform: rotate(0deg) scale(1); }
+          20% { transform: rotate(90deg) scale(1.1); filter: blur(2px); }
+          40% { transform: rotate(180deg) scale(1.2); filter: blur(4px); }
+          60% { transform: rotate(270deg) scale(1.1); filter: blur(2px); }
+          80% { transform: rotate(360deg) scale(1); filter: blur(0); }
+          100% { transform: rotate(360deg) scale(1); }
         }
       `;
       document.head.appendChild(styleSheet);
-
-      ghostText.addEventListener('mouseenter', () => { // Use mouseenter for less flickering
-        ghostText.style.animation = 'none'; // Pause current animation
-        // Use a small timeout to allow the browser to reset animation state
-        setTimeout(() => {
-          ghostText.style.animation = 'ghostSpin 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Faster, bouncier spin
-        }, 10);
-      });
-
-       // Optional: Reset to default animation when spin finishes or mouse leaves
-      ghostText.addEventListener('animationend', (e) => {
-          if (e.animationName === 'ghostSpin') {
-             ghostText.style.animation = 'ghostAnimation 8s infinite ease-in-out';
-          }
-      });
-       ghostText.addEventListener('mouseleave', () => {
-           // Optionally force back to default animation immediately on leave
-           ghostText.style.animation = 'ghostAnimation 8s infinite ease-in-out';
-       });
     }
+
+    // Parallax effect for hero background
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.pageYOffset;
+      const parallaxLayers = document.querySelectorAll('.layer');
+      
+      parallaxLayers.forEach((layer, index) => {
+        const speed = index * 0.2;
+        layer.style.transform = `translateY(${scrollPosition * speed}px)`;
+      });
+    });
   });
 </script>
