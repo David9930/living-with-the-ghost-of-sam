@@ -115,6 +115,17 @@ const base = import.meta.env.BASE_URL;
     
     // Password authentication
     document.addEventListener('DOMContentLoaded', function() {
+        // Check if tracking is disabled in admin mode
+        const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
+        
+        if (isTrackingDisabled) {
+            console.log("Admin mode active - tracking disabled");
+            if (document.getElementById('password-feedback')) {
+                document.getElementById('password-feedback').textContent = 'Admin mode active - tracking disabled';
+                document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
+            }
+        }
+
         // Enhanced authentication check
         if (sessionStorage.getItem('authenticated')) {
             const passwordContainer = document.querySelector('.password-container');
@@ -132,12 +143,105 @@ const base = import.meta.env.BASE_URL;
         const contentElement = document.getElementById('content');
         const passwordContainer = document.querySelector('.password-container');
         
-        // Password validation
-        function checkPassword() {
+        // Enhanced password validation with admin mode
+        async function checkPassword() {
             const enteredPassword = passwordInput.value;
             
+            // Admin mode OFF - Disable tracking
+            if (enteredPassword === 'TergusonOFF') {
+                // Enable admin mode
+                localStorage.setItem('trackingDisabled', 'true');
+                console.log("Admin mode activated - tracking disabled");
+                
+                // Show success with admin mode color
+                feedbackElement.textContent = 'Admin mode activated - tracking disabled';
+                feedbackElement.classList.add('success');
+                feedbackElement.classList.remove('error');
+                feedbackElement.style.color = '#FFD700'; // Gold color
+                
+                // Save authentication state
+                sessionStorage.setItem('authenticated', 'true');
+                
+                // Animate transition
+                setTimeout(() => {
+                    passwordContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordContainer.style.display = 'none';
+                        contentElement.classList.remove('hidden');
+                        initializeTiltEffect();
+                    }, 500);
+                }, 1000);
+                
+                return;
+            }
+            
+            // Admin mode ON - Re-enable tracking
+            if (enteredPassword === 'TergusonON') {
+                // Disable admin mode
+                localStorage.removeItem('trackingDisabled');
+                console.log("Admin mode deactivated - tracking re-enabled");
+                
+                // Show success with normal color
+                feedbackElement.textContent = 'Tracking re-enabled';
+                feedbackElement.classList.add('success');
+                feedbackElement.classList.remove('error');
+                feedbackElement.style.color = '#51cf66'; // Green color
+                
+                // Save authentication state
+                sessionStorage.setItem('authenticated', 'true');
+                
+                // Animate transition
+                setTimeout(() => {
+                    passwordContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordContainer.style.display = 'none';
+                        contentElement.classList.remove('hidden');
+                        initializeTiltEffect();
+                    }, 500);
+                }, 1000);
+                
+                return;
+            }
+            
+            // Regular password
             if (enteredPassword === 'Terguson') {
-                // Correct password
+                // Track successful login if not in admin mode
+                if (localStorage.getItem('trackingDisabled') !== 'true') {
+                    try {
+                        // Track authentication success with IP info
+                        const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+                        
+                        if (ipResponse.ok) {
+                            const ipData = await ipResponse.json();
+                            // Prepare location info
+                            const location = `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
+                            
+                            // Send tracking email via EmailJS
+                            if (typeof emailjs !== 'undefined') {
+                                emailjs.send(
+                                    'service_mglwuwe',
+                                    'template_6cjvb36',
+                                    {
+                                        to_email: 'dburnham9930@gmail.com',
+                                        subject: 'Authentication Success - Living with the Ghost of Sam',
+                                        message: `
+                                            IP Information:
+                                            -----------------------------
+                                            IP: ${ipData.ip || 'Unknown'}
+                                            Location: ${location}
+                                            Time: ${new Date().toISOString()}
+                                            User Agent: ${navigator.userAgent}
+                                        `
+                                    }
+                                );
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Error tracking authentication:", error);
+                    }
+                }
+                
+                // Show success message
                 feedbackElement.textContent = 'Access granted!';
                 feedbackElement.classList.add('success');
                 feedbackElement.classList.remove('error');
@@ -243,6 +347,57 @@ const base = import.meta.env.BASE_URL;
             });
         }
     }
+
+    // Page view tracking function
+    async function trackPageView() {
+        // Skip if in admin mode
+        if (localStorage.getItem('trackingDisabled') === 'true') {
+            console.log("Page view tracking skipped (admin mode)");
+            return;
+        }
+        
+        try {
+            // Get IP info
+            const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+            
+            if (ipResponse.ok && typeof emailjs !== 'undefined') {
+                const ipData = await ipResponse.json();
+                const location = `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
+                
+                // Send page view tracking
+                emailjs.send(
+                    'service_mglwuwe',
+                    'template_6cjvb36',
+                    {
+                        to_email: 'dburnham9930@gmail.com',
+                        subject: 'Page View - Living with the Ghost of Sam',
+                        message: `
+                            Page View Information:
+                            -----------------------------
+                            URL: ${window.location.pathname}
+                            Title: ${document.title}
+                            Time: ${new Date().toISOString()}
+                            IP: ${ipData.ip || 'Unknown'}
+                            Location: ${location}
+                            User Agent: ${navigator.userAgent}
+                        `
+                    }
+                );
+            }
+        } catch (error) {
+            console.error("Error tracking page view:", error);
+        }
+    }
+
+    // Track page views when content is shown (if not in admin mode)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Only track if user is authenticated and not in admin mode
+        if (sessionStorage.getItem('authenticated') === 'true' && 
+            localStorage.getItem('trackingDisabled') !== 'true') {
+            // Small delay to ensure page is fully loaded
+            setTimeout(trackPageView, 1000);
+        }
+    });
 </script>
 
 <style>
@@ -697,68 +852,3 @@ const base = import.meta.env.BASE_URL;
         .tagline p {
             font-size: 1.2rem;
         }
-        
-        .password-form {
-            padding: 2rem;
-        }
-        
-        .flying-sam {
-            top: -80px;
-            left: -50px;
-        }
-        
-        .flying-sam img {
-            width: 80px;
-        }
-    }
-    
-    @media (max-width: 600px) {
-        .glitch-text {
-            font-size: 2rem;
-        }
-        
-        .grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .footer-note p {
-            font-size: 1rem;
-        }
-        
-        .password-form {
-            padding: 1.5rem;
-            width: 95%;
-        }
-        
-        .password-form h1 {
-            font-size: 1.5rem;
-        }
-        
-        .flying-sam {
-            top: -60px;
-            left: -30px;
-        }
-        
-        .flying-sam img {
-            width: 60px;
-        }
-        
-        @keyframes fly {
-            0% {
-                transform: translate(0, 0) rotate(10deg);
-            }
-            25% {
-                transform: translate(200px, 30px) rotate(-5deg);
-            }
-            50% {
-                transform: translate(80px, 100px) rotate(15deg);
-            }
-            75% {
-                transform: translate(250px, 20px) rotate(-10deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(10deg);
-            }
-        }
-    }
-</style>
