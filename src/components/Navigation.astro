@@ -2,7 +2,7 @@
 // src/components/Navigation.astro
 const base = import.meta.env.BASE_URL;
 ---
-//
+
 <nav class="nav-container">
     <div class="nav-content">
         <a href={`${base}`} class="nav-title">Living with the Ghost of Sam</a>
@@ -11,7 +11,17 @@ const base = import.meta.env.BASE_URL;
             <a href={`${base}scripts`} class="nav-link">Scripts</a>
             <a href={`${base}bible`} class="nav-link">Bible</a>
             <a href={`${base}sam`} class="nav-link">Sam</a>
-            <a href={`${base}documents`} class="nav-link">Documents</a>
+            
+            <!-- Documents dropdown menu -->
+            <div class="dropdown">
+                <button class="nav-link dropdown-toggle">Documents</button>
+                <div class="dropdown-content">
+                    <a href={`${base}roles/synopsis`} class="dropdown-item">Synopsis</a>
+                    <a href={`${base}roles/seasonarcsummary`} class="dropdown-item">Show Arc and Episode Highlights</a>
+                </div>
+            </div>
+            
+            <!-- Roles dropdown menu -->
             <div class="dropdown">
                 <button class="nav-link dropdown-toggle">Roles</button>
                 <div class="dropdown-content">
@@ -26,6 +36,7 @@ const base = import.meta.env.BASE_URL;
         </div>
     </div>
 </nav>
+
 <style>
     .nav-container {
         position: fixed;
@@ -161,15 +172,32 @@ const base = import.meta.env.BASE_URL;
 </style>
 
 <script>
-    // Handle mobile responsiveness for dropdown
+    // Handle mobile responsiveness for dropdowns
     document.addEventListener('DOMContentLoaded', () => {
-        const dropdownToggle = document.querySelector('.dropdown-toggle');
-        const dropdownContent = document.querySelector('.dropdown-content');
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
         
         if (window.innerWidth <= 768) {
-            dropdownToggle?.addEventListener('click', (e) => {
-                e.preventDefault();
-                dropdownContent?.classList.toggle('show');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Close all other dropdowns first
+                    document.querySelectorAll('.dropdown-content').forEach(content => {
+                        if (content !== toggle.nextElementSibling) {
+                            content.classList.remove('show');
+                        }
+                    });
+                    // Toggle the current dropdown
+                    toggle.nextElementSibling.classList.toggle('show');
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.matches('.dropdown-toggle')) {
+                    document.querySelectorAll('.dropdown-content').forEach(content => {
+                        content.classList.remove('show');
+                    });
+                }
             });
         }
     });
