@@ -153,9 +153,23 @@ const base = import.meta.env.BASE_URL;
             <div class="contact-section" data-aos="fade-up">
                 <h2>Get in Touch</h2>
                 <div class="contact-container">
-                    <a href="mailto:derekdevon17@gmail.com" class="email-btn">
+                    <a href="mailto:derekdevon17@gmail.com" class="email-btn primary-btn">
                         <i class="fas fa-envelope"></i> Email Me
                     </a>
+                    
+                    <div class="alt-contact">
+                        <p>Alternative contact options:</p>
+                        <div class="alt-buttons">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=derekdevon17@gmail.com" target="_blank" class="alt-btn">
+                                <i class="fas fa-envelope"></i> Open in Gmail
+                            </a>
+                            
+                            <button onclick="copyEmail()" class="alt-btn">
+                                <i class="fas fa-copy"></i> Copy Email Address
+                            </button>
+                        </div>
+                        <p id="email-copied-message" style="display: none;">Email copied to clipboard!</p>
+                    </div>
                 </div>
                 <div class="newsletter-signup">
                     <h3>Stay Updated on Future Projects</h3>
@@ -193,6 +207,18 @@ const base = import.meta.env.BASE_URL;
             once: true
         });
     };
+    
+    // Email copy function
+    function copyEmail() {
+        navigator.clipboard.writeText('derekdevon17@gmail.com');
+        const message = document.getElementById('email-copied-message');
+        message.style.display = 'block';
+        message.style.color = '#4CAF50';
+        
+        setTimeout(() => {
+            message.style.display = 'none';
+        }, 3000);
+    }
     
     // Simple form handling for newsletter
     document.addEventListener('DOMContentLoaded', function() {
@@ -570,7 +596,7 @@ const base = import.meta.env.BASE_URL;
 
     .contact-container {
         margin: 0 auto 2rem;
-        max-width: 400px;
+        max-width: 500px;
     }
 
     .email-btn {
@@ -595,6 +621,46 @@ const base = import.meta.env.BASE_URL;
     .email-btn i {
         margin-right: 10px;
         font-size: 1.2rem;
+    }
+    
+    .alt-contact {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .alt-contact p {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .alt-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .alt-btn {
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .alt-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    #email-copied-message {
+        margin-top: 0.8rem;
+        font-size: 0.9rem;
+        font-weight: bold;
     }
 
     .newsletter-signup {
@@ -676,6 +742,11 @@ const base = import.meta.env.BASE_URL;
 
         .two-column {
             grid-template-columns: 1fr;
+        }
+        
+        .alt-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .newsletter-signup form {
