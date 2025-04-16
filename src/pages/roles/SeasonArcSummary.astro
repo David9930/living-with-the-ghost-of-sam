@@ -1,1 +1,134 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
 
+<Layout title="Show Arc and Episode Highlights">
+	<main>
+		<h1>Season Arc Summary</h1>
+		
+		<section class="arc-overview">
+			<h2>Season Overview</h2>
+			<p>
+				<!-- Replace this with your season overview content -->
+				The first season of "Living with the Ghost of Sam" follows the journey of [Main Character] as they navigate life 
+				alongside the ghost of Sam, a charismatic and enigmatic spirit who has unfinished business in the mortal world.
+			</p>
+		</section>
+		
+		<section class="episode-breakdown">
+			<h2>Episode Breakdown</h2>
+			
+			<div class="episode">
+				<h3>Episode 1: "Title"</h3>
+				<p class="logline">Logline: Brief one-sentence summary of the episode.</p>
+				<div class="episode-content">
+					<p>
+						<!-- Replace with episode 1 details -->
+						Detailed description of episode 1 plot, character developments, and key moments.
+					</p>
+				</div>
+			</div>
+			
+			<div class="episode">
+				<h3>Episode 2: "Title"</h3>
+				<p class="logline">Logline: Brief one-sentence summary of the episode.</p>
+				<div class="episode-content">
+					<p>
+						<!-- Replace with episode 2 details -->
+						Detailed description of episode 2 plot, character developments, and key moments.
+					</p>
+				</div>
+			</div>
+			
+			<!-- Add more episodes as needed -->
+		</section>
+		
+		<section class="season-arc">
+			<h2>Character Arcs</h2>
+			
+			<div class="character-arc">
+				<h3>Main Character</h3>
+				<p>
+					<!-- Replace with character arc details -->
+					Description of the main character's journey throughout the season.
+				</p>
+			</div>
+			
+			<div class="character-arc">
+				<h3>Sam</h3>
+				<p>
+					<!-- Replace with character arc details -->
+					Description of Sam's journey and revelations throughout the season.
+				</p>
+			</div>
+			
+			<!-- Add more character arcs as needed -->
+		</section>
+		
+		<section class="season-finale">
+			<h2>Season Finale</h2>
+			<p>
+				<!-- Replace with season finale details -->
+				Description of how the season concludes, any cliffhangers, and setup for the next season.
+			</p>
+		</section>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		padding: 2rem;
+		max-width: 1000px;
+		color: white;
+	}
+	
+	h1 {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+	
+	section {
+		margin-bottom: 3rem;
+		background: rgba(255, 255, 255, 0.05);
+		padding: 2rem;
+		border-radius: 8px;
+	}
+	
+	h2 {
+		font-size: 1.8rem;
+		margin-bottom: 1.5rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		padding-bottom: 0.5rem;
+	}
+	
+	h3 {
+		font-size: 1.4rem;
+		margin-bottom: 1rem;
+		color: #FFD700;
+	}
+	
+	.episode, .character-arc {
+		margin-bottom: 2rem;
+		padding: 1.5rem;
+		background: rgba(0, 0, 0, 0.3);
+		border-radius: 6px;
+	}
+	
+	.logline {
+		font-style: italic;
+		margin-bottom: 1rem;
+		color: #B8B8B8;
+	}
+	
+	.episode-content {
+		margin-top: 1rem;
+	}
+	
+	/* Add some subtle animation to sections on hover */
+	section:hover {
+		box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+		transition: box-shadow 0.3s ease;
+	}
+</style>
