@@ -164,7 +164,7 @@ const base = import.meta.env.BASE_URL;
                                 <i class="fas fa-envelope"></i> Open in Gmail
                             </a>
                             
-                            <button onclick="copyEmail()" class="alt-btn">
+                            <button id="copy-email-btn" class="alt-btn">
                                 <i class="fas fa-copy"></i> Copy Email Address
                             </button>
                         </div>
@@ -208,17 +208,84 @@ const base = import.meta.env.BASE_URL;
         });
     };
     
-    // Email copy function
-    function copyEmail() {
-        navigator.clipboard.writeText('derekdevon17@gmail.com');
+    // Improved clipboard functionality with fallback methods
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyBtn = document.getElementById('copy-email-btn');
         const message = document.getElementById('email-copied-message');
-        message.style.display = 'block';
-        message.style.color = '#4CAF50';
+        const emailText = 'derekdevon17@gmail.com';
         
-        setTimeout(() => {
-            message.style.display = 'none';
-        }, 3000);
-    }
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                // Method 1: Modern Clipboard API with fallbacks
+                if (navigator.clipboard && window.isSecureContext) {
+                    // Secure context with Clipboard API available
+                    navigator.clipboard.writeText(emailText)
+                        .then(() => {
+                            showSuccess();
+                        })
+                        .catch(err => {
+                            console.error('Could not copy text: ', err);
+                            fallbackCopyMethod();
+                        });
+                } else {
+                    // Fallback for older browsers or non-secure contexts
+                    fallbackCopyMethod();
+                }
+            });
+        }
+        
+        // Fallback copy method using text area
+        function fallbackCopyMethod() {
+            try {
+                // Create a temporary textarea element
+                const textArea = document.createElement("textarea");
+                textArea.value = emailText;
+                
+                // Make the textarea out of viewport
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                
+                // Focus and select the text
+                textArea.focus();
+                textArea.select();
+                
+                // Execute the copy command
+                const successful = document.execCommand('copy');
+                
+                // Clean up
+                document.body.removeChild(textArea);
+                
+                if (successful) {
+                    showSuccess();
+                } else {
+                    showManualCopyPrompt();
+                }
+            } catch (err) {
+                console.error('Fallback copy method failed: ', err);
+                showManualCopyPrompt();
+            }
+        }
+        
+        // Show success message
+        function showSuccess() {
+            message.textContent = "Email copied to clipboard!";
+            message.style.display = 'block';
+            message.style.color = '#4CAF50';
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Show manual copy prompt if all else fails
+        function showManualCopyPrompt() {
+            message.innerHTML = "Copy this email: <strong>" + emailText + "</strong>";
+            message.style.display = 'block';
+            message.style.color = '#FFA500';
+        }
+    });
     
     // Simple form handling for newsletter
     document.addEventListener('DOMContentLoaded', function() {
