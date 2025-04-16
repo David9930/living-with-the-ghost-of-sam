@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Show Documents">
 	<main>
 		<h1>Show Documents</h1>
-		<p class="instruction">Click on a box to stop it, then click "View Document" to proceed</p>
+		<p class="instruction">CLICK TO CATCH A BOX BEFORE IT ESCAPES!</p>
 		
 		<div class="floating-container">
 			<div class="doc-card" id="synopsis-card">
@@ -51,6 +51,12 @@ import Layout from '../layouts/Layout.astro';
 		margin-bottom: 2rem;
 		color: #FFD700;
 		font-style: italic;
+		animation: pulse 1.5s infinite alternate;
+	}
+	
+	@keyframes pulse {
+		0% { opacity: 0.7; }
+		100% { opacity: 1; text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
 	}
 	
 	.floating-container {
@@ -69,9 +75,9 @@ import Layout from '../layouts/Layout.astro';
 		box-shadow: 0 0 25px rgba(33, 150, 243, 0.4);
 		border: 1px solid rgba(255, 255, 255, 0.1);
 		transition: transform 0.3s, box-shadow 0.3s;
-		animation-duration: 30s;
+		animation-duration: 12s; /* Much faster animation */
 		animation-iteration-count: infinite;
-		animation-timing-function: linear;
+		animation-timing-function: ease-in-out;
 		animation-direction: alternate;
 		user-select: none;
 	}
@@ -90,9 +96,11 @@ import Layout from '../layouts/Layout.astro';
 	
 	.doc-card.paused {
 		animation-play-state: paused;
-		box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-		transform: scale(1.05);
+		box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4);
+		transform: scale(1.1);
 		z-index: 10;
+		background: rgba(20, 20, 20, 0.9);
+		border: 2px solid rgba(255, 215, 0, 0.5);
 	}
 	
 	.card-content {
@@ -114,21 +122,43 @@ import Layout from '../layouts/Layout.astro';
 	
 	.view-btn {
 		display: inline-block;
-		background: #2196F3;
+		background: linear-gradient(135deg, #2196F3, #0D47A1);
 		color: white;
-		padding: 0.7rem 1.2rem;
+		padding: 0.8rem 1.2rem;
 		border-radius: 4px;
 		text-decoration: none;
 		text-align: center;
-		transition: background 0.3s, transform 0.3s;
+		transition: all 0.3s;
 		font-weight: bold;
 		position: relative;
 		overflow: hidden;
+		box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+		text-transform: uppercase;
+		letter-spacing: 1px;
 	}
 	
 	.view-btn:hover {
-		background: #1976D2;
-		transform: translateY(-2px);
+		background: linear-gradient(135deg, #1E88E5, #0D47A1);
+		transform: translateY(-2px) scale(1.05);
+		box-shadow: 0 0 15px rgba(33, 150, 243, 0.8);
+	}
+	
+	.doc-card.paused .view-btn {
+		background: linear-gradient(135deg, #FFD700, #FF8C00);
+		box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+		animation: pulse-button 1.5s infinite;
+	}
+	
+	.doc-card.paused .view-btn:hover {
+		background: linear-gradient(135deg, #FFC107, #FF8C00);
+		transform: translateY(-3px) scale(1.08);
+		box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+	}
+	
+	@keyframes pulse-button {
+		0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
+		50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
+		100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.7); }
 	}
 	
 	.view-btn::after {
@@ -149,19 +179,23 @@ import Layout from '../layouts/Layout.astro';
 	
 	@keyframes float-1 {
 		0% { transform: translate(0, 0) rotate(0deg); }
-		20% { transform: translate(100px, 50px) rotate(5deg); }
-		40% { transform: translate(200px, -30px) rotate(-3deg); }
-		60% { transform: translate(100px, 100px) rotate(5deg); }
-		80% { transform: translate(-50px, 30px) rotate(-5deg); }
+		15% { transform: translate(150px, 80px) rotate(8deg); }
+		30% { transform: translate(250px, -60px) rotate(-10deg); }
+		45% { transform: translate(100px, 150px) rotate(12deg); }
+		60% { transform: translate(-100px, 80px) rotate(-8deg); }
+		75% { transform: translate(-180px, -100px) rotate(10deg); }
+		90% { transform: translate(-80px, -150px) rotate(-12deg); }
 		100% { transform: translate(0, 0) rotate(0deg); }
 	}
 	
 	@keyframes float-2 {
 		0% { transform: translate(0, 0) rotate(0deg); }
-		20% { transform: translate(-100px, 30px) rotate(-5deg); }
-		40% { transform: translate(-150px, -50px) rotate(3deg); }
-		60% { transform: translate(-50px, 80px) rotate(-3deg); }
-		80% { transform: translate(100px, 10px) rotate(5deg); }
+		15% { transform: translate(-150px, 60px) rotate(-8deg); }
+		30% { transform: translate(-220px, -80px) rotate(10deg); }
+		45% { transform: translate(-100px, 120px) rotate(-12deg); }
+		60% { transform: translate(150px, 30px) rotate(8deg); }
+		75% { transform: translate(200px, -120px) rotate(-10deg); }
+		90% { transform: translate(100px, -150px) rotate(12deg); }
 		100% { transform: translate(0, 0) rotate(0deg); }
 	}
 	
@@ -196,12 +230,57 @@ import Layout from '../layouts/Layout.astro';
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
 		const cards = document.querySelectorAll('.doc-card');
+		const instruction = document.querySelector('.instruction');
+		
+		// Add a success message function
+		const showSuccessMessage = (message) => {
+			// Update instruction text
+			instruction.textContent = message;
+			instruction.style.color = "#00FF00";
+			instruction.style.fontSize = "1.4rem";
+			
+			// Reset after 3 seconds
+			setTimeout(() => {
+				instruction.textContent = "CLICK TO CATCH A BOX BEFORE IT ESCAPES!";
+				instruction.style.color = "#FFD700";
+				instruction.style.fontSize = "1.2rem";
+			}, 3000);
+		};
 		
 		cards.forEach(card => {
+			// Play a capture sound when clicked
+			const playCapture = () => {
+				const audio = new Audio();
+				audio.volume = 0.5;
+				try {
+					// Use a simple beep sound since we can't reference external files
+					const context = new (window.AudioContext || window.webkitAudioContext)();
+					const oscillator = context.createOscillator();
+					const gainNode = context.createGain();
+					
+					oscillator.connect(gainNode);
+					gainNode.connect(context.destination);
+					
+					oscillator.type = 'sine';
+					oscillator.frequency.value = 800;
+					gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.5);
+					
+					oscillator.start(context.currentTime);
+					oscillator.stop(context.currentTime + 0.5);
+				} catch (e) {
+					console.log("Audio not supported");
+				}
+			};
+			
 			// Toggle paused state when clicking the card
 			card.addEventListener('click', (e) => {
 				// Only toggle if the click is on the card itself, not on the button
 				if (!e.target.classList.contains('view-btn')) {
+					if (!card.classList.contains('paused')) {
+						playCapture();
+						showSuccessMessage("CAUGHT! NOW CLICK VIEW DOCUMENT!");
+					}
+					
 					card.classList.toggle('paused');
 					
 					// If this card is now paused, make sure it's on top
@@ -223,6 +302,8 @@ import Layout from '../layouts/Layout.astro';
 				if (!card.classList.contains('paused')) {
 					e.preventDefault();
 					card.classList.add('paused');
+					playCapture();
+					showSuccessMessage("CAUGHT! NOW CLICK VIEW DOCUMENT!");
 				}
 			});
 		});
