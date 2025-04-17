@@ -616,38 +616,27 @@ function sendTrackingEventImpl(eventType, eventData) {
     eventData.time = new Date().toISOString();
   }
   
-  // Create a formatted message with proper sections
-  let formattedMessage = `Event Type: ${eventType}\n`;
-  formattedMessage += `Time: ${eventData.time}\n`;
+  // Create a formatted message with proper sections - this is critical for the template
+  const formattedMessage = formatTrackingEventMessage(eventType, eventData);
   
-  if (eventData.sessionId) {
-    formattedMessage += `Session ID: ${eventData.sessionId}\n`;
-  }
-  
-  // Add a section header for the specific event type
-  formattedMessage += `\n${eventType} Information: -----------------------------\n`;
-  
-  // Add all event data except sessionId (already included above)
-  Object.entries(eventData)
-    .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
-    .forEach(([key, value]) => {
-      // Format the key with first letter capitalized
-      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-      formattedMessage += `${formattedKey}: ${value}\n`;
-    });
-  
-  // Prepare email parameters with improved formatting
+  // Prepare email parameters with improved formatting for the template
   const params = {
     to_email: 'dburnham9930@gmail.com',
     from_name: `Ghost of Sam - ${eventType}`,
+    from_email: 'system@livingwiththeghost.com',
     subject: `Site Activity: ${eventType} - Living with the Ghost of Sam`,
-    message: formattedMessage
+    message: formattedMessage,
+    // These fields are likely what the template is expecting
+    content: formattedMessage,  // Try alternate parameter name
+    name: `Ghost of Sam - ${eventType}`, // Try alternate parameter name
+    email: 'system@livingwiththeghost.com', // Try alternate parameter name
+    // Include raw data for template access
+    eventType: eventType
   };
   
   console.log("Sending email with params:", params);
   
-  // Check if the window.emailjsInitialized flag is set to true by the improved initialization code
-  // If not set, try to send anyway since EmailJS might still work
+  // Check if EmailJS is available
   if (typeof emailjs !== 'undefined') {
     // Send the email asynchronously
     emailjs.send(
@@ -669,6 +658,30 @@ function sendTrackingEventImpl(eventType, eventData) {
   } else {
     console.error("EmailJS not available for sending tracking event");
   }
+}
+
+// Format the message consistently for all tracking events
+function formatTrackingEventMessage(eventType, eventData) {
+  let formattedMessage = `Event Type: ${eventType}\n`;
+  formattedMessage += `Time: ${eventData.time}\n`;
+  
+  if (eventData.sessionId) {
+    formattedMessage += `Session ID: ${eventData.sessionId}\n`;
+  }
+  
+  // Add a section header for the specific event type
+  formattedMessage += `\n${eventType} Information: -----------------------------\n`;
+  
+  // Add all event data except sessionId (already included above)
+  Object.entries(eventData)
+    .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
+    .forEach(([key, value]) => {
+      // Format the key with first letter capitalized
+      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+      formattedMessage += `${formattedKey}: ${value}\n`;
+    });
+    
+  return formattedMessage;
 }
 
 // Function to track contact form submissions
