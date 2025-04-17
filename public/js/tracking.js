@@ -8,10 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Check if tracking is explicitly disabled via admin mode
   const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
   
-  if (isTrackingDisabled) {
+  // Get password feedback element if it exists
+  const passwordFeedbackElement = document.getElementById('password-feedback');
+  
+  if (isTrackingDisabled && passwordFeedbackElement) {
     console.log("Tracking disabled via admin mode");
-    document.getElementById('password-feedback').textContent = 'Admin mode active - tracking disabled';
-    document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
+    passwordFeedbackElement.textContent = 'Admin mode active - tracking disabled';
+    passwordFeedbackElement.style.color = '#FFD700'; // Gold color
   }
   
   // Set up password listeners regardless of tracking state
@@ -73,9 +76,10 @@ function setupPasswordListeners() {
         console.log("Admin mode activated - tracking disabled");
         
         // Provide visual feedback that admin mode is activated
-        if (document.getElementById('password-feedback')) {
-          document.getElementById('password-feedback').textContent = 'Admin mode activated - tracking disabled';
-          document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
+        const passwordFeedbackElement = document.getElementById('password-feedback');
+        if (passwordFeedbackElement) {
+          passwordFeedbackElement.textContent = 'Admin mode activated - tracking disabled';
+          passwordFeedbackElement.style.color = '#FFD700'; // Gold color
         }
         
         // Still allow access to the site
@@ -85,16 +89,18 @@ function setupPasswordListeners() {
         const passwordContainer = document.querySelector('.password-container');
         const contentElement = document.getElementById('content');
         
-        setTimeout(() => {
-          passwordContainer.style.opacity = '0';
+        if (passwordContainer && contentElement) {
           setTimeout(() => {
-            passwordContainer.style.display = 'none';
-            contentElement.classList.remove('hidden');
-            if (typeof initializeTiltEffect === 'function') {
-              initializeTiltEffect();
-            }
-          }, 500);
-        }, 1000);
+            passwordContainer.style.opacity = '0';
+            setTimeout(() => {
+              passwordContainer.style.display = 'none';
+              contentElement.classList.remove('hidden');
+              if (typeof window.initializeTiltEffect === 'function') {
+                window.initializeTiltEffect();
+              }
+            }, 500);
+          }, 1000);
+        }
         
         return;
       }
@@ -105,9 +111,10 @@ function setupPasswordListeners() {
         localStorage.removeItem('trackingDisabled');
         console.log("Admin mode deactivated - tracking re-enabled");
         
-        if (document.getElementById('password-feedback')) {
-          document.getElementById('password-feedback').textContent = 'Tracking re-enabled';
-          document.getElementById('password-feedback').style.color = '#51cf66'; // Green success color
+        const passwordFeedbackElement = document.getElementById('password-feedback');
+        if (passwordFeedbackElement) {
+          passwordFeedbackElement.textContent = 'Tracking re-enabled';
+          passwordFeedbackElement.style.color = '#51cf66'; // Green success color
         }
         
         // Still allow access with regular password handling
@@ -117,16 +124,18 @@ function setupPasswordListeners() {
         const passwordContainer = document.querySelector('.password-container');
         const contentElement = document.getElementById('content');
         
-        setTimeout(() => {
-          passwordContainer.style.opacity = '0';
+        if (passwordContainer && contentElement) {
           setTimeout(() => {
-            passwordContainer.style.display = 'none';
-            contentElement.classList.remove('hidden');
-            if (typeof initializeTiltEffect === 'function') {
-              initializeTiltEffect();
-            }
-          }, 500);
-        }, 1000);
+            passwordContainer.style.opacity = '0';
+            setTimeout(() => {
+              passwordContainer.style.display = 'none';
+              contentElement.classList.remove('hidden');
+              if (typeof window.initializeTiltEffect === 'function') {
+                window.initializeTiltEffect();
+              }
+            }, 500);
+          }, 1000);
+        }
         
         return;
       }
@@ -202,6 +211,7 @@ function generateSessionId() {
 
 // Format location string from IP data
 function formatLocation(ipData) {
+  if (!ipData) return 'Unknown';
   return `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
 }
 
@@ -215,7 +225,7 @@ async function trackPageView() {
   
   try {
     // Get the current session data
-    const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking'));
+    const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
     
     // Update last activity time
     sessionData.lastActivity = new Date().toISOString();
@@ -272,7 +282,7 @@ async function trackPageView() {
     
     // Still track the page view without IP data
     try {
-      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking'));
+      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
       
       // Record basic page visit
       const pageVisit = {
@@ -282,8 +292,10 @@ async function trackPageView() {
       };
       
       // Add to history
-      sessionData.pageVisits.push(pageVisit);
-      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+      if (Array.isArray(sessionData.pageVisits)) {
+        sessionData.pageVisits.push(pageVisit);
+        sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+      }
       
       // Send notification
       sendTrackingEvent('Page View', {
@@ -412,8 +424,10 @@ function setupInactivityTracking() {
     
     // Update last activity time
     const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-    sessionData.lastActivity = new Date().toISOString();
-    sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+    if (sessionData) {
+      sessionData.lastActivity = new Date().toISOString();
+      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+    }
     
     // Set new timer
     inactivityTimer = setTimeout(endSessionDueToInactivity, INACTIVITY_TIMEOUT);
@@ -472,7 +486,7 @@ function setupExitTrackingMetrics() {
   window.addEventListener('scroll', function() {
     const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollPercentage = Math.round((scrollTop / scrollHeight) * 100);
+    const scrollPercentage = scrollHeight > 0 ? Math.round((scrollTop / scrollHeight) * 100) : 0;
     
     // Update deepest scroll if needed
     if (scrollPercentage > deepestScroll) {
@@ -497,7 +511,7 @@ function setupExitTrackingMetrics() {
   });
 }
 
-// Send tracking event via EmailJS
+// Send tracking event via EmailJS with retry logic
 function sendTrackingEvent(eventType, eventData) {
   // Skip if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
@@ -505,12 +519,26 @@ function sendTrackingEvent(eventType, eventData) {
     return;
   }
   
-  // Only proceed if EmailJS is available
+  // Check if EmailJS is properly initialized before sending
   if (typeof emailjs === 'undefined') {
-    console.error("EmailJS not available for tracking");
+    console.warn("EmailJS not available for tracking yet, will retry in 1s");
+    // Try again in 1 second if EmailJS isn't loaded yet
+    setTimeout(() => {
+      if (typeof emailjs !== 'undefined') {
+        sendTrackingEventImpl(eventType, eventData);
+      } else {
+        console.error("EmailJS still not available after retry, tracking event not sent");
+      }
+    }, 1000);
     return;
   }
   
+  // EmailJS is available, proceed with sending
+  sendTrackingEventImpl(eventType, eventData);
+}
+
+// Implementation of sending tracking event
+function sendTrackingEventImpl(eventType, eventData) {
   // Verify we have the needed information
   if (!eventType || !eventData) {
     console.error("Missing tracking event data");
@@ -536,33 +564,44 @@ function sendTrackingEvent(eventType, eventData) {
     `
   };
   
-  // Send the email asynchronously
-  emailjs.send(
-    'service_mglwuwe',
-    'template_6cjvb36',
-    params
-  ).then(
-    function(response) {
-      console.log(`Tracking event '${eventType}' sent successfully:`, response);
-    },
-    function(error) {
-      console.error(`Failed to send tracking event '${eventType}':`, error);
-    }
-  );
+  // Check if the window.emailjsInitialized flag is set to true by the improved initialization code
+  if (window.emailjsInitialized) {
+    // Send the email asynchronously
+    emailjs.send(
+      'service_mglwuwe',
+      'template_6cjvb36',
+      params
+    ).then(
+      function(response) {
+        console.log(`Tracking event '${eventType}' sent successfully:`, response);
+      },
+      function(error) {
+        console.error(`Failed to send tracking event '${eventType}':`, error);
+      }
+    );
+  } else {
+    console.warn("EmailJS not fully initialized yet, tracking event not sent");
+  }
 }
-  // Function to track contact form submissions
+
+// Function to track contact form submissions
 window.trackContactRequest = function(email, category, sessionId) {
   // Skip if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
     console.log("Contact request tracking skipped (admin mode)");
-    return;
+    return true; // Return true so UI feedback still works
   }
   
   try {
     // Get the session data if sessionId is not provided
-    if (sessionId === 'Unknown') {
-      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-      sessionId = sessionData.sessionId || 'Unknown';
+    if (!sessionId || sessionId === 'Unknown') {
+      try {
+        const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+        sessionId = sessionData.sessionId || 'Unknown';
+      } catch (error) {
+        console.error('Error getting session data:', error);
+        sessionId = 'Unknown';
+      }
     }
     
     // Send notification for contact request
@@ -581,4 +620,3 @@ window.trackContactRequest = function(email, category, sessionId) {
     return false;
   }
 };
-}
