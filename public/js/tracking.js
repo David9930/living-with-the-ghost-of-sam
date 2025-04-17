@@ -706,55 +706,49 @@ window.trackContactRequest = function(email, category, sessionId) {
     
     console.log(`Contact request being tracked for email: ${email}, category: ${category}`);
     
-    // Check if we can send directly via EmailJS for better parameter control
-    if (typeof emailjs !== 'undefined' && window.emailjsInitialized) {
-      // Create parameters that match the template expectations
-      const params = {
-        to_email: 'dburnham9930@gmail.com',
-        from_name: `Contact Request - ${category}`,
-        from_email: email,
-        subject: `Contact Request - ${category}`,
-        message: `
+    // Direct EmailJS submission approach
+    if (typeof emailjs !== 'undefined') {
+      // Format message content for the template
+      const messageContent = `
 Contact Request Details:
 - Email: ${email}
 - Category: ${category}
 - Page: ${window.location.pathname}
 - Session ID: ${sessionId}
 - Time: ${new Date().toISOString()}
-        `,
-        email: email, // This parameter seems expected by the template
-        category: category,
-        page: window.location.pathname
-      };
-      
-      // Send directly via EmailJS
-      emailjs.send('service_mglwuwe', 'template_6cjvb36', params)
-        .then(function(response) {
-          console.log(`Contact request tracked successfully via direct EmailJS:`, response);
-        })
-        .catch(function(error) {
-          console.error(`Error sending contact request via direct EmailJS:`, error);
-          // Fall back to the standard tracking method
-          sendStandardTrackingEvent();
-        });
-    } else {
-      // Fall back to standard tracking method
-      sendStandardTrackingEvent();
-    }
-    
-    // Helper function for the standard tracking approach
-    function sendStandardTrackingEvent() {
-      // Send notification for contact request via the standard tracking event system
-      sendTrackingEvent('Contact Request', {
-        sessionId: sessionId,
+`;
+
+      // Create parameters that match the template expectations
+      const params = {
+        to_email: 'dburnham9930@gmail.com',
+        from_name: `Contact - ${category}`,
+        from_email: email,
+        subject: `Contact - ${category}`,
+        message: messageContent,
+        // Additional template parameters that might be required
+        content: messageContent,
+        name: `Contact - ${category}`,
         email: email,
         category: category,
         page: window.location.pathname,
-        time: new Date().toISOString()
-      });
+        user_email: email,  // Try another variant
+        reply_to: email     // Try another variant
+      };
+      
+      // Send directly via EmailJS
+      return emailjs.send('service_mglwuwe', 'template_6cjvb36', params)
+        .then(function(response) {
+          console.log(`Contact request tracked successfully:`, response);
+          return true;
+        })
+        .catch(function(error) {
+          console.error(`Error sending contact request:`, error);
+          return false;
+        });
+    } else {
+      console.error("EmailJS not available for tracking");
+      return false;
     }
-    
-    return true;
   } catch (error) {
     console.error('Error tracking contact request:', error);
     return false;
