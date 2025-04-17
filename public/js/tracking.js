@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Setup inactivity tracking
   setupInactivityTracking();
+  
+  // Setup exit tracking metrics
+  setupExitTrackingMetrics();
 });
 
 // Set up password listeners for both normal and admin modes
@@ -449,6 +452,48 @@ function setupInactivityTracking() {
   const events = ['mousedown', 'keypress', 'scroll', 'touchstart'];
   events.forEach(event => {
     document.addEventListener(event, resetInactivityTimer, false);
+  });
+}
+
+// Setup consolidated exit tracking metrics
+function setupExitTrackingMetrics() {
+  // Skip if in admin mode
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    return;
+  }
+  
+  // Track page entry time
+  const entryTime = new Date();
+  
+  // Track deepest scroll position
+  let deepestScroll = 0;
+  
+  // Track scroll depth but don't send events yet
+  window.addEventListener('scroll', function() {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollPercentage = Math.round((scrollTop / scrollHeight) * 100);
+    
+    // Update deepest scroll if needed
+    if (scrollPercentage > deepestScroll) {
+      deepestScroll = scrollPercentage;
+    }
+  });
+  
+  // Send consolidated data only when user leaves
+  window.addEventListener('beforeunload', function() {
+    // Calculate time on page
+    const exitTime = new Date();
+    const timeOnPage = Math.round((exitTime - entryTime) / 1000); // in seconds
+    
+    // Send single event with all metrics
+    sendTrackingEvent('Enhanced Page Exit', {
+      url: window.location.pathname,
+      timeOnPage: timeOnPage + ' seconds',
+      deepestScroll: deepestScroll + '%',
+      referrer: document.referrer || 'Direct',
+      time: new Date().toISOString()
+    });
   });
 }
 
