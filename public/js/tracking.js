@@ -550,3 +550,35 @@ function sendTrackingEvent(eventType, eventData) {
     }
   );
 }
+  // Function to track contact form submissions
+window.trackContactRequest = function(email, category, sessionId) {
+  // Skip if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Contact request tracking skipped (admin mode)");
+    return;
+  }
+  
+  try {
+    // Get the session data if sessionId is not provided
+    if (sessionId === 'Unknown') {
+      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+      sessionId = sessionData.sessionId || 'Unknown';
+    }
+    
+    // Send notification for contact request
+    sendTrackingEvent('Contact Request', {
+      sessionId: sessionId,
+      email: email,
+      category: category,
+      page: window.location.pathname,
+      time: new Date().toISOString()
+    });
+    
+    console.log(`Contact request tracked for category: ${category}`);
+    return true;
+  } catch (error) {
+    console.error('Error tracking contact request:', error);
+    return false;
+  }
+};
+}
