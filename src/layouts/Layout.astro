@@ -18,43 +18,84 @@ const base = import.meta.env.BASE_URL;
         <meta name="generator" content={Astro.generator} />
         <title>{title} | Living with the Ghost of Sam</title>
         
-        <!-- Replace the current EmailJS initialization with this more robust version -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script type="text/javascript">
-    (function() {
-        // Flag to track EmailJS initialization status
-        window.emailjsInitialized = false;
-        
-        // Function to initialize EmailJS with retry logic
-        function initializeEmailJS(retryCount = 0) {
-            console.log("Attempting to initialize EmailJS...");
-            try {
-                if (typeof emailjs !== 'undefined') {
-                    emailjs.init("9RBvHdx1jHS-zVWcA");
-                    window.emailjsInitialized = true;
-                    console.log("EmailJS initialized successfully");
-                } else if (retryCount < 3) {
-                    // Retry up to 3 times with increasing delay
-                    console.warn(`EmailJS not available yet, will retry (attempt ${retryCount + 1}/3)`);
-                    setTimeout(() => initializeEmailJS(retryCount + 1), 500 * (retryCount + 1));
+        <!-- EmailJS with improved initialization, debugging and validation -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script type="text/javascript">
+            (function() {
+                // Flag to track EmailJS initialization status
+                window.emailjsInitialized = false;
+                
+                // Debug logging
+                console.log("Starting EmailJS initialization process...");
+                
+                // Function to initialize EmailJS with retry logic
+                function initializeEmailJS(retryCount = 0) {
+                    console.log(`Attempting to initialize EmailJS (attempt ${retryCount + 1})...`);
+                    
+                    try {
+                        if (typeof emailjs !== 'undefined') {
+                            // Initialize with public key
+                            emailjs.init("9RBvHdx1jHS-zVWcA");
+                            
+                            // Set global flag for other scripts to check
+                            window.emailjsInitialized = true;
+                            
+                            // Verify initialization worked by checking a method
+                            if (typeof emailjs.send === 'function') {
+                                console.log("EmailJS initialized successfully and verified");
+                                
+                                // Send a test ping to ensure everything is working
+                                setTimeout(function() {
+                                    console.log("Sending EmailJS test ping...");
+                                    emailjs.send(
+                                        'service_mglwuwe',
+                                        'template_6cjvb36',
+                                        {
+                                            to_email: 'dburnham9930@gmail.com',
+                                            from_name: 'System Check',
+                                            subject: 'EmailJS Initialization Test',
+                                            message: 'EmailJS has been successfully initialized and can send messages.'
+                                        }
+                                    ).then(
+                                        function() { console.log("Test ping sent successfully"); },
+                                        function(error) { console.error("Test ping failed:", error); }
+                                    );
+                                }, 2000); // Wait 2 seconds to make sure everything is loaded
+                            } else {
+                                console.error("EmailJS initialized but send method not found");
+                                retryInitialization(retryCount);
+                            }
+                        } else {
+                            retryInitialization(retryCount);
+                        }
+                    } catch (error) {
+                        console.error("Error initializing EmailJS:", error);
+                        retryInitialization(retryCount);
+                    }
+                }
+                
+                // Helper function for retry logic
+                function retryInitialization(retryCount) {
+                    if (retryCount < 3) {
+                        // Retry up to 3 times with increasing delay
+                        console.warn(`EmailJS initialization failed, will retry (attempt ${retryCount + 1}/3)`);
+                        setTimeout(() => initializeEmailJS(retryCount + 1), 1000 * (retryCount + 1));
+                    } else {
+                        console.error("Failed to initialize EmailJS after multiple attempts");
+                    }
+                }
+                
+                // Start initialization when DOM is loaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', function() {
+                        initializeEmailJS();
+                    });
                 } else {
-                    console.error("Failed to initialize EmailJS after multiple attempts");
+                    // DOM already loaded, initialize immediately
+                    initializeEmailJS();
                 }
-            } catch (error) {
-                console.error("Error initializing EmailJS:", error);
-                if (retryCount < 3) {
-                    // Retry up to 3 times with increasing delay
-                    setTimeout(() => initializeEmailJS(retryCount + 1), 500 * (retryCount + 1));
-                }
-            }
-        }
-        
-        // Start initialization when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeEmailJS();
-        });
-    })();
-</script>
+            })();
+        </script>
     </head>
     <body>
         {showNavigation && <Navigation />}
@@ -62,8 +103,31 @@ const base = import.meta.env.BASE_URL;
             <slot />
         </main>
         
-        <!-- Page tracking script -->
-        <script is:inline src="https://david9930.github.io/living-with-the-ghost-of-sam/js/tracking.js"></script>
+        <!-- Page tracking script - Use local path instead of absolute URL -->
+        <script is:inline>
+            // Check if tracking.js is already loaded
+            if (!window.trackingLoaded) {
+                console.log("Loading tracking.js script...");
+                
+                const script = document.createElement('script');
+                script.src = `${import.meta.env.BASE_URL}/js/tracking.js`;
+                script.onerror = function() {
+                    console.error("Failed to load tracking.js from base URL path");
+                    
+                    // Fallback to the absolute URL if local path fails
+                    const fallbackScript = document.createElement('script');
+                    fallbackScript.src = "https://david9930.github.io/living-with-the-ghost-of-sam/js/tracking.js";
+                    fallbackScript.onerror = function() {
+                        console.error("Failed to load tracking.js from fallback URL");
+                    };
+                    document.body.appendChild(fallbackScript);
+                };
+                document.body.appendChild(script);
+                
+                // Set flag to prevent double loading
+                window.trackingLoaded = true;
+            }
+        </script>
     </body>
 </html>
 
