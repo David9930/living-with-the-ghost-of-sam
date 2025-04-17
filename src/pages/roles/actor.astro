@@ -427,72 +427,76 @@ const base = import.meta.env.BASE_URL;
                     console.error("Error getting session data:", error);
                 }
                 
-                // First try direct EmailJS submission for more control over parameters
-                if (typeof emailjs !== 'undefined' && window.emailjsInitialized) {
-                    // Prepare email parameters that match the template expectations
-                    const params = {
-                        to_email: 'dburnham9930@gmail.com',
-                        from_name: `Actor Contact - ${category}`,
-                        from_email: email,
-                        subject: `Actor Contact - ${category}`,
-                        message: `
+                // Directly send EmailJS using multiple possible parameter formats
+                if (typeof emailjs !== 'undefined') {
+                    // Create message content
+                    const messageContent = `
 Actor Contact Request:
 - Email: ${email}
 - Category: ${category}
 - Page: ${window.location.pathname}
 - Session ID: ${sessionId}
 - Time: ${new Date().toISOString()}
-                        `,
-                        email: email, // This matches the template parameter expected
+                    `;
+                    
+                    // Include all possible parameter names the template might expect
+                    const params = {
+                        to_email: 'dburnham9930@gmail.com',
+                        from_name: `Actor Contact - ${category}`,
+                        from_email: email,
+                        subject: `Actor Contact - ${category}`,
+                        message: messageContent,
+                        content: messageContent,
+                        name: `Actor Contact - ${category}`,
+                        email: email,
                         category: category,
-                        page: window.location.pathname
+                        page: window.location.pathname,
+                        user_email: email,
+                        reply_to: email
                     };
                     
-                    // Send the email directly
+                    // Send using EmailJS
                     emailjs.send('service_mglwuwe', 'template_6cjvb36', params)
                         .then(function() {
                             console.log("Form submission sent successfully");
-                            
-                            // Show success message
-                            message.textContent = "Your information has been submitted!";
-                            message.style.color = "#4CAF50";
-                            form.reset();
-                            
-                            // Clear the message after a few seconds
-                            setTimeout(() => {
-                                message.textContent = "";
-                            }, 5000);
+                            showSuccess();
                         }, function(error) {
-                            console.error("Direct email send failed, trying trackContactRequest:", error);
+                            console.error("EmailJS send failed:", error);
                             
-                            // Fall back to trackContactRequest if direct send fails
-                            fallbackToTrackContactRequest();
+                            // Try trackContactRequest as fallback
+                            if (typeof window.trackContactRequest === 'function') {
+                                console.log("Trying trackContactRequest as fallback");
+                                window.trackContactRequest(email, category, sessionId);
+                                showSuccess();
+                            } else {
+                                showError();
+                            }
                         });
+                } else if (typeof window.trackContactRequest === 'function') {
+                    // Fall back to trackContactRequest if EmailJS not available
+                    window.trackContactRequest(email, category, sessionId);
+                    showSuccess();
                 } else {
-                    // Fall back to trackContactRequest
-                    fallbackToTrackContactRequest();
+                    showError();
                 }
                 
-                // Fallback function to use trackContactRequest when direct EmailJS is not available
-                function fallbackToTrackContactRequest() {
-                    // Use the global trackContactRequest function that's in tracking.js
-                    if (typeof window.trackContactRequest === 'function') {
-                        window.trackContactRequest(email, category, sessionId);
-                        
-                        // Show success message
-                        message.textContent = "Your information has been submitted!";
-                        message.style.color = "#4CAF50";
-                        form.reset();
-                        
-                        // Clear the message after a few seconds
-                        setTimeout(() => {
-                            message.textContent = "";
-                        }, 5000);
-                    } else {
-                        console.error("trackContactRequest function not available");
-                        message.textContent = "There was a problem submitting your request. Please try again.";
-                        message.style.color = "#FF5252";
-                    }
+                // Helper function to show success message
+                function showSuccess() {
+                    message.textContent = "Your information has been submitted!";
+                    message.style.color = "#4CAF50";
+                    form.reset();
+                    
+                    // Clear the message after a few seconds
+                    setTimeout(() => {
+                        message.textContent = "";
+                    }, 5000);
+                }
+                
+                // Helper function to show error message
+                function showError() {
+                    console.error("All submission methods failed");
+                    message.textContent = "There was a problem submitting your request. Please try again.";
+                    message.style.color = "#FF5252";
                 }
             });
         });
