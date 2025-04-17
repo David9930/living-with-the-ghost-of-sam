@@ -288,7 +288,7 @@ const base = import.meta.env.BASE_URL;
     });
     
 
-// Simple form handling for newsletter with EmailJS tracking integration
+// Newsletter form handling with tracking integration
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('newsletter-form');
     const message = document.querySelector('.form-message');
@@ -299,15 +299,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const emailInput = form.querySelector('input[type="email"]');
             const email = emailInput.value;
             
-            // Skip if tracking is disabled (admin mode)
+            // Skip tracking if in admin mode
             if (localStorage.getItem('trackingDisabled') === 'true') {
-                console.log("Newsletter subscription tracking skipped (admin mode)");
-                // Still show success message
                 message.textContent = "Thanks for subscribing! We'll be in touch.";
                 message.style.color = "#4CAF50";
                 form.reset();
                 
-                // Clear the message after a few seconds
                 setTimeout(() => {
                     message.textContent = "";
                 }, 5000);
@@ -323,23 +320,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error("Error getting session data:", error);
             }
             
-            // Send tracking event for the newsletter subscription
-            sendTrackingEvent('Newsletter Subscription', {
-                sessionId: sessionId,
-                email: email,
-                page: window.location.pathname,
-                time: new Date().toISOString()
-            });
-            
-            // Show success message
-            message.textContent = "Thanks for subscribing! We'll be in touch.";
-            message.style.color = "#4CAF50";
-            form.reset();
-            
-            // Clear the message after a few seconds
-            setTimeout(() => {
-                message.textContent = "";
-            }, 5000);
+            // Use the trackContactRequest function from tracking.js
+            if (typeof window.trackContactRequest === 'function') {
+                window.trackContactRequest(email, "Newsletter Subscription", sessionId);
+                
+                // Show success message
+                message.textContent = "Thanks for subscribing! We'll be in touch.";
+                message.style.color = "#4CAF50";
+                form.reset();
+                
+                // Clear the message after a few seconds
+                setTimeout(() => {
+                    message.textContent = "";
+                }, 5000);
+            } else {
+                console.error("trackContactRequest function not available");
+                message.textContent = "There was a problem with your subscription. Please try again.";
+                message.style.color = "#FF5252";
+            }
         });
     }
 });
