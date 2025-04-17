@@ -1,62 +1,89 @@
 // Simplified Page Tracking System with Admin Mode Toggle (Fixed Version)
 // Includes password-based tracking disable/enable
 
-// Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("Admin mode tracking script loaded");
+// Set a global flag to avoid loading the script twice
+if (typeof window.trackingScriptLoaded !== 'undefined') {
+  console.log("Tracking script already loaded, skipping initialization");
+} else {
+  window.trackingScriptLoaded = true;
   
-  // Check if tracking is explicitly disabled via admin mode
-  const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
-  
-  // Get password feedback element if it exists
-  const passwordFeedbackElement = document.getElementById('password-feedback');
-  
-  if (isTrackingDisabled && passwordFeedbackElement) {
-    console.log("Tracking disabled via admin mode");
-    passwordFeedbackElement.textContent = 'Admin mode active - tracking disabled';
-    passwordFeedbackElement.style.color = '#FFD700'; // Gold color
-  }
-  
-  // Set up password listeners regardless of tracking state
-  setupPasswordListeners();
-  
-  // Skip further tracking if disabled
-  if (isTrackingDisabled) {
-    return;
-  }
-  
-  // Normal tracking code begins here
-  // Check if we're on the password screen or authenticated
-  const isPasswordScreen = document.querySelector('.password-container') && 
-                           !document.querySelector('.password-container.hidden') && 
-                           !sessionStorage.getItem('authenticated');
-  
-  // If we're on the password screen, only set up password tracking
-  if (isPasswordScreen) {
-    console.log("On password screen, setting up password tracking");
-    // Initialize session tracking
+  // Ensure we wait for DOM and EmailJS to be fully loaded
+  function initializeTracking() {
+    console.log("Initializing tracking system...");
+    
+    // Check if tracking is explicitly disabled via admin mode
+    const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
+    
+    // Get password feedback element if it exists
+    const passwordFeedbackElement = document.getElementById('password-feedback');
+    
+    if (isTrackingDisabled && passwordFeedbackElement) {
+      console.log("Tracking disabled via admin mode");
+      passwordFeedbackElement.textContent = 'Admin mode active - tracking disabled';
+      passwordFeedbackElement.style.color = '#FFD700'; // Gold color
+    }
+    
+    // Set up password listeners regardless of tracking state
+    setupPasswordListeners();
+    
+    // Skip further tracking if disabled
+    if (isTrackingDisabled) {
+      console.log("Tracking fully disabled, skipping all tracking functions");
+      return;
+    }
+    
+    // Check if EmailJS is available
+    if (typeof emailjs === 'undefined') {
+      console.warn("EmailJS not available yet, will retry tracking initialization in 1s");
+      // Wait for EmailJS to be available and retry initialization
+      return setTimeout(initializeTracking, 1000);
+    }
+    
+    // Normal tracking code begins here
+    console.log("EmailJS available, proceeding with tracking setup");
+    
+    // Check if we're on the password screen or authenticated
+    const isPasswordScreen = document.querySelector('.password-container') && 
+                             !document.querySelector('.password-container.hidden') && 
+                             !sessionStorage.getItem('authenticated');
+    
+    // If we're on the password screen, only set up password tracking
+    if (isPasswordScreen) {
+      console.log("On password screen, setting up password tracking");
+      // Initialize session tracking
+      initializeSessionTracking();
+      return;
+    }
+    
+    // For authenticated pages or pages without password protection
+    console.log("Setting up full page tracking");
+    
+    // Initialize session tracking if not already done
     initializeSessionTracking();
-    return;
+    
+    // Track the current page view (with slight delay to ensure everything is initialized)
+    setTimeout(trackPageView, 500);
+    
+    // Add listeners for downloads
+    setupDownloadTracking();
+    
+    // Setup inactivity tracking
+    setupInactivityTracking();
+    
+    // Setup exit tracking metrics
+    setupExitTrackingMetrics();
+    
+    console.log("Tracking system fully initialized");
   }
   
-  // For authenticated pages or pages without password protection
-  console.log("Tracking page view");
-  
-  // Initialize session tracking if not already done
-  initializeSessionTracking();
-  
-  // Track the current page view
-  trackPageView();
-  
-  // Add listeners for downloads
-  setupDownloadTracking();
-  
-  // Setup inactivity tracking
-  setupInactivityTracking();
-  
-  // Setup exit tracking metrics
-  setupExitTrackingMetrics();
-});
+  // Begin tracking initialization when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeTracking);
+  } else {
+    // DOM already loaded, initialize immediately
+    initializeTracking();
+  }
+}
 
 // Set up password listeners for both normal and admin modes
 function setupPasswordListeners() {
@@ -223,88 +250,127 @@ async function trackPageView() {
     return;
   }
   
+  console.log("Starting page view tracking...");
+  
   try {
     // Get the current session data
     const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+    
+    if (!sessionData.sessionId) {
+      console.warn("No session ID found, reinitializing session tracking");
+      initializeSessionTracking();
+      return setTimeout(trackPageView, 500); // Try again after reinitialization
+    }
     
     // Update last activity time
     sessionData.lastActivity = new Date().toISOString();
     sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
     
-    // Try to get IP data
-    const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+    // Log current page info for debugging
+    console.log("Current page:", {
+      path: window.location.pathname,
+      title: document.title,
+      session: sessionData.sessionId
+    });
     
-    if (ipResponse.ok) {
-      const ipData = await ipResponse.json();
+    // Always include user agent info for better tracking
+    const userAgent = navigator.userAgent;
+    
+    // Try to get IP data
+    console.log("Fetching IP information...");
+    try {
+      const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
       
-      // Record page visit with IP data
-      const pageVisit = {
-        url: window.location.pathname,
-        title: document.title,
-        time: new Date().toISOString(),
-        ip: ipData.ip || 'Unknown',
-        location: formatLocation(ipData)
-      };
+      if (ipResponse.ok) {
+        const ipData = await ipResponse.json();
+        console.log("IP data received:", ipData);
+        
+        // Record page visit with IP data
+        const pageVisit = {
+          url: window.location.pathname,
+          title: document.title,
+          time: new Date().toISOString(),
+          ip: ipData.ip || 'Unknown',
+          location: formatLocation(ipData),
+          userAgent: userAgent
+        };
+        
+        // Add to history if pageVisits array exists
+        if (Array.isArray(sessionData.pageVisits)) {
+          sessionData.pageVisits.push(pageVisit);
+          sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+        } else {
+          // Create pageVisits array if it doesn't exist
+          sessionData.pageVisits = [pageVisit];
+          sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+        }
+        
+        // Send notification
+        console.log("Sending page view event with IP data");
+        sendTrackingEvent('Page View', {
+          sessionId: sessionData.sessionId,
+          url: pageVisit.url,
+          title: pageVisit.title,
+          ip: pageVisit.ip,
+          location: pageVisit.location,
+          userAgent: userAgent
+        });
+      } else {
+        // IP fetch failed but we'll still track the page view
+        console.warn("IP fetch response not OK:", ipResponse.status);
+        throw new Error("IP fetch failed with status: " + ipResponse.status);
+      }
+    } catch (ipError) {
+      console.warn("Error fetching IP, will track page view without IP data:", ipError);
       
-      // Add to history
-      sessionData.pageVisits.push(pageVisit);
-      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
-      
-      // Send notification
-      sendTrackingEvent('Page View', {
-        sessionId: sessionData.sessionId,
-        url: pageVisit.url,
-        title: pageVisit.title,
-        ip: pageVisit.ip,
-        location: pageVisit.location
-      });
-    } else {
       // Record page visit without IP data
       const pageVisit = {
         url: window.location.pathname,
         title: document.title,
-        time: new Date().toISOString()
-      };
-      
-      // Add to history
-      sessionData.pageVisits.push(pageVisit);
-      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
-      
-      // Send notification
-      sendTrackingEvent('Page View', {
-        sessionId: sessionData.sessionId,
-        url: pageVisit.url,
-        title: pageVisit.title
-      });
-    }
-  } catch (error) {
-    console.error("Error in trackPageView:", error);
-    
-    // Still track the page view without IP data
-    try {
-      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-      
-      // Record basic page visit
-      const pageVisit = {
-        url: window.location.pathname,
-        title: document.title,
-        time: new Date().toISOString()
+        time: new Date().toISOString(),
+        userAgent: userAgent
       };
       
       // Add to history
       if (Array.isArray(sessionData.pageVisits)) {
         sessionData.pageVisits.push(pageVisit);
-        sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+      } else {
+        sessionData.pageVisits = [pageVisit];
       }
+      sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
       
       // Send notification
+      console.log("Sending page view event without IP data");
       sendTrackingEvent('Page View', {
         sessionId: sessionData.sessionId,
         url: pageVisit.url,
-        title: pageVisit.title
+        title: pageVisit.title,
+        userAgent: userAgent
+      });
+    }
+  } catch (error) {
+    console.error("Error in trackPageView:", error);
+    
+    // Still track the page view without session data
+    try {
+      // Create basic page visit data
+      const pageVisit = {
+        url: window.location.pathname,
+        title: document.title,
+        time: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      };
+      
+      // Send notification as fallback
+      console.log("Sending fallback page view event");
+      sendTrackingEvent('Page View', {
+        sessionId: 'Unknown-Fallback',
+        url: pageVisit.url,
+        title: pageVisit.title,
+        userAgent: pageVisit.userAgent
       });
     } catch (innerError) {
-      console.error("Failed to track page view:", innerError);
+      console.error("Failed to track page view in fallback mode:", innerError);
     }
   }
 }
@@ -550,22 +616,39 @@ function sendTrackingEventImpl(eventType, eventData) {
     eventData.time = new Date().toISOString();
   }
   
-  // Prepare email content
+  // Create a formatted message with proper sections
+  let formattedMessage = `Event Type: ${eventType}\n`;
+  formattedMessage += `Time: ${eventData.time}\n`;
+  
+  if (eventData.sessionId) {
+    formattedMessage += `Session ID: ${eventData.sessionId}\n`;
+  }
+  
+  // Add a section header for the specific event type
+  formattedMessage += `\n${eventType} Information: -----------------------------\n`;
+  
+  // Add all event data except sessionId (already included above)
+  Object.entries(eventData)
+    .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
+    .forEach(([key, value]) => {
+      // Format the key with first letter capitalized
+      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+      formattedMessage += `${formattedKey}: ${value}\n`;
+    });
+  
+  // Prepare email parameters with improved formatting
   const params = {
     to_email: 'dburnham9930@gmail.com',
-    subject: `Visitor ${eventType} - Living with the Ghost of Sam`,
-    message: `
-      Event: ${eventType}
-      Time: ${eventData.time || new Date().toISOString()}
-      Session ID: ${eventData.sessionId || 'Unknown'}
-      
-      ${Object.entries(eventData).filter(([key]) => key !== 'sessionId')
-        .map(([key, value]) => `${key}: ${value}`).join('\n')}
-    `
+    from_name: `Ghost of Sam - ${eventType}`,
+    subject: `Site Activity: ${eventType} - Living with the Ghost of Sam`,
+    message: formattedMessage
   };
   
+  console.log("Sending email with params:", params);
+  
   // Check if the window.emailjsInitialized flag is set to true by the improved initialization code
-  if (window.emailjsInitialized) {
+  // If not set, try to send anyway since EmailJS might still work
+  if (typeof emailjs !== 'undefined') {
     // Send the email asynchronously
     emailjs.send(
       'service_mglwuwe',
@@ -577,10 +660,14 @@ function sendTrackingEventImpl(eventType, eventData) {
       },
       function(error) {
         console.error(`Failed to send tracking event '${eventType}':`, error);
+        
+        // Log additional debugging information
+        console.error("EmailJS parameters:", params);
+        console.error("EmailJS initialized flag:", window.emailjsInitialized);
       }
     );
   } else {
-    console.warn("EmailJS not fully initialized yet, tracking event not sent");
+    console.error("EmailJS not available for sending tracking event");
   }
 }
 
