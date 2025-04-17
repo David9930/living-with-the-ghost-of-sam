@@ -1,9 +1,6 @@
 // Simplified Page Tracking System with Admin Mode Toggle (Fixed Version)
 // Includes password-based tracking disable/enable
 
-// Flag to track EmailJS initialization status
-window.emailjsInitialized = false;
-
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
   console.log("Admin mode tracking script loaded");
@@ -13,10 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (isTrackingDisabled) {
     console.log("Tracking disabled via admin mode");
-    if (document.getElementById('password-feedback')) {
-      document.getElementById('password-feedback').textContent = 'Admin mode active - tracking disabled';
-      document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
-    }
+    document.getElementById('password-feedback').textContent = 'Admin mode active - tracking disabled';
+    document.getElementById('password-feedback').style.color = '#FFD700'; // Gold color
   }
   
   // Set up password listeners regardless of tracking state
@@ -502,7 +497,7 @@ function setupExitTrackingMetrics() {
   });
 }
 
-// Send tracking event via EmailJS with improved error handling
+// Send tracking event via EmailJS
 function sendTrackingEvent(eventType, eventData) {
   // Skip if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
@@ -514,12 +509,6 @@ function sendTrackingEvent(eventType, eventData) {
   if (typeof emailjs === 'undefined') {
     console.error("EmailJS not available for tracking");
     return;
-  }
-  
-  // Check if EmailJS is initialized
-  if (window.emailjsInitialized === false) {
-    console.warn("EmailJS not yet initialized, tracking event may fail");
-    // Still continue as it might work
   }
   
   // Verify we have the needed information
@@ -547,61 +536,33 @@ function sendTrackingEvent(eventType, eventData) {
     `
   };
   
-  // Send the email asynchronously with retry mechanism
-  function sendWithRetry(retryCount = 0, maxRetries = 2) {
-    emailjs.send(
-      'service_mglwuwe',
-      'template_6cjvb36',
-      params
-    ).then(
-      function(response) {
-        console.log(`Tracking event '${eventType}' sent successfully:`, response);
-      },
-      function(error) {
-        console.error(`Failed to send tracking event '${eventType}':`, error);
-        // Retry if we haven't exceeded max retries
-        if (retryCount < maxRetries) {
-          console.log(`Retrying tracking event '${eventType}' (attempt ${retryCount + 1}/${maxRetries})...`);
-          setTimeout(() => sendWithRetry(retryCount + 1, maxRetries), 1000);
-        }
-      }
-    );
-  }
-  
-  // Start sending with retry
-  sendWithRetry();
+  // Send the email asynchronously
+  emailjs.send(
+    'service_mglwuwe',
+    'template_6cjvb36',
+    params
+  ).then(
+    function(response) {
+      console.log(`Tracking event '${eventType}' sent successfully:`, response);
+    },
+    function(error) {
+      console.error(`Failed to send tracking event '${eventType}':`, error);
+    }
+  );
 }
-
-// Function to track contact form submissions with improved error handling
+  // Function to track contact form submissions
 window.trackContactRequest = function(email, category, sessionId) {
   // Skip if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
     console.log("Contact request tracking skipped (admin mode)");
-    return true; // Return true to indicate "success" even though we're skipping
+    return;
   }
   
   try {
-    // Validate inputs
-    if (!email || !category) {
-      console.error('Missing required parameters for tracking contact request');
-      return false;
-    }
-    
-    // Get the session data if sessionId is not provided or is 'Unknown'
-    if (!sessionId || sessionId === 'Unknown') {
-      try {
-        const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-        sessionId = sessionData.sessionId || 'Unknown';
-      } catch (error) {
-        console.error('Error getting session data:', error);
-        // Continue with Unknown sessionId
-      }
-    }
-    
-    // Make sure EmailJS is available before trying to use it
-    if (typeof emailjs === 'undefined') {
-      console.error('EmailJS not available for tracking contact request');
-      return false;
+    // Get the session data if sessionId is not provided
+    if (sessionId === 'Unknown') {
+      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+      sessionId = sessionData.sessionId || 'Unknown';
     }
     
     // Send notification for contact request
@@ -620,3 +581,4 @@ window.trackContactRequest = function(email, category, sessionId) {
     return false;
   }
 };
+}
