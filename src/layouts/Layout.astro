@@ -52,9 +52,13 @@ const base = import.meta.env.BASE_URL;
                                         'template_6cjvb36',
                                         {
                                             to_email: 'dburnham9930@gmail.com',
-                                            from_name: 'System Check',
+                                            from_name: 'System Initialization',
+                                            from_email: 'system@livingwiththeghost.com',
                                             subject: 'EmailJS Initialization Test',
-                                            message: 'EmailJS has been successfully initialized and can send messages.'
+                                            message: 'EmailJS has been successfully initialized and can send messages. This is an automated message from the website system initialization process.',
+                                            email: 'system@livingwiththeghost.com', // For template compatibility
+                                            category: 'System Initialization',
+                                            page: window.location.pathname
                                         }
                                     ).then(
                                         function() { console.log("Test ping sent successfully"); },
