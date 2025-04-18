@@ -32,47 +32,48 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
       return;
     }
     
-    // Check if EmailJS is available and wait for it to be fully initialized
-    ensureEmailJSInitialized(function() {
-      // Normal tracking code begins here after EmailJS is confirmed available
-      console.log("EmailJS confirmed available, proceeding with tracking setup");
-      
-      // Check if we're on the password screen or authenticated
-      const isPasswordScreen = document.querySelector('.password-container') && 
-                              !document.querySelector('.password-container.hidden') && 
-                              !sessionStorage.getItem('authenticated');
-      
-      // If we're on the password screen, only set up password tracking
-      if (isPasswordScreen) {
-        console.log("On password screen, setting up password tracking");
-        // Initialize session tracking
-        initializeSessionTracking();
-        return;
-      }
-      
-      // For authenticated pages or pages without password protection
-      console.log("Setting up full page tracking");
-      
-      // Initialize session tracking if not already done
+    // Check if EmailJS is available
+    if (typeof emailjs === 'undefined') {
+      console.warn("EmailJS not available yet, will retry tracking initialization in 1s");
+      // Wait for EmailJS to be available and retry initialization
+      return setTimeout(initializeTracking, 1000);
+    }
+    
+    // Normal tracking code begins here
+    console.log("EmailJS available, proceeding with tracking setup");
+    
+    // Check if we're on the password screen or authenticated
+    const isPasswordScreen = document.querySelector('.password-container') && 
+                             !document.querySelector('.password-container.hidden') && 
+                             !sessionStorage.getItem('authenticated');
+    
+    // If we're on the password screen, only set up password tracking
+    if (isPasswordScreen) {
+      console.log("On password screen, setting up password tracking");
+      // Initialize session tracking
       initializeSessionTracking();
-      
-      // Track the current page view (with slight delay to ensure everything is initialized)
-      setTimeout(trackPageView, 500);
-      
-      // Add listeners for downloads
-      setupDownloadTracking();
-      
-      // Setup inactivity tracking
-      setupInactivityTracking();
-      
-      // Setup exit tracking metrics
-      setupExitTrackingMetrics();
-      
-      // Setup contact form tracking
-      setupContactFormTracking();
-      
-      console.log("Tracking system fully initialized");
-    });
+      return;
+    }
+    
+    // For authenticated pages or pages without password protection
+    console.log("Setting up full page tracking");
+    
+    // Initialize session tracking if not already done
+    initializeSessionTracking();
+    
+    // Track the current page view (with slight delay to ensure everything is initialized)
+    setTimeout(trackPageView, 500);
+    
+    // Add listeners for downloads
+    setupDownloadTracking();
+    
+    // Setup inactivity tracking
+    setupInactivityTracking();
+    
+    // Setup exit tracking metrics
+    setupExitTrackingMetrics();
+    
+    console.log("Tracking system fully initialized");
   }
   
   // Begin tracking initialization when DOM is loaded
@@ -82,40 +83,6 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
     // DOM already loaded, initialize immediately
     initializeTracking();
   }
-}
-
-// Makes sure EmailJS is fully initialized before proceeding
-function ensureEmailJSInitialized(callback, maxAttempts = 10, currentAttempt = 0) {
-  // If EmailJS is available and the send method exists
-  if (typeof emailjs !== 'undefined' && typeof emailjs.send === 'function') {
-    console.log("EmailJS confirmed available");
-    
-    // If we detect the initialization ping has already been sent, continue right away
-    if (window.emailjsInitialized === true) {
-      console.log("EmailJS already initialized, proceeding");
-      callback();
-      return;
-    }
-    
-    // Wait a bit more to make sure initialization ping has been sent
-    console.log("EmailJS detected, waiting for initialization to complete...");
-    setTimeout(callback, 1000);
-    return;
-  }
-  
-  // If we've tried too many times, give up
-  if (currentAttempt >= maxAttempts) {
-    console.error("EmailJS not available after multiple attempts");
-    return;
-  }
-  
-  // Wait and try again with exponential backoff
-  const waitTime = Math.min(1000 * Math.pow(1.5, currentAttempt), 5000);
-  console.log(`EmailJS not available yet, will retry in ${waitTime/1000}s (attempt ${currentAttempt + 1}/${maxAttempts})`);
-  
-  setTimeout(function() {
-    ensureEmailJSInitialized(callback, maxAttempts, currentAttempt + 1);
-  }, waitTime);
 }
 
 // Set up password listeners for both normal and admin modes
@@ -305,7 +272,7 @@ async function trackPageView() {
     const pageTitle = document.title;
     
     // Log current page info for debugging
-    console.log("Current page:", {
+    console.log("Current page for tracking:", {
       url: currentUrl,
       path: fullPath,
       title: pageTitle,
@@ -441,6 +408,7 @@ function setupDownloadTracking() {
       
       // Send notification for download
       sendTrackingEvent('Download', {
+        sessionId: sessionData.sessionId || 'Unknown',
         url: downloadInfo.url,
         filename: downloadInfo.filename,
         time: new Date().toISOString()
@@ -549,6 +517,7 @@ function setupInactivityTracking() {
     
     // Send session ended notification
     sendTrackingEvent('Session Ended', {
+      sessionId: sessionData.sessionId || 'Unknown',
       reason: 'Inactivity timeout (15 minutes)',
       startTime: sessionData.startTime || 'Unknown',
       lastActivity: sessionData.lastActivity || 'Unknown',
@@ -616,16 +585,204 @@ function setupExitTrackingMetrics() {
   });
 }
 
-// Setup contact form tracking
-function setupContactFormTracking() {
+// Send tracking event via EmailJS with retry logic
+function sendTrackingEvent(eventType, eventData) {
+  // Skip if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log(`Tracking event '${eventType}' skipped (admin mode)`);
+    return;
+  }
+  
+  // Check if EmailJS is properly initialized before sending
+  if (typeof emailjs === 'undefined') {
+    console.warn("EmailJS not available for tracking yet, will retry in 1s");
+    // Try again in 1 second if EmailJS isn't loaded yet
+    setTimeout(() => {
+      if (typeof emailjs !== 'undefined') {
+        sendTrackingEventImpl(eventType, eventData);
+      } else {
+        console.error("EmailJS still not available after retry, tracking event not sent");
+      }
+    }, 1000);
+    return;
+  }
+  
+  // EmailJS is available, proceed with sending
+  sendTrackingEventImpl(eventType, eventData);
+}
+
+// Implementation of sending tracking event
+function sendTrackingEventImpl(eventType, eventData) {
+  // Verify we have the needed information
+  if (!eventType || !eventData) {
+    console.error("Missing tracking event data");
+    return;
+  }
+  
+  // Add timestamp if not provided
+  if (!eventData.time) {
+    eventData.time = new Date().toISOString();
+  }
+  
+  // Create a formatted message with proper sections
+  const formattedMessage = formatTrackingEventMessage(eventType, eventData);
+  
+  // Send with the right parameters needed for the template
+  const params = {
+    to_email: 'dburnham9930@gmail.com',
+    from_name: `Ghost of Sam - ${eventType}`, 
+    from_email: 'system@livingwiththeghost.com',
+    subject: `Site Activity: ${eventType} - Living with the Ghost of Sam`,
+    message: formattedMessage
+  };
+  
+  console.log(`Sending ${eventType} tracking event with data:`, eventData);
+  
+  // Send the email using EmailJS
+  if (typeof emailjs !== 'undefined') {
+    emailjs.send(
+      'service_mglwuwe',
+      'template_6cjvb36',
+      params
+    ).then(
+      function(response) {
+        console.log(`Tracking event '${eventType}' sent successfully:`, response);
+      },
+      function(error) {
+        console.error(`Failed to send tracking event '${eventType}':`, error);
+      }
+    );
+  } else {
+    console.error("EmailJS not available for sending tracking event");
+  }
+}
+
+// Format the message consistently for all tracking events
+function formatTrackingEventMessage(eventType, eventData) {
+  let formattedMessage = `Event Type: ${eventType}\n`;
+  formattedMessage += `Time: ${eventData.time}\n`;
+  
+  if (eventData.sessionId) {
+    formattedMessage += `Session ID: ${eventData.sessionId}\n`;
+  }
+  
+  // Add a section header for the specific event type
+  formattedMessage += `\n${eventType} Information: -----------------------------\n`;
+  
+  // Add all event data except sessionId and time (already included above)
+  Object.entries(eventData)
+    .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
+    .forEach(([key, value]) => {
+      // Format the key with first letter capitalized
+      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+      formattedMessage += `${formattedKey}: ${value}\n`;
+    });
+    
+  return formattedMessage;
+}
+
+// Function to track contact form submissions
+window.trackContactRequest = function(email, category, sessionId) {
+  // Skip if tracking is disabled
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Contact request tracking skipped (admin mode)");
+    return true; // Return true so UI feedback still works
+  }
+  
+  try {
+    // Get the session data if sessionId is not provided
+    if (!sessionId || sessionId === 'Unknown') {
+      try {
+        const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+        sessionId = sessionData.sessionId || 'Unknown';
+      } catch (error) {
+        console.error('Error getting session data:', error);
+        sessionId = 'Unknown';
+      }
+    }
+    
+    console.log(`Contact request being tracked for email: ${email}, category: ${category}`);
+    
+    // Using the same tracking event system for contact requests
+    sendTrackingEvent('Contact Request', {
+      email: email,
+      category: category,
+      page: window.location.pathname,
+      sessionId: sessionId,
+      time: new Date().toISOString()
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error tracking contact request:', error);
+    return false;
+  }
+};
+
+// Set up tracking for navigation links to ensure page views are tracked
+function setupNavigationTracking() {
+  // Add a global flag to indicate we're waiting for a page navigation
+  window.pendingNavigation = false;
+  
+  // Listen for clicks on all internal navigation links
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    // Only track internal navigation (links that don't start with http and aren't downloads)
+    const isInternalLink = !href.startsWith('http') && 
+                          !href.startsWith('//') && 
+                          !href.startsWith('javascript:') &&
+                          !link.hasAttribute('download');
+    
+    if (isInternalLink) {
+      link.addEventListener('click', function() {
+        console.log(`Navigation link clicked: ${this.href}`);
+        // Set flag to indicate navigation is in progress
+        window.pendingNavigation = true;
+        // Force page view tracking to happen before navigation completes
+        trackPageView();
+      });
+    }
+  });
+}
+
+// Track page views when the URL changes (for single page apps)
+function setupHistoryChangeTracking() {
+  // Use history API to detect page changes
+  const originalPushState = history.pushState;
+  const originalReplaceState = history.replaceState;
+  
+  // Override pushState
+  history.pushState = function() {
+    originalPushState.apply(this, arguments);
+    console.log("URL changed via pushState, tracking page view");
+    trackPageView();
+  };
+  
+  // Override replaceState
+  history.replaceState = function() {
+    originalReplaceState.apply(this, arguments);
+    console.log("URL changed via replaceState, tracking page view");
+    trackPageView();
+  };
+  
+  // Listen for popstate events (back/forward navigation)
+  window.addEventListener('popstate', function() {
+    console.log("URL changed via popstate, tracking page view");
+    trackPageView();
+  });
+}
+
+// Set up form tracking for contact forms
+document.addEventListener('DOMContentLoaded', function() {
   console.log("Setting up contact form tracking");
   
-  // Initialize all contact forms with our tracking function
+  // Find all contact forms
   document.querySelectorAll('.contact-form').forEach(form => {
     console.log("Found contact form:", form.id);
     
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      
       const emailInput = this.querySelector('input[type="email"]');
       if (!emailInput) {
         console.error("Email input not found in form:", this.id);
@@ -640,7 +797,7 @@ function setupContactFormTracking() {
       console.log(`Contact form submitted: ${email}, ${category}`);
       
       // Track the contact request
-      if (trackContactRequest(email, category)) {
+      if (window.trackContactRequest(email, category)) {
         if (message) {
           message.textContent = "Your information has been submitted!";
           message.style.color = "#4CAF50";
@@ -678,7 +835,7 @@ function setupContactFormTracking() {
       console.log(`Newsletter form submitted: ${email}`);
       
       // Track the newsletter subscription
-      if (trackContactRequest(email, "Newsletter Subscription")) {
+      if (window.trackContactRequest(email, "Newsletter Subscription")) {
         if (message) {
           message.textContent = "Thanks for subscribing! We'll be in touch.";
           message.style.color = "#4CAF50";
@@ -696,173 +853,25 @@ function setupContactFormTracking() {
       }
     });
   }
-}
+  
+  // Set up navigation tracking to ensure page views are tracked
+  setupNavigationTracking();
+  
+  // Set up history change tracking for single-page apps
+  setupHistoryChangeTracking();
+});
 
-// Send tracking event via EmailJS with retry logic
-function sendTrackingEvent(eventType, eventData) {
-  // Skip if tracking is disabled
-  if (localStorage.getItem('trackingDisabled') === 'true') {
-    console.log(`Tracking event '${eventType}' skipped (admin mode)`);
-    return;
-  }
-  
-  // Check if EmailJS is properly initialized before sending
-  if (typeof emailjs === 'undefined' || typeof emailjs.send !== 'function') {
-    console.warn(`EmailJS not available for tracking '${eventType}', will retry in 1s`);
-    // Try again in 1 second if EmailJS isn't loaded yet
-    setTimeout(() => {
-      if (typeof emailjs !== 'undefined' && typeof emailjs.send === 'function') {
-        sendTrackingEventImpl(eventType, eventData);
-      } else {
-        console.error(`EmailJS still not available after retry, '${eventType}' event not sent`);
-      }
-    }, 1000);
-    return;
-  }
-  
-  // EmailJS is available, proceed with sending
-  sendTrackingEventImpl(eventType, eventData);
-}
+// Make sure page views are tracked on all page loads
+window.addEventListener('load', function() {
+  console.log("Window loaded, ensuring page view is tracked");
+  // Allow a short delay for everything to initialize
+  setTimeout(trackPageView, 1000);
+});
 
-// Implementation of sending tracking event
-function sendTrackingEventImpl(eventType, eventData) {
-  // Verify we have the needed information
-  if (!eventType || !eventData) {
-    console.error("Missing tracking event data");
-    return;
-  }
-  
-  // Add timestamp if not provided
-  if (!eventData.time) {
-    eventData.time = new Date().toISOString();
-  }
-  
-  // Add session ID if available
-  if (!eventData.sessionId && typeof sessionStorage !== 'undefined') {
-    try {
-      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-      if (sessionData && sessionData.sessionId) {
-        eventData.sessionId = sessionData.sessionId;
-      }
-    } catch (e) {
-      console.error("Error getting session ID:", e);
-    }
-  }
-  
-  // Create a formatted message with proper sections
-  const formattedMessage = formatTrackingEventMessage(eventType, eventData);
-  
-  // Create the email parameters for EmailJS
-  const params = {
-    to_email: 'dburnham9930@gmail.com',
-    from_name: `Ghost of Sam - ${eventType}`,
-    from_email: 'system@livingwiththeghost.com',
-    subject: `Site Activity: ${eventType} - Living with the Ghost of Sam`,
-    message: formattedMessage
-  };
-  
-  console.log(`Sending ${eventType} tracking event:`, eventData);
-  
-  // Send the email using EmailJS
-  if (typeof emailjs !== 'undefined' && typeof emailjs.send === 'function') {
-    emailjs.send(
-      'service_mglwuwe',
-      'template_6cjvb36',
-      params
-    ).then(
-      function(response) {
-        console.log(`Tracking event '${eventType}' sent successfully:`, response);
-      },
-      function(error) {
-        console.error(`Failed to send tracking event '${eventType}':`, error);
-      }
-    );
-  } else {
-    console.error(`EmailJS not available for sending '${eventType}' tracking event`);
-  }
-}
-
-// Format the message consistently for all tracking events
-function formatTrackingEventMessage(eventType, eventData) {
-  let formattedMessage = `Event Type: ${eventType}\n`;
-  formattedMessage += `Time: ${eventData.time}\n`;
-  
-  if (eventData.sessionId) {
-    formattedMessage += `Session ID: ${eventData.sessionId}\n`;
-  }
-  
-  // Add a section header for the specific event type
-  formattedMessage += `\n${eventType} Information: -----------------------------\n`;
-  
-  // Add all event data except sessionId and time (already included above)
-  Object.entries(eventData)
-    .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
-    .forEach(([key, value]) => {
-      // Format the key with first letter capitalized
-      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
-      formattedMessage += `${formattedKey}: ${value}\n`;
-    });
-    
-  return formattedMessage;
-}
-
-// Function to track contact form submissions
-window.trackContactRequest = function(email, category) {
-  // Skip if tracking is disabled
-  if (localStorage.getItem('trackingDisabled') === 'true') {
-    console.log("Contact request tracking skipped (admin mode)");
-    return true; // Return true so UI feedback still works
-  }
-  
-  // Validate inputs
-  if (!email) {
-    console.error("Email is required for contact tracking");
-    return false;
-  }
-  
-  if (!category) {
-    category = "General Contact";
-    console.warn("No category provided for contact tracking, using 'General Contact'");
-  }
-  
-  try {
-    // Get session data if available
-    let sessionId = 'Unknown';
-    try {
-      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
-      sessionId = sessionData.sessionId || 'Unknown';
-    } catch (error) {
-      console.error('Error getting session data:', error);
-    }
-    
-    console.log(`Contact request being tracked - Email: ${email}, Category: ${category}`);
-    
-    // Send tracking event for contact request
-    sendTrackingEvent('Contact Request', {
-      email: email,
-      category: category,
-      page: window.location.pathname,
-      time: new Date().toISOString(),
-      sessionId: sessionId
-    });
-    
-    return true;
-  } catch (error) {
-    console.error('Error tracking contact request:', error);
-    return false;
-  }
-};
-
-// After the DOM is fully loaded, make sure EmailJS is initialized and set up contact forms
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM loaded, ensuring EmailJS is initialized for contact forms");
-  
-  // Make sure EmailJS is initialized for contact forms
-  if (typeof emailjs === 'undefined' || typeof emailjs.send !== 'function') {
-    console.log("EmailJS not yet available, will set up contact forms when tracking system initializes");
-    // This will be handled by initializeTracking() when EmailJS becomes available
-  } else {
-    // EmailJS is already available, set up forms immediately
-    setupContactFormTracking();
+// Track views when the page visibility changes (useful for tabs)
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    console.log("Page became visible, tracking page view");
+    trackPageView();
   }
 });
