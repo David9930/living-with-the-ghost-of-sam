@@ -299,10 +299,16 @@ async function trackPageView() {
     sessionData.lastActivity = new Date().toISOString();
     sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
     
+    // Get the full URL and document title for accurate tracking
+    const currentUrl = window.location.href;
+    const fullPath = window.location.pathname;
+    const pageTitle = document.title;
+    
     // Log current page info for debugging
     console.log("Current page:", {
-      path: window.location.pathname,
-      title: document.title,
+      url: currentUrl,
+      path: fullPath,
+      title: pageTitle,
       session: sessionData.sessionId
     });
     
@@ -320,8 +326,8 @@ async function trackPageView() {
         
         // Record page visit with IP data
         const pageVisit = {
-          url: window.location.pathname,
-          title: document.title,
+          url: fullPath, // Use full path instead of just pathname
+          title: pageTitle, // Use document title
           time: new Date().toISOString(),
           ip: ipData.ip || 'Unknown',
           location: formatLocation(ipData),
@@ -358,8 +364,8 @@ async function trackPageView() {
       
       // Record page visit without IP data
       const pageVisit = {
-        url: window.location.pathname,
-        title: document.title,
+        url: fullPath, // Use full path instead of just pathname
+        title: pageTitle, // Use document title
         time: new Date().toISOString(),
         userAgent: userAgent
       };
