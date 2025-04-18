@@ -44,27 +44,36 @@ const base = import.meta.env.BASE_URL;
                             if (typeof emailjs.send === 'function') {
                                 console.log("EmailJS initialized successfully and verified");
                                 
-                                // Send a test ping to ensure everything is working
-                                setTimeout(function() {
-                                    console.log("Sending EmailJS test ping...");
-                                    emailjs.send(
-                                        'service_mglwuwe',
-                                        'template_6cjvb36',
-                                        {
-                                            to_email: 'dburnham9930@gmail.com',
-                                            from_name: 'System Initialization',
-                                            from_email: 'system@livingwiththeghost.com',
-                                            subject: 'EmailJS Initialization Test',
-                                            message: 'EmailJS has been successfully initialized and can send messages. This is an automated message from the website system initialization process.',
-                                            email: 'system@livingwiththeghost.com', // For template compatibility
-                                            category: 'System Initialization',
-                                            page: window.location.pathname
-                                        }
-                                    ).then(
-                                        function() { console.log("Test ping sent successfully"); },
-                                        function(error) { console.error("Test ping failed:", error); }
-                                    );
-                                }, 2000); // Wait 2 seconds to make sure everything is loaded
+                                // Check if we've already sent the test ping in this session
+                                if (!sessionStorage.getItem('emailjs_test_sent')) {
+                                    // Send a test ping to ensure everything is working, but only once per session
+                                    setTimeout(function() {
+                                        console.log("Sending EmailJS test ping...");
+                                        emailjs.send(
+                                            'service_mglwuwe',
+                                            'template_6cjvb36',
+                                            {
+                                                to_email: 'dburnham9930@gmail.com',
+                                                from_name: 'System Initialization',
+                                                from_email: 'system@livingwiththeghost.com',
+                                                subject: 'EmailJS Initialization Test',
+                                                message: 'EmailJS has been successfully initialized and can send messages. This is an automated message from the website system initialization process.',
+                                                email: 'system@livingwiththeghost.com', // For template compatibility
+                                                category: 'System Initialization',
+                                                page: window.location.pathname
+                                            }
+                                        ).then(
+                                            function() { 
+                                                console.log("Test ping sent successfully");
+                                                // Mark that we've sent the test ping for this session
+                                                sessionStorage.setItem('emailjs_test_sent', 'true');
+                                            },
+                                            function(error) { console.error("Test ping failed:", error); }
+                                        );
+                                    }, 2000); // Wait 2 seconds to make sure everything is loaded
+                                } else {
+                                    console.log("EmailJS test ping already sent in this session, skipping");
+                                }
                             } else {
                                 console.error("EmailJS initialized but send method not found");
                                 retryInitialization(retryCount);
