@@ -1,16 +1,17 @@
 // Simplified Page Tracking System with Admin Mode Toggle (Fixed Version)
-// Includes password-based tracking disable/enable and debounce to prevent duplicates
-
-// Debounce mechanism to prevent duplicate events
-window.lastTrackedUrl = '';
-window.lastTrackedTime = 0;
-window.trackingInProgress = false;
+// Includes password-based tracking disable/enable
 
 // Set a global flag to avoid loading the script twice
 if (typeof window.trackingScriptLoaded !== 'undefined') {
   console.log("Tracking script already loaded, skipping initialization");
 } else {
   window.trackingScriptLoaded = true;
+  
+  // Single tracking point - only track on page load, not on clicks or URL changes
+  window.addEventListener('load', function() {
+    // Ensure we wait for DOM and EmailJS to be fully loaded
+    initializeTracking();
+  });
   
   // Ensure we wait for DOM and EmailJS to be fully loaded
   function initializeTracking() {
@@ -75,18 +76,10 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
     // Setup inactivity tracking
     setupInactivityTracking();
     
-    // Setup exit tracking metrics
-    setupExitTrackingMetrics();
+    // Setup forms
+    setupContactForms();
     
     console.log("Tracking system fully initialized");
-  }
-  
-  // Begin tracking initialization when DOM is loaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeTracking);
-  } else {
-    // DOM already loaded, initialize immediately
-    initializeTracking();
   }
 }
 
@@ -247,31 +240,13 @@ function formatLocation(ipData) {
   return `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
 }
 
-// Track a page view with debounce mechanism
+// Track a page view
 async function trackPageView() {
   // Exit if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
     console.log("Page view tracking skipped (admin mode)");
     return;
   }
-  
-  // Debounce: prevent duplicate tracking of the same URL within 2 seconds
-  const currentUrl = window.location.href;
-  const currentTime = Date.now();
-  
-  if (window.trackingInProgress) {
-    console.log("Tracking already in progress, skipping duplicate");
-    return;
-  }
-  
-  if (currentUrl === window.lastTrackedUrl && (currentTime - window.lastTrackedTime) < 2000) {
-    console.log("Same URL tracked within debounce period, skipping duplicate");
-    return;
-  }
-  
-  window.trackingInProgress = true;
-  window.lastTrackedUrl = currentUrl;
-  window.lastTrackedTime = currentTime;
   
   console.log("Starting page view tracking...");
   
@@ -282,7 +257,6 @@ async function trackPageView() {
     if (!sessionData.sessionId) {
       console.warn("No session ID found, reinitializing session tracking");
       initializeSessionTracking();
-      window.trackingInProgress = false;
       return setTimeout(trackPageView, 500); // Try again after reinitialization
     }
     
@@ -296,7 +270,6 @@ async function trackPageView() {
     
     // Log current page info for debugging
     console.log("Current page for tracking:", {
-      url: currentUrl,
       path: fullPath,
       title: pageTitle,
       session: sessionData.sessionId
@@ -401,11 +374,6 @@ async function trackPageView() {
     } catch (innerError) {
       console.error("Failed to track page view in fallback mode:", innerError);
     }
-  } finally {
-    // Always reset tracking in progress flag when done
-    setTimeout(() => {
-      window.trackingInProgress = false;
-    }, 500);
   }
 }
 
@@ -571,48 +539,6 @@ function setupInactivityTracking() {
   });
 }
 
-// Setup consolidated exit tracking metrics
-function setupExitTrackingMetrics() {
-  // Skip if in admin mode
-  if (localStorage.getItem('trackingDisabled') === 'true') {
-    return;
-  }
-  
-  // Track page entry time
-  const entryTime = new Date();
-  
-  // Track deepest scroll position
-  let deepestScroll = 0;
-  
-  // Track scroll depth but don't send events yet
-  window.addEventListener('scroll', function() {
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollPercentage = scrollHeight > 0 ? Math.round((scrollTop / scrollHeight) * 100) : 0;
-    
-    // Update deepest scroll if needed
-    if (scrollPercentage > deepestScroll) {
-      deepestScroll = scrollPercentage;
-    }
-  });
-  
-  // Send consolidated data only when user leaves
-  window.addEventListener('beforeunload', function() {
-    // Calculate time on page
-    const exitTime = new Date();
-    const timeOnPage = Math.round((exitTime - entryTime) / 1000); // in seconds
-    
-    // Send single event with all metrics
-    sendTrackingEvent('Enhanced Page Exit', {
-      url: window.location.pathname,
-      timeOnPage: timeOnPage + ' seconds',
-      deepestScroll: deepestScroll + '%',
-      referrer: document.referrer || 'Direct',
-      time: new Date().toISOString()
-    });
-  });
-}
-
 // Send tracking event via EmailJS with retry logic
 function sendTrackingEvent(eventType, eventData) {
   // Skip if tracking is disabled
@@ -747,61 +673,8 @@ window.trackContactRequest = function(email, category, sessionId) {
   }
 };
 
-// Set up tracking for navigation links to ensure page views are tracked
-function setupNavigationTracking() {
-  // Add a global flag to indicate we're waiting for a page navigation
-  window.pendingNavigation = false;
-  
-  // Listen for clicks on all internal navigation links
-  document.querySelectorAll('a').forEach(link => {
-    const href = link.getAttribute('href') || '';
-    // Only track internal navigation (links that don't start with http and aren't downloads)
-    const isInternalLink = !href.startsWith('http') && 
-                          !href.startsWith('//') && 
-                          !href.startsWith('javascript:') &&
-                          !link.hasAttribute('download');
-    
-    if (isInternalLink) {
-      link.addEventListener('click', function() {
-        console.log(`Navigation link clicked: ${this.href}`);
-        // Set flag to indicate navigation is in progress
-        window.pendingNavigation = true;
-        // Force page view tracking to happen before navigation completes
-        trackPageView();
-      });
-    }
-  });
-}
-
-// Track page views when the URL changes (for single page apps)
-function setupHistoryChangeTracking() {
-  // Use history API to detect page changes
-  const originalPushState = history.pushState;
-  const originalReplaceState = history.replaceState;
-  
-  // Override pushState
-  history.pushState = function() {
-    originalPushState.apply(this, arguments);
-    console.log("URL changed via pushState, tracking page view");
-    trackPageView();
-  };
-  
-  // Override replaceState
-  history.replaceState = function() {
-    originalReplaceState.apply(this, arguments);
-    console.log("URL changed via replaceState, tracking page view");
-    trackPageView();
-  };
-  
-  // Listen for popstate events (back/forward navigation)
-  window.addEventListener('popstate', function() {
-    console.log("URL changed via popstate, tracking page view");
-    trackPageView();
-  });
-}
-
 // Set up form tracking for contact forms
-document.addEventListener('DOMContentLoaded', function() {
+function setupContactForms() {
   console.log("Setting up contact form tracking");
   
   // Find all contact forms
@@ -881,25 +754,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-  
-  // Set up navigation tracking to ensure page views are tracked
-  setupNavigationTracking();
-  
-  // Set up history change tracking for single-page apps
-  setupHistoryChangeTracking();
-});
-
-// Make sure page views are tracked on all page loads
-window.addEventListener('load', function() {
-  console.log("Window loaded, ensuring page view is tracked");
-  // Allow a short delay for everything to initialize
-  setTimeout(trackPageView, 1000);
-});
-
-// Track views when the page visibility changes (useful for tabs)
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') {
-    console.log("Page became visible, tracking page view");
-    trackPageView();
-  }
-});
+}
