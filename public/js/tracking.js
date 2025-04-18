@@ -1,5 +1,10 @@
 // Simplified Page Tracking System with Admin Mode Toggle (Fixed Version)
-// Includes password-based tracking disable/enable
+// Includes password-based tracking disable/enable and debounce to prevent duplicates
+
+// Debounce mechanism to prevent duplicate events
+window.lastTrackedUrl = '';
+window.lastTrackedTime = 0;
+window.trackingInProgress = false;
 
 // Set a global flag to avoid loading the script twice
 if (typeof window.trackingScriptLoaded !== 'undefined') {
@@ -242,13 +247,31 @@ function formatLocation(ipData) {
   return `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
 }
 
-// Track a page view
+// Track a page view with debounce mechanism
 async function trackPageView() {
   // Exit if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
     console.log("Page view tracking skipped (admin mode)");
     return;
   }
+  
+  // Debounce: prevent duplicate tracking of the same URL within 2 seconds
+  const currentUrl = window.location.href;
+  const currentTime = Date.now();
+  
+  if (window.trackingInProgress) {
+    console.log("Tracking already in progress, skipping duplicate");
+    return;
+  }
+  
+  if (currentUrl === window.lastTrackedUrl && (currentTime - window.lastTrackedTime) < 2000) {
+    console.log("Same URL tracked within debounce period, skipping duplicate");
+    return;
+  }
+  
+  window.trackingInProgress = true;
+  window.lastTrackedUrl = currentUrl;
+  window.lastTrackedTime = currentTime;
   
   console.log("Starting page view tracking...");
   
@@ -259,6 +282,7 @@ async function trackPageView() {
     if (!sessionData.sessionId) {
       console.warn("No session ID found, reinitializing session tracking");
       initializeSessionTracking();
+      window.trackingInProgress = false;
       return setTimeout(trackPageView, 500); // Try again after reinitialization
     }
     
@@ -267,7 +291,6 @@ async function trackPageView() {
     sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
     
     // Get the full URL and document title for accurate tracking
-    const currentUrl = window.location.href;
     const fullPath = window.location.pathname;
     const pageTitle = document.title;
     
@@ -378,6 +401,11 @@ async function trackPageView() {
     } catch (innerError) {
       console.error("Failed to track page view in fallback mode:", innerError);
     }
+  } finally {
+    // Always reset tracking in progress flag when done
+    setTimeout(() => {
+      window.trackingInProgress = false;
+    }, 500);
   }
 }
 
