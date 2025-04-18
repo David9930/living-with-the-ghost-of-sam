@@ -700,40 +700,16 @@ window.trackContactRequest = function(email, category, sessionId) {
     
     console.log(`Contact request being tracked for email: ${email}, category: ${category}`);
     
-    // Format message for tracking
-    const formattedMessage = `Event Type: Contact Request
-Time: ${new Date().toISOString()}
-Session ID: ${sessionId}
-
-Contact Request Information: -----------------------------
-Email: ${email}
-Category: ${category}
-Page: ${window.location.pathname}`;
-
-    // Create parameters for EmailJS
-    const params = {
-      to_email: 'dburnham9930@gmail.com',
-      from_name: `Contact - ${category}`,
-      from_email: email,
-      subject: `Contact - ${category}`,
-      message: formattedMessage
-    };
+    // Using the same sendTrackingEvent function for consistency
+    sendTrackingEvent('Contact Request', {
+      email: email,
+      category: category,
+      page: window.location.pathname,
+      sessionId: sessionId,
+      time: new Date().toISOString()
+    });
     
-    // Send via EmailJS
-    if (typeof emailjs !== 'undefined') {
-      return emailjs.send('service_mglwuwe', 'template_6cjvb36', params)
-        .then(function(response) {
-          console.log('Contact request tracked successfully:', response);
-          return true;
-        })
-        .catch(function(error) {
-          console.error('Error sending contact request:', error);
-          return false;
-        });
-    } else {
-      console.error("EmailJS not available for tracking");
-      return false;
-    }
+    return true;
   } catch (error) {
     console.error('Error tracking contact request:', error);
     return false;
