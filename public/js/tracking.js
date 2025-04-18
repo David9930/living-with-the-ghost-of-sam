@@ -7,6 +7,10 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
 } else {
   window.trackingScriptLoaded = true;
   
+  // Tracking state flags
+  window.lastPageTracked = null;
+  window.lastTrackingTime = 0;
+  
   // Basic tracking initialization - happens for all visitors
   // This sets up password tracking and allows failed password tracking
   function initializeBasicTracking() {
@@ -291,7 +295,7 @@ function formatLocation(ipData) {
   return `${ipData.city || ''}, ${ipData.region || ''}, ${ipData.country || ''}`.replace(/, ,/g, ',').replace(/^, /, '').replace(/, $/, '') || 'Unknown';
 }
 
-// Track a page view
+// Track a page view - with built-in debounce
 async function trackPageView() {
   // Exit if tracking is disabled
   if (localStorage.getItem('trackingDisabled') === 'true') {
@@ -299,7 +303,22 @@ async function trackPageView() {
     return;
   }
   
-  console.log("Starting page view tracking...");
+  // Get current page information for debounce checking
+  const currentPath = window.location.pathname;
+  const currentTime = Date.now();
+  
+  // Don't track the same page too frequently (60 second cooldown)
+  if (window.lastPageTracked === currentPath && (currentTime - window.lastTrackingTime) < 60000) {
+    console.log("Skipping repeated page view tracking for", currentPath, "- tracked", 
+                Math.round((currentTime - window.lastTrackingTime)/1000), "seconds ago");
+    return;
+  }
+  
+  // Update tracking state
+  window.lastPageTracked = currentPath;
+  window.lastTrackingTime = currentTime;
+  
+  console.log("Starting page view tracking for:", currentPath);
   
   try {
     // Get the current session data
@@ -659,11 +678,31 @@ function setupInactivityTracking() {
   // Set initial timer
   resetInactivityTimer();
   
-  // Reset timer on user activity
-  const events = ['mousedown', 'keypress', 'scroll', 'touchstart'];
+  // Track user activity to reset inactivity timer, but DON'T trigger page view tracking on scroll!
+  const events = ['mousedown', 'keypress', 'touchstart'];
   events.forEach(event => {
     document.addEventListener(event, resetInactivityTimer, false);
   });
+  
+  // Special handler for scroll - ONLY reset inactivity timer, don't track page views
+  document.addEventListener('scroll', function() {
+    // Only update the activity timestamp, don't trigger tracking
+    try {
+      const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
+      if (sessionData) {
+        sessionData.lastActivity = new Date().toISOString();
+        sessionStorage.setItem('sessionTracking', JSON.stringify(sessionData));
+      }
+      
+      // Reset inactivity timer
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+      }
+      inactivityTimer = setTimeout(endSessionDueToInactivity, INACTIVITY_TIMEOUT);
+    } catch (e) {
+      console.error("Error updating activity time on scroll:", e);
+    }
+  }, false);
 }
 
 // Send tracking event via EmailJS with retry logic
