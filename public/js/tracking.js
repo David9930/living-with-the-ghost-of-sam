@@ -313,7 +313,8 @@ async function trackPageView() {
           title: pageVisit.title,
           ip: pageVisit.ip,
           location: pageVisit.location,
-          userAgent: userAgent
+          userAgent: userAgent,
+          time: new Date().toISOString()
         });
       } else {
         // IP fetch failed but we'll still track the page view
@@ -345,7 +346,8 @@ async function trackPageView() {
         sessionId: sessionData.sessionId,
         url: pageVisit.url,
         title: pageVisit.title,
-        userAgent: userAgent
+        userAgent: userAgent,
+        time: new Date().toISOString()
       });
     }
   } catch (error) {
@@ -367,7 +369,8 @@ async function trackPageView() {
         sessionId: 'Unknown-Fallback',
         url: pageVisit.url,
         title: pageVisit.title,
-        userAgent: pageVisit.userAgent
+        userAgent: pageVisit.userAgent,
+        time: new Date().toISOString()
       });
     } catch (innerError) {
       console.error("Failed to track page view in fallback mode:", innerError);
@@ -404,7 +407,8 @@ function setupDownloadTracking() {
       sendTrackingEvent('Download', {
         sessionId: sessionData.sessionId || 'Unknown',
         url: downloadInfo.url,
-        filename: downloadInfo.filename
+        filename: downloadInfo.filename,
+        time: new Date().toISOString()
       });
     } catch (error) {
       console.error('Error tracking download:', error);
@@ -515,7 +519,8 @@ function setupInactivityTracking() {
       startTime: sessionData.startTime || 'Unknown',
       lastActivity: sessionData.lastActivity || 'Unknown',
       pageCount: sessionData.pageVisits ? sessionData.pageVisits.length : 0,
-      downloadCount: sessionData.downloads ? sessionData.downloads.length : 0
+      downloadCount: sessionData.downloads ? sessionData.downloads.length : 0,
+      time: new Date().toISOString()
     });
     
     // Clear session tracking data
@@ -616,29 +621,22 @@ function sendTrackingEventImpl(eventType, eventData) {
     eventData.time = new Date().toISOString();
   }
   
-  // Create a formatted message with proper sections - this is critical for the template
+  // Create a formatted message with proper sections
   const formattedMessage = formatTrackingEventMessage(eventType, eventData);
   
-  // Prepare email parameters with improved formatting for the template
+  // Send with the right parameters needed for the template
   const params = {
     to_email: 'dburnham9930@gmail.com',
-    from_name: `Ghost of Sam - ${eventType}`,
+    from_name: `Ghost of Sam - ${eventType}`, 
     from_email: 'system@livingwiththeghost.com',
     subject: `Site Activity: ${eventType} - Living with the Ghost of Sam`,
     message: formattedMessage,
-    // These fields are likely what the template is expecting
-    content: formattedMessage,  // Try alternate parameter name
-    name: `Ghost of Sam - ${eventType}`, // Try alternate parameter name
-    email: 'system@livingwiththeghost.com', // Try alternate parameter name
-    // Include raw data for template access
-    eventType: eventType
   };
   
-  console.log("Sending email with params:", params);
+  console.log(`Sending ${eventType} tracking event`);
   
-  // Check if EmailJS is available
+  // Send the email using EmailJS
   if (typeof emailjs !== 'undefined') {
-    // Send the email asynchronously
     emailjs.send(
       'service_mglwuwe',
       'template_6cjvb36',
@@ -649,10 +647,6 @@ function sendTrackingEventImpl(eventType, eventData) {
       },
       function(error) {
         console.error(`Failed to send tracking event '${eventType}':`, error);
-        
-        // Log additional debugging information
-        console.error("EmailJS parameters:", params);
-        console.error("EmailJS initialized flag:", window.emailjsInitialized);
       }
     );
   } else {
@@ -672,7 +666,7 @@ function formatTrackingEventMessage(eventType, eventData) {
   // Add a section header for the specific event type
   formattedMessage += `\n${eventType} Information: -----------------------------\n`;
   
-  // Add all event data except sessionId (already included above)
+  // Add all event data except sessionId and time (already included above)
   Object.entries(eventData)
     .filter(([key]) => key !== 'sessionId' && key !== 'time') // exclude already included fields
     .forEach(([key, value]) => {
@@ -706,43 +700,34 @@ window.trackContactRequest = function(email, category, sessionId) {
     
     console.log(`Contact request being tracked for email: ${email}, category: ${category}`);
     
-    // Direct EmailJS submission approach
-    if (typeof emailjs !== 'undefined') {
-      // Format message content for the template
-      const messageContent = `
-Contact Request Details:
-- Email: ${email}
-- Category: ${category}
-- Page: ${window.location.pathname}
-- Session ID: ${sessionId}
-- Time: ${new Date().toISOString()}
-`;
+    // Format message for tracking
+    const formattedMessage = `Event Type: Contact Request
+Time: ${new Date().toISOString()}
+Session ID: ${sessionId}
 
-      // Create parameters that match the template expectations
-      const params = {
-        to_email: 'dburnham9930@gmail.com',
-        from_name: `Contact - ${category}`,
-        from_email: email,
-        subject: `Contact - ${category}`,
-        message: messageContent,
-        // Additional template parameters that might be required
-        content: messageContent,
-        name: `Contact - ${category}`,
-        email: email,
-        category: category,
-        page: window.location.pathname,
-        user_email: email,  // Try another variant
-        reply_to: email     // Try another variant
-      };
-      
-      // Send directly via EmailJS
+Contact Request Information: -----------------------------
+Email: ${email}
+Category: ${category}
+Page: ${window.location.pathname}`;
+
+    // Create parameters for EmailJS
+    const params = {
+      to_email: 'dburnham9930@gmail.com',
+      from_name: `Contact - ${category}`,
+      from_email: email,
+      subject: `Contact - ${category}`,
+      message: formattedMessage
+    };
+    
+    // Send via EmailJS
+    if (typeof emailjs !== 'undefined') {
       return emailjs.send('service_mglwuwe', 'template_6cjvb36', params)
         .then(function(response) {
-          console.log(`Contact request tracked successfully:`, response);
+          console.log('Contact request tracked successfully:', response);
           return true;
         })
         .catch(function(error) {
-          console.error(`Error sending contact request:`, error);
+          console.error('Error sending contact request:', error);
           return false;
         });
     } else {
