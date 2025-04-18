@@ -10,6 +10,7 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
   // Tracking state flags
   window.lastPageTracked = null;
   window.lastTrackingTime = 0;
+  window.lastTrackedDownloads = {};
   
   // Basic tracking initialization - happens for all visitors
   // This sets up password tracking and allows failed password tracking
@@ -531,6 +532,19 @@ function setupDownloadTracking() {
       return;
     }
     
+    // Skip if we recently tracked this exact download
+    const currentTime = Date.now();
+    const downloadKey = url + '|' + filename;
+    const lastDownloadTime = window.lastTrackedDownloads[downloadKey] || 0;
+    
+    if ((currentTime - lastDownloadTime) < 2000) {
+      console.log("Download already tracked within the last 2 seconds, skipping duplicate:", downloadKey);
+      return;
+    }
+    
+    // Update last tracked time for this download
+    window.lastTrackedDownloads[downloadKey] = currentTime;
+    
     try {
       const sessionData = JSON.parse(sessionStorage.getItem('sessionTracking') || '{}');
       if (!sessionData.downloads) {
@@ -581,6 +595,11 @@ function setupDownloadTracking() {
   
   // Find all download links and PDF links
   document.querySelectorAll('a').forEach(link => {
+    // Skip if this link already has tracking attached
+    if (link.hasAttribute('data-tracking-attached')) {
+      return;
+    }
+    
     // Check if the link is a download or points to a PDF
     const href = link.getAttribute('href') || '';
     const isDownload = link.hasAttribute('download') || 
@@ -592,6 +611,9 @@ function setupDownloadTracking() {
     
     if (isDownload) {
       console.log("Found download link:", href);
+      
+      // Mark that we've attached tracking to this link
+      link.setAttribute('data-tracking-attached', 'true');
       
       // For links with download attribute, modify to use forceDownload
       if (link.hasAttribute('download')) {
@@ -854,7 +876,15 @@ function setupContactForms() {
   
   // Find all contact forms
   document.querySelectorAll('.contact-form').forEach(form => {
+    // Skip if this form already has tracking attached
+    if (form.hasAttribute('data-tracking-attached')) {
+      return;
+    }
+    
     console.log("Found contact form:", form.id);
+    
+    // Mark that we've attached tracking to this form
+    form.setAttribute('data-tracking-attached', 'true');
     
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -894,8 +924,11 @@ function setupContactForms() {
   
   // Also check for newsletter form
   const newsletterForm = document.getElementById('newsletter-form');
-  if (newsletterForm) {
+  if (newsletterForm && !newsletterForm.hasAttribute('data-tracking-attached')) {
     console.log("Found newsletter form");
+    
+    // Mark that we've attached tracking to this form
+    newsletterForm.setAttribute('data-tracking-attached', 'true');
     
     newsletterForm.addEventListener('submit', function(e) {
       e.preventDefault();
