@@ -1,5 +1,5 @@
-// Simplified Page Tracking System - Only tracks after password submission
-// Includes password-based tracking disable/enable
+// Complete tracking system with authentication-based security
+// Tracks: failed passwords, page views, downloads, and form submissions
 
 // Set a global flag to avoid loading the script twice
 if (typeof window.trackingScriptLoaded !== 'undefined') {
@@ -7,45 +7,53 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
 } else {
   window.trackingScriptLoaded = true;
   
-  // Set a flag to indicate if tracking is enabled
-  // Default is disabled until password is submitted
-  window.trackingEnabled = false;
-  
-  // ONLY set up password listeners initially
-  initializePasswordTracking();
-  
-  function initializePasswordTracking() {
-    console.log("Setting up password tracking only...");
+  // Basic tracking initialization - happens for all visitors
+  // This sets up password tracking and allows failed password tracking
+  function initializeBasicTracking() {
+    console.log("Initializing basic tracking...");
     
-    // Set up password listeners
+    // Check if tracking is explicitly disabled via admin mode
+    const isTrackingDisabled = localStorage.getItem('trackingDisabled') === 'true';
+    
+    // Get password feedback element if it exists
+    const passwordFeedbackElement = document.getElementById('password-feedback');
+    
+    if (isTrackingDisabled && passwordFeedbackElement) {
+      console.log("Tracking disabled via admin mode");
+      passwordFeedbackElement.textContent = 'Admin mode active - tracking disabled';
+      passwordFeedbackElement.style.color = '#FFD700'; // Gold color
+    }
+    
+    // Set up password listeners regardless of tracking state
     setupPasswordListeners();
+    
+    // If already authenticated, initialize full tracking
+    if (sessionStorage.getItem('authenticated') === 'true' && !isTrackingDisabled) {
+      console.log("Already authenticated, setting up full tracking...");
+      initializeFullTracking();
+    }
   }
   
-  // Only initialize full tracking after password is verified
+  // Full tracking initialization - only happens after successful password
   function initializeFullTracking() {
-    // Skip if already initialized or disabled
+    // Skip if already initialized or explicitly disabled
     if (window.fullTrackingInitialized || localStorage.getItem('trackingDisabled') === 'true') {
       return;
     }
     
-    console.log("Password verified - initializing full tracking...");
+    console.log("Initializing full tracking system...");
     window.fullTrackingInitialized = true;
-    window.trackingEnabled = true;
     
     // Check if EmailJS is available
     if (typeof emailjs === 'undefined') {
-      console.warn("EmailJS not available yet, will retry tracking initialization in 1s");
-      // Wait for EmailJS to be available and retry initialization
+      console.warn("EmailJS not available yet, will retry full tracking initialization in 1s");
       return setTimeout(initializeFullTracking, 1000);
     }
     
-    // Normal tracking code begins here
-    console.log("EmailJS available, proceeding with tracking setup");
-    
-    // Initialize session tracking
+    // Initialize session tracking if not already done
     initializeSessionTracking();
     
-    // Track the current page view (with slight delay to ensure everything is initialized)
+    // Track the current page view
     setTimeout(trackPageView, 500);
     
     // Add listeners for downloads
@@ -54,10 +62,21 @@ if (typeof window.trackingScriptLoaded !== 'undefined') {
     // Setup inactivity tracking
     setupInactivityTracking();
     
-    // Setup forms
+    // Track navigation between pages
+    setupNavigationTracking();
+    
+    // Set up form tracking
     setupContactForms();
     
     console.log("Full tracking system initialized");
+  }
+  
+  // Begin tracking initialization when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeBasicTracking);
+  } else {
+    // DOM already loaded, initialize immediately
+    initializeBasicTracking();
   }
 }
 
@@ -68,9 +87,18 @@ function setupPasswordListeners() {
   const submitButton = document.getElementById('submit-password');
   
   if (submitButton && passwordInput) {
+    console.log("Password field found, setting up listeners");
+    
     // Function to handle password input
     const handlePasswordInput = async function() {
-      const enteredPassword = passwordInput.value;
+      const enteredPassword = passwordInput.value.trim();
+      
+      // Skip empty passwords
+      if (!enteredPassword) {
+        return;
+      }
+      
+      console.log("Password submitted:", enteredPassword === 'Terguson' ? 'Correct password' : 'Incorrect password');
       
       // Check for admin mode toggle password
       if (enteredPassword === "TergusonOFF") {
@@ -123,7 +151,7 @@ function setupPasswordListeners() {
         // Still allow access with regular password handling
         sessionStorage.setItem('authenticated', 'true');
         
-        // Initialize tracking if tracking is now enabled
+        // Initialize full tracking now that tracking is enabled
         initializeFullTracking();
         
         // Animate transition
@@ -146,45 +174,68 @@ function setupPasswordListeners() {
         return;
       }
       
-      // Track and initialize if password is correct
+      // Check if the password is correct
       if (enteredPassword === 'Terguson') {
-        // Successfully authenticated - enable tracking unless in admin mode
-        if (localStorage.getItem('trackingDisabled') !== 'true') {
-          // Initialize full tracking
-          initializeFullTracking();
+        // Try to get IP info for successful login
+        try {
+          const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
           
-          try {
-            // Get IP info for successful login
-            const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
-            
-            if (ipResponse.ok) {
-              const ipData = await ipResponse.json();
-              // Track the successful authentication with IP data
-              sendTrackingEvent('Authentication Success', {
-                location: formatLocation(ipData),
-                ip: ipData.ip || 'Unknown',
-                time: new Date().toISOString()
-              });
-            } else {
-              // Track without IP data if fetch failed
-              sendTrackingEvent('Authentication Success', {
-                time: new Date().toISOString()
-              });
-            }
-          } catch (error) {
-            console.error("Error fetching IP information:", error);
-            // Still track the authentication success without IP data
+          if (ipResponse.ok) {
+            const ipData = await ipResponse.json();
+            // Track the successful authentication with IP data
+            sendTrackingEvent('Authentication Success', {
+              location: formatLocation(ipData),
+              ip: ipData.ip || 'Unknown',
+              time: new Date().toISOString()
+            });
+          } else {
+            // Track without IP data if fetch failed
             sendTrackingEvent('Authentication Success', {
               time: new Date().toISOString()
             });
           }
+        } catch (error) {
+          console.error("Error fetching IP information:", error);
+          // Still track the authentication success without IP data
+          sendTrackingEvent('Authentication Success', {
+            time: new Date().toISOString()
+          });
         }
         
         // Set authenticated flag regardless of tracking status
         sessionStorage.setItem('authenticated', 'true');
+        
+        // Initialize full tracking unless in admin mode
+        if (localStorage.getItem('trackingDisabled') !== 'true') {
+          initializeFullTracking();
+        }
       } else if (enteredPassword !== "TergusonOFF" && enteredPassword !== "TergusonON") {
-        // Track failed attempt if tracking is enabled
-        if (window.trackingEnabled && localStorage.getItem('trackingDisabled') !== 'true') {
+        // Track failed password attempt
+        console.log("Tracking failed password attempt");
+        
+        // Try to get IP info for the failed attempt
+        try {
+          const ipResponse = await fetch('https://ipinfo.io/json?token=898b193407ebcf');
+          
+          if (ipResponse.ok) {
+            const ipData = await ipResponse.json();
+            // Track the failed attempt with IP data
+            sendTrackingEvent('Failed Authentication', {
+              password: enteredPassword,
+              location: formatLocation(ipData),
+              ip: ipData.ip || 'Unknown',
+              time: new Date().toISOString()
+            });
+          } else {
+            // Track without IP data if fetch failed
+            sendTrackingEvent('Failed Authentication', {
+              password: enteredPassword,
+              time: new Date().toISOString()
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching IP information for failed attempt:", error);
+          // Still track the failed attempt without IP data
           sendTrackingEvent('Failed Authentication', {
             password: enteredPassword,
             time: new Date().toISOString()
@@ -202,6 +253,8 @@ function setupPasswordListeners() {
         handlePasswordInput();
       }
     });
+  } else {
+    console.log("Password field not found, may be on an internal page");
   }
 }
 
@@ -241,8 +294,8 @@ function formatLocation(ipData) {
 // Track a page view
 async function trackPageView() {
   // Exit if tracking is disabled
-  if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
-    console.log("Page view tracking skipped (not enabled or admin mode)");
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Page view tracking skipped (admin mode)");
     return;
   }
   
@@ -375,13 +428,87 @@ async function trackPageView() {
   }
 }
 
+// Track navigation between pages
+function setupNavigationTracking() {
+  console.log("Setting up navigation tracking");
+  
+  // Track all link clicks
+  document.addEventListener('click', function(e) {
+    // Find if the click was on a link or inside a link
+    let target = e.target;
+    while (target && target.tagName !== 'A') {
+      target = target.parentElement;
+    }
+    
+    // If we found a link and it's an internal link
+    if (target && target.tagName === 'A') {
+      const href = target.getAttribute('href') || '';
+      
+      // Only track internal links that aren't downloads
+      const isInternalLink = href && !href.startsWith('http') && 
+                            !href.startsWith('//') && 
+                            !href.startsWith('javascript:') &&
+                            !target.hasAttribute('download');
+      
+      if (isInternalLink) {
+        console.log("Internal navigation link clicked:", href);
+        // Track the page view on the next load
+        const navigationTracked = sessionStorage.getItem('navigationTracked');
+        if (!navigationTracked) {
+          sessionStorage.setItem('navigationTracked', 'true');
+          
+          // This will be cleared when the page loads, but ensures we only set it once
+          window.addEventListener('beforeunload', function() {
+            sessionStorage.setItem('pendingNavigation', 'true');
+          });
+        }
+      }
+    }
+  });
+  
+  // Check for a pending navigation when the page loads
+  if (sessionStorage.getItem('pendingNavigation') === 'true') {
+    console.log("Detected navigation from internal link, tracking page view");
+    sessionStorage.removeItem('pendingNavigation');
+    sessionStorage.removeItem('navigationTracked');
+    
+    // If we're authenticated, track the page view
+    if (sessionStorage.getItem('authenticated') === 'true' && 
+        localStorage.getItem('trackingDisabled') !== 'true') {
+      // Track the page view after a short delay to ensure everything is loaded
+      setTimeout(trackPageView, 1000);
+    }
+  }
+  
+  // Also track on page visibility changes (like returning to the tab)
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      // If we're authenticated, check if we need to track this page view
+      if (sessionStorage.getItem('authenticated') === 'true' && 
+          localStorage.getItem('trackingDisabled') !== 'true') {
+        console.log("Page became visible, checking if tracking needed");
+        
+        // Only track if we haven't recently tracked this page
+        const lastTrackedURL = sessionStorage.getItem('lastTrackedURL');
+        const currentURL = window.location.pathname;
+        
+        if (lastTrackedURL !== currentURL) {
+          console.log("New page detected, tracking view");
+          trackPageView();
+          sessionStorage.setItem('lastTrackedURL', currentURL);
+        }
+      }
+    }
+  });
+}
+
 // Track downloads
 function setupDownloadTracking() {
   // Make the download function available globally
   window.trackDownload = function(url, filename) {
     // Skip if tracking is disabled
-    if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
-      console.log("Download tracking skipped (not enabled or admin mode)");
+    if (localStorage.getItem('trackingDisabled') === 'true') {
+      console.log("Download tracking skipped (admin mode)");
       return;
     }
     
@@ -424,8 +551,8 @@ function setupDownloadTracking() {
       link.click();
       document.body.removeChild(link);
       
-      // Track the download (if tracking is enabled)
-      if (window.trackingEnabled && localStorage.getItem('trackingDisabled') !== 'true') {
+      // Track the download (if not in admin mode)
+      if (sessionStorage.getItem('authenticated') === 'true' && localStorage.getItem('trackingDisabled') !== 'true') {
         window.trackDownload(url, filename);
       }
     } catch (error) {
@@ -445,6 +572,8 @@ function setupDownloadTracking() {
                        href.includes('/documents/');
     
     if (isDownload) {
+      console.log("Found download link:", href);
+      
       // For links with download attribute, modify to use forceDownload
       if (link.hasAttribute('download')) {
         link.addEventListener('click', function(e) {
@@ -456,8 +585,8 @@ function setupDownloadTracking() {
         // For other "viewable" links, just track them
         link.addEventListener('click', function(e) {
           const filename = this.href.split('/').pop();
-          // Only track if in tracking is enabled
-          if (window.trackingEnabled && localStorage.getItem('trackingDisabled') !== 'true') {
+          // Only track if authenticated and not in admin mode
+          if (sessionStorage.getItem('authenticated') === 'true' && localStorage.getItem('trackingDisabled') !== 'true') {
             window.trackDownload(this.href, filename);
           }
         });
@@ -469,8 +598,8 @@ function setupDownloadTracking() {
 // Setup inactivity tracking (15 minutes = 900000 ms)
 function setupInactivityTracking() {
   // Skip if tracking is disabled
-  if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
-    console.log("Inactivity tracking skipped (not enabled or admin mode)");
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Inactivity tracking skipped (admin mode)");
     return;
   }
   
@@ -480,7 +609,7 @@ function setupInactivityTracking() {
   // Function to reset the timer
   function resetInactivityTimer() {
     // Skip if tracking is disabled
-    if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
+    if (localStorage.getItem('trackingDisabled') === 'true') {
       return;
     }
     
@@ -503,7 +632,7 @@ function setupInactivityTracking() {
   // Function to end the session due to inactivity
   function endSessionDueToInactivity() {
     // Skip if tracking is disabled
-    if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
+    if (localStorage.getItem('trackingDisabled') === 'true') {
       return;
     }
     
@@ -539,13 +668,11 @@ function setupInactivityTracking() {
 
 // Send tracking event via EmailJS with retry logic
 function sendTrackingEvent(eventType, eventData) {
-  // Skip if tracking is disabled
-  if (!window.trackingEnabled && eventType !== 'Authentication Success' && eventType !== 'Failed Authentication') {
-    console.log(`Tracking event '${eventType}' skipped (tracking not enabled)`);
-    return;
-  }
+  // Special case: Always track authentication events regardless of status
+  const isAuthEvent = eventType === 'Authentication Success' || eventType === 'Failed Authentication';
   
-  if (localStorage.getItem('trackingDisabled') === 'true') {
+  // Skip if tracking is disabled and this isn't an auth event
+  if (!isAuthEvent && localStorage.getItem('trackingDisabled') === 'true') {
     console.log(`Tracking event '${eventType}' skipped (admin mode)`);
     return;
   }
@@ -641,9 +768,15 @@ function formatTrackingEventMessage(eventType, eventData) {
 // Function to track contact form submissions
 window.trackContactRequest = function(email, category, sessionId) {
   // Skip if tracking is disabled
-  if (!window.trackingEnabled || localStorage.getItem('trackingDisabled') === 'true') {
-    console.log("Contact request tracking skipped (not enabled or admin mode)");
+  if (localStorage.getItem('trackingDisabled') === 'true') {
+    console.log("Contact request tracking skipped (admin mode)");
     return true; // Return true so UI feedback still works
+  }
+  
+  // Skip if not authenticated
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    console.log("Contact request tracking skipped (not authenticated)");
+    return true; // Still return true so forms work
   }
   
   try {
